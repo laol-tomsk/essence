@@ -1,0 +1,41 @@
+<div class="contextual">
+  <%= link_to l(:button_delete), @method_definition, method: :delete,
+              data: { confirm: "Are you sure you want to delete it?" }, :class => 'icon icon-del' %>
+</div>
+
+<h2>Method Definition: <%= @method_definition.name %></h2>
+
+<div style="display: flex">
+  <div class="alphas-block">
+    <h3>Alphas</h3>
+    <ul>
+      <% @method_definition.alpha_definitions.each do |alpha| %>
+        <li>
+          <%= link_to alpha.name, alpha %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="work-product-block">
+    <h3>Work Products</h3>
+    <ul>
+      <% @method_definition.work_product_definitions.each do |wp| %>
+        <li>
+          <%= link_to wp.name, wp %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="activities-block">
+    <h3>Activities</h3>
+    <ul>
+      <% @method_definition.activity_definitions.each do |activity_definition| %>
+        <li>
+          <%= link_to activity_definition.name, activity_definition %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

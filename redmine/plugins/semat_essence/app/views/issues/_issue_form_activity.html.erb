@@ -1,0 +1,32 @@
+<% if issue.project && issue.project.method_definition && issue.project.method_definition.activity_definitions %>
+<div id="essence-form-area">
+  <div class="essence-plugin-name">SEMAT Essence Plugin</div>
+
+  <p>
+    <label>Activity</label>
+    <%= form.collection_select(:activity_definition_id,
+                               issue.project.method_definition.activity_definitions, :id, :name, {},
+                               {data: {
+                                   remote: true,
+                                   url: url_for(controller: 'issues', action: 'add_criterions_to_issue_form', project_id: issue.project.id),
+                               }}) %>
+  </p>
+
+  <div id="entry-criterions">
+    <div class="entry-criterions__name">Entry Criterions</div>
+    <div id="entry-criterions-placeholder">
+      <% if issue.activity_definition.present? %>
+        <%= render partial: 'entry_criterions_form', locals: { activity_definition: issue.activity_definition, project: issue.project} %>
+      <% else %>
+        <%= render partial: 'entry_criterions_form', locals: { activity_definition: issue.project.method_definition.activity_definitions.first, project: issue.project} %>
+    <% end %>
+    </div>
+  </div>
+
+</div>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'issue-form', :plugin => 'semat_essence' %>
+<% end %>
+<%= javascript_include_tag 'issue', :plugin => 'semat_essence' %>
+<% end %>

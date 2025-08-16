@@ -1,0 +1,57 @@
+{
+  "$schema": "method-scheme.json",
+  "name": "Method with Product Backlog",
+  "activities": [
+    {
+      "id": "1000",
+      "name": "Refine Product Backlog"
+    },
+    {
+      "id": "1001",
+      "name": "Prepare a Product Backlog Item"
+    }
+  ],
+  "work_products": [
+    {
+      "id": "20000",
+      "name": "Product Backlog",
+      "required_level": "30001"
+    }
+  ],
+  "level_of_details": [
+    {
+      "id": "30000",
+      "name": "Items Gathered",
+      "order": 10,
+      "work_product_id": "20000"
+    },
+    {
+      "id": "30001",
+      "name": "Items Prioritized",
+      "order": 20,
+      "work_product_id": "20000"
+    },
+    {
+      "id": "30002",
+      "name": "Cost-Benefit Quantified",
+      "order": 30,
+      "work_product_id": "20000"
+    }
+  ],
+  "work_product_manifest": [
+    {
+      "alpha_id": "1",
+      "work_product_id": "20000",
+      "lower_bound": "1",
+      "upper_bound": "-1"
+    }
+  ],
+  "work_product_criterions": [
+    {
+      "id": 6000,
+      "criterion_type": "Entry",
+      "activity_id": "1001",
+      "level_of_detail_id": "30001"
+    }
+  ]
+}

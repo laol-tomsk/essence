@@ -1,0 +1,25 @@
+<h2>ActivityDefinitionsController#new</h2>
+
+<div class="base" style="max-width: 400px; padding: 30px ">
+  <%= form_for(@activity_definition) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_field :description, class: "form-control" %>
+    </div>
+
+    <%= hidden_field_tag :method_definition_id, @method_definition.id %>
+
+    <%= f.submit "Create activity definition", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'mini-bootstrap', :plugin => 'semat_essence' %>
+<% end %>

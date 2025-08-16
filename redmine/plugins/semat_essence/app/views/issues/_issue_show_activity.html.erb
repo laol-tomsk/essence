@@ -1,0 +1,8 @@
+<div class="attributes">
+  <div class="attribute">
+    <% if issue.activity_definition %>
+    <div class="label">Activity:</div>
+    <div class="value"><%= link_to issue.activity_definition.name, issue.activity_definition %></div>
+    <% end -%>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<h2>AlphaStatesController#show</h2>
+
+<div class="se_state-card">
+  <div class="se_state-card__header">
+    <div class="se_state-card__name"><%= @alpha_state.name %></div>
+    <div class="se_state-card__description"><%= @alpha_state.description %></div>
+  </div>
+  <div class="se_state-card__content">
+    <div class="se_state-card__checkpoints">
+      <% @alpha_state.se_checkpoints.each do |checkpoint| %>
+        <div class="se_state-card__checkpoint">
+          <%= check_box_tag 'completed', checkpoint.id, checkpoint.checked, class: "alpha-state-checkpoint",
+                            onchange: "$(this).data('params', 'checked=' + this.checked)",
+                            data: {
+                                remote: true,
+                                url: url_for(action: :toggle, id: checkpoint.id),
+                                method: "POST"
+                            }
+          %>
+          <div class="se_state-checkpoint__name"><%= checkpoint.name %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'alpha-states', :plugin => 'semat_essence' %>
+<% end %>

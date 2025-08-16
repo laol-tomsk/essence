@@ -1,0 +1,21 @@
+<%= title 'Edit Subaplha' %>
+
+<%= form_for(@alpha) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="box tabular">
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </p>
+
+    <p>
+      <%= f.label :link %>
+      <%= f.text_area :link, class: "form-control" %>
+    </p>
+
+    <%= hidden_field_tag :project_id, @project.id %>
+  </div>
+
+  <%= f.submit l(:button_update) %>
+<% end %>

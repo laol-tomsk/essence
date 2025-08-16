@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Database manager</title>
+
+		<script src="eel.js"></script>
+		<link rel="stylesheet" type="text/css" href="main.css">
+	</head>
+
+	<body>
+		<button id="1">Показать все базы данных</button>
+		<button id="2">Показать состояние баз данных</button>
+		<button id="3">Создать базу данных</button>
+		<button id="4">Удалить базу данных</button>
+		<button id="5">Запустить базу данных</button>
+		<button id="6">Остановить базу данных</button>
+		<button id="7">Отправить запрос базе данных</button>
+		<button id="8">Скопировать базу данных</button>
+		<button id="9">Переименовать базу данных</button>
+		<button id="10">Очистить консоль</button>
+		<button id="11">Привести сервер к заводским настройкам</button>
+		<button id="12">Добавить NODE</button>
+		<button id="13">Создать базу из prectice</button>
+		<button id="14">Создать базу из protocol</button>
+		<button id="15">Создать базу из XML</button>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script type="text/javascript">
+				async function get_bases() {
+					await eel.get_bases()();
+
+				}
+
+				async function show_databases_status() {
+					await eel.show_databases_status()();
+
+				}
+
+				async function сreate_database() {
+					await eel.сreate_database()();
+
+				}
+
+				async function drop_database() {
+					await eel.drop_database()();
+
+				}
+
+				async function start_database() {
+					await eel.start_database()();
+
+				}
+
+				async function stop_database() {
+					await eel.stop_database()();
+
+				}
+
+				async function send_request() {
+					await eel.send_request()();
+
+				}
+
+				async function copy_base() {
+					await eel.copy_base()();
+
+				}
+
+				async function rename_database() {
+					await eel.rename_database()();
+
+				}
+
+				async function clear() {
+					await eel.clear()();
+
+				}
+
+				async function all_database_remuve() {
+					await eel.all_database_remuve()();
+
+				}
+
+				async function create_new_node(){
+					await eel.create_new_node()();
+				}
+
+				async function create_new_databese_prectice(){
+					await eel.create_new_databese_prectice()();
+				}
+
+				async function create_new_databese_protocol(){
+					await eel.create_new_databese_protocol()();
+				}
+
+				async function create_new_databese_XML(){
+					await eel.create_new_databese_XML()();
+				}
+
+
+				jQuery('#1').on('click',function(){
+					get_bases();
+				});
+
+				jQuery('#2').on('click',function(){
+					show_databases_status();
+				});
+
+				jQuery('#3').on('click',function(){
+					сreate_database();
+				});
+
+				jQuery('#4').on('click',function(){
+					drop_database();
+				});
+
+				jQuery('#5').on('click',function(){
+					start_database();
+				});
+
+				jQuery('#6').on('click',function(){
+					stop_database();
+				});
+
+				jQuery('#7').on('click',function(){
+					send_request();
+				});
+
+				jQuery('#8').on('click',function(){
+					copy_base();
+				});
+
+				jQuery('#9').on('click',function(){
+					rename_database();
+				});
+
+				jQuery('#10').on('click',function(){
+					clear();
+				});
+
+				jQuery('#11').on('click',function(){
+					all_database_remuve();
+				});
+
+				jQuery('#12').on('click',function(){
+					create_new_node();
+				});
+
+				jQuery('#13').on('click',function(){
+					create_new_databese_prectice();
+				});
+
+				jQuery('#14').on('click',function(){
+					create_new_databese_protocol();
+				});
+
+				jQuery('#15').on('click',function(){
+					create_new_databese_XML();
+				});
+
+
+		</script>
+	</body>
+</html>

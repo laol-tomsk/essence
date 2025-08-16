@@ -1,0 +1,2 @@
+module AlphaStatesHelper
+end

@@ -1,0 +1,2 @@
+module WorkProductCriterionDefinitionsHelper
+end

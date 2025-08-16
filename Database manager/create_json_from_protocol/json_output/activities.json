@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Inspect Architecture",
+    "description": "Check system architecture for antipatterns.",
+    "id": "756348e9-922e-4d25-86f8-ac15d7510001"
+  },
+  {
+    "name": "Fix Architecture",
+    "description": "Eliminate antipatterns in system architecture.",
+    "id": "0c794563-d7e7-4569-9656-858029756077"
+  },
+  {
+    "name": "Review the Code",
+    "description": "Review the source code of the Software System.",
+    "id": "6675d992-825c-4e92-a009-bd2bdbc45658"
+  },
+  {
+    "name": "Refactor the Code",
+    "description": "Refactor the source code of Software System without behaviour changing.",
+    "id": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+  },
+  {
+    "name": "Determine Architecture",
+    "description": "Define a system structure to meet the architectural requirements.",
+    "id": "e12d2b72-9349-4bce-a4fe-1d683b948ee1"
+  },
+  {
+    "name": "Evolve Architecture Implementation",
+    "description": "Implement a skeleton system and then evolve it to address the architectural requirements.",
+    "id": "383c57c6-844a-4e79-8b23-4dce76b51c7b"
+  }
+]

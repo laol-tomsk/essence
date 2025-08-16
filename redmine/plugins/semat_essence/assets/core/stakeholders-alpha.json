@@ -1,0 +1,169 @@
+{
+  "alphas": [
+    {
+      "id": 1,
+      "name": "Stakeholders",
+      "description": "The people, groups, or organizations who affect or are affected by a software system."
+    }
+  ],
+  "states": [
+    {
+      "id": 10,
+      "name": "Recognized",
+      "description": "Stakeholders have been identified.",
+      "order": 10,
+      "alpha_id": 1
+    },
+    {
+      "id": 11,
+      "name": "Represented",
+      "description": "The mechanisms for involving the stakeholders are agreed and the stakeholder representatives have been appointed.",
+      "order": 20,
+      "alpha_id": 1
+    },
+    {
+      "id": 12,
+      "name": "Involved",
+      "description": "The stakeholder representatives are actively involved in the work and fulfilling their responsibilities.",
+      "order": 30,
+      "alpha_id": 1
+    },
+    {
+      "id": 13,
+      "name": "In Agreement",
+      "description": "The stakeholder representatives are in agreement.",
+      "order": 40,
+      "alpha_id": 1
+    },
+    {
+      "id": 14,
+      "name": "Satisfied for Deployment",
+      "description": "The minimal expectations of the stakeholder representatives have been achieved.",
+      "order": 50,
+      "alpha_id": 1
+    },
+    {
+      "id": 15,
+      "name": "Satisfied in Use",
+      "description": "The system has met or exceeds the minimal stakeholder expectations.",
+      "order": 60,
+      "alpha_id": 1
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": 100,
+      "name": "Stakeholder groups identified",
+      "description": "All the different groups of stakeholders that are, or will be, affected by the development and operation of the software system are identified.",
+      "state_id": 10
+    },
+    {
+      "id": 101,
+      "name": "Key stakeholder groups represented",
+      "description": "There is agreement on the stakeholder groups to be represented. At a minimum, the stakeholders groups that fund, use, support, and maintain the system have been considered.",
+      "state_id": 10
+    },
+    {
+      "id": 102,
+      "name": "Responsibilities defined",
+      "description": "The responsibilities of the stakeholder representatives have been defined.",
+      "state_id": 10
+    },
+    {
+      "id": 103,
+      "name": "Responsibilities agreed",
+      "description": "The stakeholder representatives have agreed to take on their responsibilities. ",
+      "state_id": 11
+    },
+    {
+      "id": 104,
+      "name": "Representatives authorized",
+      "description": "The stakeholder representatives are authorized to carry out their responsibilities.",
+      "state_id": 11
+    },
+    {
+      "id": 105,
+      "name": "Collaboration approach agreed",
+      "description": "The collaboration approach among the stakeholder representatives has been agreed.",
+      "state_id": 11
+    },
+    {
+      "id": 106,
+      "name": "Way of working supported & respected",
+      "description": "The stakeholder representative’s support and respect the team’s way of working.",
+      "state_id": 11
+    },
+    {
+      "id": 107,
+      "name": "Representatives assist the team",
+      "description": "The stakeholder representatives assist the team in accordance with their responsibilities.",
+      "state_id": 12
+    },
+    {
+      "id": 108,
+      "name": "Timely feedback and decisions provided",
+      "description": "The stakeholder representatives provide feedback and take part in decision making in a timely manner.",
+      "state_id": 12
+    },
+    {
+      "id": 109,
+      "name": "Changes promptly communicated",
+      "description": "The stakeholder representatives promptly communicate changes that are relevant for their stakeholder groups.",
+      "state_id": 12
+    },
+    {
+      "id": 110,
+      "name": "Minimal expectations agreed",
+      "description": "The stakeholder representatives have agreed upon their minimal expectations for the next deployment of the new system.",
+      "state_id": 13
+    },
+    {
+      "id": 111,
+      "name": "Rep's happy with their involvement",
+      "description": "The stakeholder representatives are happy with their involvement in the work.",
+      "state_id": 13
+    },
+    {
+      "id": 112,
+      "name": "Rep's input valued",
+      "description": "The stakeholder representatives agree that their input is valued by the team and treated with respect.",
+      "state_id": 13
+    },
+    {
+      "id": 113,
+      "name": "Team's input valued",
+      "description": "The team members agree that their input is valued by the stakeholder representatives and treated with respect.",
+      "state_id": 13
+    },
+    {
+      "id": 114,
+      "name": "Priorities clear & perspectives balanced",
+      "description": "The stakeholder representatives agree with how their different priorities and perspectives are being balanced to provide a clear direction for the team.",
+      "state_id": 13
+    },
+    {
+      "id": 115,
+      "name": "Stakeholder feedback provided",
+      "description": "The stakeholder representatives provide feedback on the system from their stakeholder group perspective.",
+      "state_id": 14
+    },
+    {
+      "id": 116,
+      "name": "System ready for deployment",
+      "description": "The stakeholder representatives confirm that they agree that the system is ready for deployment.",
+      "state_id": 14
+    },
+    {
+      "id": 117,
+      "name": "Feedback on system use available",
+      "description": "Stakeholders are using the new system and providing feedback on their experiences.",
+      "state_id": 15
+    },
+    {
+      "id": 118,
+      "name": "System meets expectations",
+      "description": "The stakeholders confirm that the new system meets their expectations.",
+      "state_id": 15
+    }
+  ]
+}

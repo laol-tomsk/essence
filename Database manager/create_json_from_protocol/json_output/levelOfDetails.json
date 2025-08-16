@@ -1,0 +1,58 @@
+[
+  {
+    "id": "b84e895c-2e64-4a7b-a7b1-1dff932b1548",
+    "specialId": null,
+    "name": "Antipattern detected",
+    "description": "A flaw has been found in the Software System.",
+    "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+    "order": 0
+  },
+  {
+    "id": "1ce21b97-b2cf-4e37-80d9-9f598bd32954",
+    "specialId": null,
+    "name": "Antipattern\u2019s properties are determined",
+    "description": "The defect found in the Software System is localized, described and analyzed.",
+    "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+    "order": 10
+  },
+  {
+    "id": "da7811d0-a7a3-4355-8535-3c469cc8ff0f",
+    "specialId": null,
+    "name": "Antipattern influence determined",
+    "description": "The influence of the antipattern was assessed and a decision was made on the advisability of its elimination.",
+    "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+    "order": 20
+  },
+  {
+    "id": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202",
+    "specialId": null,
+    "name": "Antipattern eliminated",
+    "description": "The defect found in the Software System has been completely eliminated, all related work has been successfully completed.",
+    "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+    "order": 30
+  },
+  {
+    "id": "73539590-eb51-4440-a2c4-9e84a1159dc6",
+    "specialId": null,
+    "name": "Goals and Constraints Defined",
+    "description": "The first things to consider in the architecture description are the architecture goals and constraints. Goals and constraints are often described at a fairly high level and may have a large scope. However goals and constrains are essential and will drive the rest of the architectural development work.",
+    "workProductId": "c0862ab6-9ea1-4d74-bfc0-f0bf4ab6578f",
+    "order": 0
+  },
+  {
+    "id": "1aacfd12-da17-4a50-bb67-d1d16f95d54d",
+    "specialId": null,
+    "name": "Significant Scenarios Described",
+    "description": "Architectural requirements are not clear until architecturally significant scenarios are defined. These scenarios are needed to provide the basis for architectural prototyping and testing.",
+    "workProductId": "c0862ab6-9ea1-4d74-bfc0-f0bf4ab6578f",
+    "order": 10
+  },
+  {
+    "id": "4ed3eeff-f165-4488-b216-7e0705469c4d",
+    "specialId": null,
+    "name": "Views Described",
+    "description": "The architectural views are described to ensure that the architecture addresses the concerns and meets the needs of the stakeholders.",
+    "workProductId": "c0862ab6-9ea1-4d74-bfc0-f0bf4ab6578f",
+    "order": 20
+  }
+]

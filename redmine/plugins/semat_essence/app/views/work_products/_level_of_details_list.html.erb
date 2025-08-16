@@ -1,0 +1,83 @@
+<%= stylesheet_link_tag "alphacards.css" , :plugin => 'semat_essence' %>
+<%
+  def makecard (work_product, level_of_details)
+    res = "<div class=\"card softwaresystem ui-sortable-handle\" id=\"#{level_of_details.id}\"
+    data-id=\"#{work_product.id}\" data-card-number=\"#{LevelOfDetailsDefinition.where(id: level_of_details.id).first.order/10}\">
+        <div class=\"header\">
+          <div class=\"alpha-icon\"></div>
+          #{work_product.name}
+        </div>
+        <div class=\"subtitle\">
+          #{LevelOfDetailsDefinition.where(id: level_of_details.id).first.name}
+          <input class=\"level-checkbox\" data-work-product-id=\"#{work_product.id}\"
+            data-level-id=\"#{level_of_details.id}\" type=\"checkbox\""
+    if achieved_level_of_details?(work_product, level_of_details)
+      res += "checked"
+    end
+    res += ">
+        </div>
+
+        <div class=\"data\" data-card-data=\"#{level_of_details}\">"
+    LevelOfDetailsDefinition.where(id: level_of_details.id).first.wp_checkpoint_definitions.order(order: :asc).each do |checkpoint|
+      res += "<input class=\"card-checkbox\" data-work-product-id=\"#{work_product.id}\"
+            data-checkpoint-id=\"#{checkpoint.id}\" type=\"checkbox\""
+      if WpCheckpoint.where(wp_checkpoint_definition_id: checkpoint.id, work_product_id: work_product.id).take.fulfilled == true
+        res += "checked"
+      end
+      res += "><span>#{checkpoint.name}</span>
+            <br>"
+    end
+    res += "</div>
+        <div class=\"card-number\">
+          #{LevelOfDetailsDefinition.where(id: level_of_details.id).first.order/10 + 1}/#{work_product.definition.level_of_details_definitions.count}
+
+        </div>
+
+        <img class=\"kernel-icon\" src=\"/plugin_assets/semat_essence/images/essence_kernel_20.png\">
+        <img class=\"cards-logo\" src=\"/plugin_assets/semat_essence/images/logo.png\">
+        <div class=\"version\">1.1.2</div>
+        </div>"
+    return res
+  end
+%>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'alphacards.css', :plugin => 'semat_essence' %>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+      $(function () {
+          $(".level-checkbox").change(function () {
+              var work_product_id = $(this).data("work-product-id");
+              var level_id = $(this).data("level-id");
+              $.post("/work_products/" + work_product_id + "/update_level", {
+                      work_product_id: work_product_id,
+                      level_id: level_id,
+                  },
+                  function (d) {
+
+                  });
+          });
+      $(".card-checkbox").change(function () {
+          var work_product_id = $(this).data("work-product-id");
+          var checkpoint_id = $(this).data("checkpoint-id");
+          $.post("/work_products/" + work_product_id + "/update_checkpoint", {
+                  work_product_id: work_product_id,
+                  checkpoint_id: checkpoint_id,
+              },
+              function (d) {
+
+              });
+      });
+      });
+  </script>
+<% end %>
+
+<div class="board-container">
+  <div id="alpha-left-board-1" class="alphaboards alphaboards-1" style="display: flex; width: 100%">
+    <% @work_product.level_of_details.each do |lod| %>
+        <%= makecard(@work_product, lod).html_safe %>
+    <% end %>
+  </div>
+</div>

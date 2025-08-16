@@ -1,0 +1,114 @@
+[
+    {
+        "criterionTypeEnumValue": 0,
+        "partial": false,
+        "minimal": 0,
+        "id": "6d5a2f21-af87-4bf8-a2de-f13acd53b089",
+        "stateId": "10864e85-6005-4749-a769-430c818b1fb2",
+        "activityId": "756348e9-922e-4d25-86f8-ac15d7510001"
+    },
+    {
+        "criterionTypeEnumValue": 0,
+        "partial": false,
+        "minimal": 0,
+        "id": "093bcdff-d9e3-46af-9a55-c8b4fbd071c5",
+        "stateId": "10864e85-6005-4749-a769-430c818b1fb2",
+        "activityId": "0c794563-d7e7-4569-9656-858029756077"
+    },
+    {
+        "criterionTypeEnumValue": 0,
+        "partial": false,
+        "minimal": 0,
+        "id": "028144f6-597c-4f3a-a655-165319c9d87d",
+        "stateId": "794c9190-d386-452c-9df0-fc318a123415",
+        "activityId": "0c794563-d7e7-4569-9656-858029756077"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "cf4bae87-6eaa-4ff0-ac3e-b267a7f7e3b7",
+        "stateId": "10864e85-6005-4749-a769-430c818b1fb2",
+        "activityId": "0c794563-d7e7-4569-9656-858029756077"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "439c1998-a537-4433-8e55-e085ec4aabb8",
+        "stateId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a",
+        "activityId": "0c794563-d7e7-4569-9656-858029756077"
+    },
+    {
+        "criterionTypeEnumValue": 0,
+        "partial": false,
+        "minimal": 0,
+        "id": "9d828f02-fef5-4ab9-b745-b6ed681c014f",
+        "stateId": "60630a72-7805-4305-b7d3-8dcea752a98e",
+        "activityId": "6675d992-825c-4e92-a009-bd2bdbc45658"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "7d67a73a-5236-4a98-ac13-f6b36e106fe4",
+        "stateId": "60630a72-7805-4305-b7d3-8dcea752a98e",
+        "activityId": "6675d992-825c-4e92-a009-bd2bdbc45658"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "b206f76f-989a-48e2-a59a-330014522ecf",
+        "stateId": "2e5d2e6d-d471-4664-959a-7e931bd677f8",
+        "activityId": "6675d992-825c-4e92-a009-bd2bdbc45658"
+    },
+    {
+        "criterionTypeEnumValue": 0,
+        "partial": false,
+        "minimal": 0,
+        "id": "a83b263c-6fc0-454b-b5af-28ba064d715d",
+        "stateId": "60630a72-7805-4305-b7d3-8dcea752a98e",
+        "activityId": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+    },
+    {
+        "criterionTypeEnumValue": 0,
+        "partial": false,
+        "minimal": 0,
+        "id": "ffb749c4-2860-4526-bc16-815bb7728ffd",
+        "stateId": "794c9190-d386-452c-9df0-fc318a123415",
+        "activityId": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "f716f574-f63f-437b-b9cb-f855ca17659e",
+        "stateId": "60630a72-7805-4305-b7d3-8dcea752a98e",
+        "activityId": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "3b8f901d-1155-443c-9e3b-1ebc24fb2328",
+        "stateId": "31cdbc60-a8ae-4d07-a23a-c4cbd476b9dc",
+        "activityId": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "7699c446-5b9f-439f-bc31-9e664bf35b67",
+        "stateId": "10864e85-6005-4749-a769-430c818b1fb2",
+        "activityId": "756348e9-922e-4d25-86f8-ac15d7510001"
+    },
+    {
+        "criterionTypeEnumValue": 1,
+        "partial": false,
+        "minimal": 0,
+        "id": "275a4065-8383-456b-b4b9-716d0c9fd149",
+        "stateId": "2e5d2e6d-d471-4664-959a-7e931bd677f8",
+        "activityId": "756348e9-922e-4d25-86f8-ac15d7510001"
+    }
+]

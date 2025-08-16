@@ -1,0 +1,30 @@
+<% if activity_definition.wp_entry_criterion_definition.length == 0 && activity_definition.alpha_entry_criterion_definition.length == 0 %>
+  <div>There are no input criterions</div>
+<% else %>
+  <% activity_definition.alpha_entry_criterion_definition.each do |alpha_criterion| %>
+    <div class="criterion">
+      <%= image_tag 'alpha.png', :plugin => 'semat_essence' %>
+      <div><%= alpha_criterion.name_with_state %></div>
+      <% avaliable_alphas = alpha_criterion.get_available_alphas(project.id) %>
+      <% if avaliable_alphas.present? %>
+        <%= collection_select(:alpha_criterion, alpha_criterion.id, avaliable_alphas, :id, :name_with_state) %>
+      <% else %>
+        <span style="color: darkred; margin-left: 10px">No alphas matching the requirement</span>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% activity_definition.wp_entry_criterion_definition.each do |wp_criterion| %>
+    <div class="criterion">
+      <%= image_tag 'work_product.png', :plugin => 'semat_essence' %>
+      <div><%= wp_criterion.name_with_level %></div>
+      <% avaliable_wps = wp_criterion.get_available_wp(project.id) %>
+      <% if avaliable_wps.present? %>
+        <%= collection_select(:work_product_criterion, wp_criterion.id, wp_criterion.get_available_wp(project.id), :id, :name_with_achieved_level) %>
+      <% else %>
+        <span style="color: darkred; margin-left: 10px">No work products matching the requirement</span>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+

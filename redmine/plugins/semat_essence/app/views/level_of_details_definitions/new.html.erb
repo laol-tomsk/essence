@@ -1,0 +1,27 @@
+<%= title 'New Level Of Details Definition' %>
+
+<%= form_for(@lod_definition) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="box tabular">
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, :size => 60 %>
+    </p>
+
+    <p>
+      <%= f.label :description %>
+      <%= f.text_field :description, :size => 60 %>
+    </p>
+
+    <p>
+      <%= f.label :order %>
+      <%= f.text_field :order, required: true, :size => 60 %>
+    </p>
+
+    <%= hidden_field_tag :work_product_definition_id, @work_product_definition.id %>
+
+  </div>
+
+  <%= f.submit l(:button_create) %>
+<% end %>

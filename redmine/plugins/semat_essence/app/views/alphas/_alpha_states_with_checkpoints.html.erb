@@ -1,0 +1,77 @@
+<% alpha.definition.state_definitions.order(order: :asc).each do |state| %>
+  <div class="state-panel__state">
+    <div class="state-panel__state_title" onclick="toggle_table(this)">
+      <div>
+        <span class="bold"><%= state.name %></span>: <%= state.description %>
+      </div>
+      <% if alpha.achieved_state.present? && state.order <= alpha.achieved_state.order %>
+        <%= image_tag 'checkmark.svg', :plugin => 'semat_essence' %>
+      <% end %>
+    </div>
+
+    <table class="se-table" chdef="<%= state.id %>">
+      <% state.checkpoint_definitions.each do |checkpoint_definition| %>
+        <tr>
+          <td style="display: flex; align-items: center">
+            <% checkpoint = Checkpoint.where(alpha_id: alpha.id, checkpoint_definition_id: checkpoint_definition.id).take %>
+            <input
+              type="checkbox"
+              style="cursor: pointer; margin-right: 10px"
+              <%= checkpoint.fulfilled ? 'checked' : '' %> style="margin-right: 10px;"  onclick="toggle_checkbox(event, this, <%= checkpoint.id %>)"
+            />
+            <%= checkpoint_definition.name %>
+          </td>
+          <td><%= checkpoint_definition.description %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<script>
+  const storageAttrName = 'open-sections';
+
+  function toggle_table(el) {
+    const wrapper = el.parentNode;
+    const table = wrapper.querySelector('.se-table');
+    const chdef = $(table).attr('chdef');
+    const storage = $('#alpha-states-checkpoints');
+    const visible = table.style.display == 'block';
+    const storageValue = storage.attr(storageAttrName);
+    let newStorageValue;
+
+    if (visible) {
+        table.style.display = 'none';
+        newStorageValue = storageValue.split(' ').filter(str => str !== chdef);
+    } else {
+        table.style.display = 'block';
+        newStorageValue = storageValue ? storageValue + ' ' + chdef : chdef;
+    }
+    storage.attr(storageAttrName, newStorageValue)
+  }
+
+  function toggle_checkbox(e, el, checkpoint_id) {
+    e.stopPropagation();
+
+      return $.ajax({
+        url: 'update_checkpoint',
+        type: 'get',
+        dataType: 'script',
+        data: {
+            project_id: <%= alpha.project.id %>,
+            checkpoint_id: checkpoint_id,
+            checkpoint_new_state: el.checked
+        }
+    })
+  }
+
+  function openNeededStates() {
+      const value = $('#alpha-states-checkpoints').attr(storageAttrName);
+      const values = value ? value.split(' ') : [];
+      values.forEach((val) => {
+         $(".se-table[chdef='" + val + "']").css('display', 'block');
+      })
+  }
+
+  openNeededStates();
+</script>

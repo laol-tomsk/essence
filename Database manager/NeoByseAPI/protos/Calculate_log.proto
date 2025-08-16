@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message Request{
+	string dict_influence = 1;
+	string mas_bit = 2;
+	string parents_node = 3;
+	int32  len_mas_bit = 4;
+}
+
+message Response{
+	double res = 1;
+}
+
+service CalculatingService{
+	rpc calculate (Request) returns (Response) {}
+}

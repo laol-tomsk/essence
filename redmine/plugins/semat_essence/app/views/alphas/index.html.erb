@@ -1,0 +1,11 @@
+
+<div class="alphaboards" style="border: none; width: 100%">
+  <% @alphas.each do |alpha| %>
+    <%= render partial: 'alpha', locals: {alpha: alpha, project_id: @project.id} %>
+  <% end %>
+</div>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'alphas', :plugin => 'semat_essence' %>
+  <%= stylesheet_link_tag 'alphacards.css', :plugin => 'semat_essence' %>
+<% end %>

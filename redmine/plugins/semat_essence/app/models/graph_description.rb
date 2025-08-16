@@ -1,0 +1,3 @@
+class GraphDescription
+
+end

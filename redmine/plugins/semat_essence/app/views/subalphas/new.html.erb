@@ -1,0 +1,31 @@
+<%= title 'New Subalpha object' %>
+
+<%= form_for @alpha, url: subalphas_path(@alpha), :html => {class: "probabilities-form"}, method: :post do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="box tabular">
+
+    <p>
+      <%= f.label :alpha_definition_id %>
+      <%= f.collection_select(:alpha_definition_id, @alpha_definitions, :id, :name, {}, {class: "form-control"}) %>
+    </p>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </p>
+
+    <!--p>
+      <!-%= f.label :link %>
+      <!-%= f.text_area :link, class: "form-control" %>
+    </p-->
+
+    <!--%= f.hidden_field :parent_id, value: @parent_alpha.id %-->
+    <%= hidden_field_tag :project_id, @project.id %>
+  </div>
+
+  <%= f.submit l(:button_create) %>
+<% end %>
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+<% end %>

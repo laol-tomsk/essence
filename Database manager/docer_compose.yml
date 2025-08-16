@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  neo4j:
+    restart: always
+    image: neo4j
+    container_name: neo4j
+    ports:
+      --"7474:7474"
+      --"7687:7687"
+
+    volumens:
+      -- C:/neo4j/data:/data
+      -- C:/neo4j/var/lib/neo4j/conf:/var/lib/neo4j/conf
+
+    environment:
+      -- NEO4J_AUTH=neo4j/test

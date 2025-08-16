@@ -1,0 +1,18 @@
+<%= title 'New Method Definition' %>
+
+<%= form_for(@method_definition, html: { multipart: true }) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="box tabular">
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </p>
+    <p>
+      <%= f.label :method_definition_file %>
+      <%= file_field_tag :method_definition_file %>
+    </p>
+
+  </div>
+  <%= f.submit l(:button_create) %>
+<% end %>

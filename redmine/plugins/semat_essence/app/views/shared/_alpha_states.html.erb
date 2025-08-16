@@ -1,0 +1,10 @@
+<div class="alpha__states">
+  <% alpha.definition.state_definitions.order(order: :asc).each do |state| %>
+    <div class="alpha__state">
+      <%= state.name %>
+      <% if alpha.achieved_state.present? && state.order <= alpha.achieved_state.order %>
+        <%= image_tag 'checkmark.svg', :plugin => 'semat_essence' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

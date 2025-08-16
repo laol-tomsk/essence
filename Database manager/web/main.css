@@ -1,0 +1,6 @@
+body {
+    background: #000 url(bg-dark-0003.gif); /* Фоновый цвет и фоновый рисунок*/
+    color: #fff; /*Цвет текста на странице*/
+    background-attachment: fixed; /* Фон страницы фиксируется */
+    background-repeat: repeat; /* Изображение повторяется по горизонтали */
+  }

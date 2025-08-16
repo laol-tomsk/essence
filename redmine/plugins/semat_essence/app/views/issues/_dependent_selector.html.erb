@@ -1,0 +1,34 @@
+<div style="padding-left: 20px">
+  <div class="criterion">
+    <% if node[:data][:type] == 'alpha' %>
+      <%= image_tag 'alpha.png', :plugin => 'semat_essence' %>
+      <div><%= node[:data][:label] %></div>
+      <select name="completion_alpha[<%= node[:data][:id] %>]" id="completion_alpha_<%= node[:data][:id] %>">
+        <% node[:data][:options].each do |option| %>
+          <option value="<%= option[:id] %>" parentId="<%= option[:parent_id] %>"><%= option[:title] %></option>
+        <% end %>
+      </select>
+    <% end %>
+
+    <% if node[:data][:type] == 'work-product' %>
+      <%= image_tag 'work_product.png', :plugin => 'semat_essence' %>
+      <div><%= node[:data][:label] %></div>
+      <select name="completion_work_product[<%= node[:data][:id] %>]" id="completion_work_product_<%= node[:data][:id] %>">
+        <% node[:data][:options].each do |option| %>
+          <option value="<%= option[:id] %>" parentId="<%= option[:parent_id] %>"><%= option[:title] %></option>
+        <% end %>
+      </select>
+    <% end %>
+
+  </div>
+
+  <% node[:childs].each do |childNode| %>
+    <%= render partial: "dependent_selector", locals: { node: childNode } %>
+  <% end %>
+
+</div>
+
+
+
+
+

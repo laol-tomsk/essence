@@ -1,0 +1,13 @@
+<h2><%= @work_product_definition.name %> (Work Product Definition)</h2>
+<p>Method: <%= link_to @work_product_definition.method_definition.name, @work_product_definition.method_definition %></p>
+
+<div style="margin-top: 30px">
+  <h3>Level of details</h3>
+  <ul>
+    <% @work_product_definition.level_of_details_definitions.order(order: :asc).each do |level_of_details| %>
+      <li>
+        <%= level_of_details.name %>
+      </li>
+    <% end %>
+  </ul>
+</div>

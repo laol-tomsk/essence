@@ -1,0 +1,46 @@
+#essence-form-area {
+    border: 1px solid gray;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.essence-plugin-name {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+#entry-criterions, #completion-criterions {
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+#entry-criterions-placeholder, #completion-criterions-placeholder {
+    padding: 20px;
+}
+
+.entry-criterions__name, .completion-criterions__name {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 5px;
+}
+
+.criterion {
+    display: flex;
+    height: 20px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.criterion img {
+    height: 100%;
+    width: auto;
+    max-width: 300px;
+    max-height: 300px;
+    margin-right: 5px;
+}
+
+.criterion select {
+    margin-left: 10px;
+}

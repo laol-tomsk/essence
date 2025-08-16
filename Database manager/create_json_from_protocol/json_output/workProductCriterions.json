@@ -1,0 +1,58 @@
+[
+  {
+    "criterionTypeEnumValue": 0,
+    "partial": false,
+    "minimal": 0,
+    "id": "caa4afdf-2c58-45d8-8a95-54b1ead29be5",
+    "levelOfDetailId": "da7811d0-a7a3-4355-8535-3c469cc8ff0f",
+    "activityId": "0c794563-d7e7-4569-9656-858029756077"
+  },
+  {
+    "criterionTypeEnumValue": 1,
+    "partial": false,
+    "minimal": 0,
+    "id": "7229a054-c5b5-4ff4-ad66-9f2e68ceebca",
+    "levelOfDetailId": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202",
+    "activityId": "0c794563-d7e7-4569-9656-858029756077"
+  },
+  {
+    "criterionTypeEnumValue": 1,
+    "partial": false,
+    "minimal": 0,
+    "id": "8e8ff5bb-258d-40f7-8858-e3f5f6c2431b",
+    "levelOfDetailId": "1ce21b97-b2cf-4e37-80d9-9f598bd32954",
+    "activityId": "6675d992-825c-4e92-a009-bd2bdbc45658"
+  },
+  {
+    "criterionTypeEnumValue": 0,
+    "partial": false,
+    "minimal": 0,
+    "id": "6f522d45-4c2c-42a4-8efa-830f20aa34cc",
+    "levelOfDetailId": "da7811d0-a7a3-4355-8535-3c469cc8ff0f",
+    "activityId": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+  },
+  {
+    "criterionTypeEnumValue": 1,
+    "partial": false,
+    "minimal": 0,
+    "id": "9c97b24f-a550-4e8c-b249-e192d632cf1e",
+    "levelOfDetailId": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202",
+    "activityId": "50b8583e-a846-429d-ba84-2d6b155b7c39"
+  },
+  {
+    "criterionTypeEnumValue": 1,
+    "partial": false,
+    "minimal": 0,
+    "id": "98289d08-1bd8-4057-bf05-41a7403ee133",
+    "levelOfDetailId": "1ce21b97-b2cf-4e37-80d9-9f598bd32954",
+    "activityId": "756348e9-922e-4d25-86f8-ac15d7510001"
+  },
+  {
+    "criterionTypeEnumValue": 1,
+    "partial": false,
+    "minimal": 0,
+    "id": "cdbde9e2-696d-4ea4-835a-bf8ac31c5b46",
+    "levelOfDetailId": "4ed3eeff-f165-4488-b216-7e0705469c4d",
+    "activityId": "e12d2b72-9349-4bce-a4fe-1d683b948ee1"
+  }
+]

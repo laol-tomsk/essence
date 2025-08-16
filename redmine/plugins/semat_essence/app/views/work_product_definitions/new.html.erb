@@ -1,0 +1,17 @@
+<h2>WorkProductDefinitionsController#new</h2>
+
+<div>
+  <%= form_for(@work_product_definition) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+
+    <%= f.label :description %>
+    <%= f.text_field :description, class: "form-control" %>
+
+    <%= f.hidden_field :method_definition_id %>
+
+    <%= f.submit "Create method definition", class: "btn btn-primary" %>
+  <% end %>
+</div>

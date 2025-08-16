@@ -1,0 +1,12 @@
+<%= title 'Choose a Method for the Project' %>
+
+<%= form_tag method_instances_path, method: :post do %>
+  <div class="box tabular">
+    <p>
+      <%= label_tag :method %>
+      <%= collection_select(:method_definition, :id, MethodDefinition.all, :id, :name) %>
+    </p>
+  </div>
+  <%= hidden_field_tag :project_id, project.id %>
+  <%= submit_tag "Choose" %>
+<% end %>

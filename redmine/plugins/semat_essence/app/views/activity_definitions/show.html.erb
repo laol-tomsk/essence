@@ -1,0 +1,58 @@
+<h2><%= @activity_definition.name %> (Activity Definition)</h2>
+<p>Method: <%= link_to @activity_definition.method_definition.name, @activity_definition.method_definition %></p>
+
+<div style="margin-top: 30px; display: flex">
+  <div>
+    <h3>Work Product Criterions</h3>
+    <h5>Entry</h5>
+    <ul>
+      <% @activity_definition.wp_entry_criterion_definition.each do |wp_criterion| %>
+        <li>
+          <%= link_to wp_criterion.level_of_details_definition.work_product_definition.name, wp_criterion.level_of_details_definition.work_product_definition %>:
+          <%= wp_criterion.level_of_details_definition.name %>
+          <%= ' (contributes to)' if wp_criterion.partial %>
+          <%= ' (or beyond)' if wp_criterion.minimal %>
+        </li>
+      <% end %>
+    </ul>
+
+    <h5>Completion</h5>
+    <ul>
+      <% @activity_definition.wp_completion_criterion_definition.each do |wp_criterion| %>
+        <li>
+          <%= link_to wp_criterion.level_of_details_definition.work_product_definition.name, wp_criterion.level_of_details_definition.work_product_definition %>:
+          <%= wp_criterion.level_of_details_definition.name %>
+          <%= ' (contributes to)' if wp_criterion.partial %>
+          <%= ' (or beyond)' if wp_criterion.minimal %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+
+  <div>
+    <h3>Alpha Criterions</h3>
+    <h5>Entry</h5>
+    <ul>
+      <% @activity_definition.alpha_entry_criterion_definition.each do |alpha_criterion| %>
+        <li>
+          <%= link_to alpha_criterion.state_definition.alpha_definition.name, alpha_criterion.state_definition.alpha_definition %>:
+          <%= alpha_criterion.state_definition.name %>
+          <%= ' (or beyond)' if alpha_criterion.minimal %>
+        </li>
+      <% end %>
+    </ul>
+
+    <h5>Completion</h5>
+    <ul>
+      <% @activity_definition.alpha_completion_criterion_definition.each do |alpha_criterion| %>
+        <li>
+          <%= link_to alpha_criterion.state_definition.alpha_definition.name, alpha_criterion.state_definition.alpha_definition %>:
+          <%= alpha_criterion.state_definition.name %>
+          <%= ' (contributes to)' if alpha_criterion.partial %>
+          <%= ' (or beyond)' if alpha_criterion.minimal %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+[
+    {
+        "id": "b84e895c-2e64-4a7b-a7b1-1dff932b1548",
+        "specialId": null,
+        "name": "Antipattern detected",
+        "description": "A flaw has been found in the Software System.",
+        "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+        "order": 0
+    },
+    {
+        "id": "1ce21b97-b2cf-4e37-80d9-9f598bd32954",
+        "specialId": null,
+        "name": "Antipattern\u2019s properties are determined",
+        "description": "The defect found in the Software System is localized, described and analyzed.",
+        "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+        "order": 10
+    },
+    {
+        "id": "da7811d0-a7a3-4355-8535-3c469cc8ff0f",
+        "specialId": null,
+        "name": "Antipattern influence determined",
+        "description": "The influence of the antipattern was assessed and a decision was made on the advisability of its elimination.",
+        "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+        "order": 20
+    },
+    {
+        "id": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202",
+        "specialId": null,
+        "name": "Antipattern eliminated",
+        "description": "The defect found in the Software System has been completely eliminated, all related work has been successfully completed.",
+        "workProductId": "84be080b-d8e8-41d5-bef8-3b006cb70789",
+        "order": 30
+    }
+]

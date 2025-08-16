@@ -1,0 +1,770 @@
+<% require 'json' %>
+
+<div class="page-wrapper_padding">
+  <div class="heading">
+    <h2>Alpha state cards</h2>
+    <h3 class="heading__method"><%= link_to @project.method_definition.name, @project.method_definition %></h3>
+  </div>
+
+  <div style="display: flex; flex-direction: row; align-items: center;">
+  <%= button_to 'Save current state as iteration', iterations_path(:project_id => @project.id), {class: "semat-button"} %>
+  <div class="semat-loader" id="save-iteration-loader" style="margin-left: 16px; display: none;"></div>
+  </div>
+
+  <div class="alphas">
+    <!--% get_base_alphas(@project).each do |alpha| %>
+      <!%= render partial: 'alpha', locals: { alpha: alpha, project_id: @project.id } %>
+    <!% end %>
+  </div-->
+
+
+    <%
+      def makecard (card, cardclass, carddata)
+        res = "<div class=\"closed card #{cardclass}\" id=\"#{card.id}\" data-id=\"#{card.id}\" data-card-number=\"#{StateDefinition.where(id: carddata).first.order/10}\">
+        <div class=\"header\">
+          <div class=\"alpha-icon\"></div>
+          #{card.cardtype}
+          <span class=\"close-button\" data-id=\"#{card.id}\">[+]</span>
+        </div>
+        <div class=\"subtitle\">
+          #{StateDefinition.where(id: carddata).first.name}
+        </div>
+
+        <div class=\"data\" data-card-data=\"#{carddata}\">"
+        StateDefinition.where(id: carddata).first.checkpoint_definitions.order(order: :asc).each do |checkpoint|
+          res += "<input class=\"card-checkbox\" data-checkbox-name=\"#{checkpoint.name}\"
+            data-card-id=\"#{card.id}\" type=\"checkbox\""
+          alpha = Alpha.where(project_id: @project.id, name: card.cardtype).first
+          if Checkpoint.where(checkpoint_definition_id: checkpoint.id, alpha_id: alpha.id).take.fulfilled == true
+            res += "checked"
+          end
+          res += "><span>#{checkpoint.name}</span>
+            <br>"
+        end
+        res += "</div>
+        <div class=\"card-number\">
+          #{StateDefinition.where(id: carddata).first.order/10}/#{StateDefinition.where(id: carddata).take.alpha_definition.state_definitions.count}
+
+        </div>
+
+        <img class=\"kernel-icon\" src=\"/plugin_assets/semat_essence/images/essence_kernel_20.png\">
+        <img class=\"cards-logo\" src=\"/plugin_assets/semat_essence/images/logo.png\">
+        <div class=\"version\">1.1.2</div>
+        </div>"
+        return res
+      end
+    %>
+    <% content_for :header_tags do %>
+      <%= stylesheet_link_tag 'alphacards.css', :plugin => 'semat_essence' %>
+      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script>
+          $(function () {
+              function sort(id) {
+                  var sortableList = $(id);
+                  var listitems = $('div.card', sortableList);
+
+                  listitems.sort(function (a, b) {
+
+                      return ($(a).data("card-number") > $(b).data("card-number")) ? 1 : -1;
+                  });
+                  sortableList.append(listitems);
+
+              }
+
+              $("span.close-button").click(function () {
+                  if (!$("#" + $(this).data("id")).is(".closed")) {
+                      $(this).html('[+]');
+                  } else {
+                      $(this).html('[-]');
+                  }
+                  $("#" + $(this).data("id")).toggleClass("closed");
+              });
+
+              $("#alpha-left-board-1").sortable({
+                  connectWith: ".alphaboards-1",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-1");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-1").sortable({
+                  connectWith: ".alphaboards-1",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-1");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-1").sortable({
+                  connectWith: ".alphaboards-1",
+                  receive: function (data, ui) {
+                    /*  var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-1");
+                     // }
+                  }
+              }).disableSelection();
+
+              $("#alpha-left-board-2").sortable({
+                  connectWith: ".alphaboards-2",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-2");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-2").sortable({
+                  connectWith: ".alphaboards-2",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-2");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-2").sortable({
+                  connectWith: ".alphaboards-2",
+                  receive: function (data, ui) {
+                    /*  var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-2");
+                     // }
+                  }
+              }).disableSelection();
+
+              $("#alpha-left-board-3").sortable({
+                  connectWith: ".alphaboards-3",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-3");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-3").sortable({
+                  connectWith: ".alphaboards-3",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-3");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-3").sortable({
+                  connectWith: ".alphaboards-3",
+                  receive: function (data, ui) {
+                   /*   var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-3");
+                    //  }
+                  }
+              }).disableSelection();
+
+              $("#alpha-left-board-4").sortable({
+                  connectWith: ".alphaboards-4",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-4");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-4").sortable({
+                  connectWith: ".alphaboards-4",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-4");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-4").sortable({
+                  connectWith: ".alphaboards-4",
+                  receive: function (data, ui) {
+                    /*  var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-4");
+                     // }
+                  }
+              }).disableSelection();
+
+              $("#alpha-left-board-5").sortable({
+                  connectWith: ".alphaboards-5",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-5");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-5").sortable({
+                  connectWith: ".alphaboards-5",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-5");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-5").sortable({
+                  connectWith: ".alphaboards-5",
+                  receive: function (data, ui) {
+                    /*  var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-5");
+                   //   }
+                  }
+              }).disableSelection();
+
+
+              $("#alpha-left-board-6").sortable({
+                  connectWith: ".alphaboards-6",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-6");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-6").sortable({
+                  connectWith: ".alphaboards-6",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-6");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-6").sortable({
+                  connectWith: ".alphaboards-6",
+                  receive: function (data, ui) {
+                   /*   var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-6");
+                   //   }
+                  }
+              }).disableSelection();
+
+
+              $("#alpha-left-board-7").sortable({
+                  connectWith: ".alphaboards-7",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 1
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-left-board-7");
+                  }
+              }).disableSelection();
+              $("#alpha-middle-board-7").sortable({
+                  connectWith: ".alphaboards-7",
+                  receive: function (data, ui) {
+                      $.post("/post/method_instances/updateposition", {
+                              id: $(ui.item[0]).data("id"),
+                              position: 2
+                          },
+                          function (d) {
+
+                          });
+                      sort("#alpha-middle-board-7");
+                  }
+              }).disableSelection();
+              $("#alpha-right-board-7").sortable({
+                  connectWith: ".alphaboards-7",
+                  receive: function (data, ui) {
+                    /*  var prevId = parseInt($(ui.item[0]).data("card-number"));
+                      prevId--;
+                      if (prevId != 0 && $(data.target).find('*[data-card-number="' + prevId + '"]').length == 0) {
+                          ui.sender.sortable("cancel");
+                      } else {*/
+                          $.post("/post/method_instances/updateposition", {
+                                  id: $(ui.item[0]).data("id"),
+                                  position: 3
+                              },
+                              function (d) {
+
+                              });
+                          sort("#alpha-right-board-7");
+                     // }
+                  }
+              }).disableSelection();
+
+
+              $(".card-checkbox").change(function () {
+                  var cardData = $(this).parent().data("card-data");
+                  $.post("/post/method_instances/updatedata", {
+                          id: $(this).data("card-id"),
+                          data: JSON.stringify($(this).data("checkbox-name")),
+                      },
+                      function (d) {
+
+                      });
+              });
+          });
+      </script>
+    <% end %>
+    <div class="board-container">
+      <div id="alpha-left-board-1" class="alphaboards alphaboards-1">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Stakeholders" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Stakeholders"
+                cardclass = "stakeholders"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-1" class="alphaboards alphaboards-1">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Stakeholders" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Stakeholders"
+                cardclass = "stakeholders"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-1" class="alphaboards alphaboards-1">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Stakeholders" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Stakeholders"
+                cardclass = "stakeholders"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="board-container">
+      <div id="alpha-left-board-2" class="alphaboards alphaboards-2">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Opportunity" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Opportunity"
+                cardclass = "stakeholders"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-2" class="alphaboards alphaboards-2">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Opportunity" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Opportunity"
+                cardclass = "stakeholders"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-2" class="alphaboards alphaboards-2">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Opportunity" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Opportunity"
+                cardclass = "stakeholders"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="board-container">
+      <div id="alpha-left-board-7" class="alphaboards alphaboards-7">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Requirements" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Requirements"
+                cardclass = "softwaresystem"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-7" class="alphaboards alphaboards-7">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Requirements" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Requirements"
+                cardclass = "softwaresystem"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-7" class="alphaboards alphaboards-7">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Requirements" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Requirements"
+                cardclass = "softwaresystem"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="board-container">
+      <div id="alpha-left-board-3" class="alphaboards alphaboards-3">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Software System" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Software System"
+                cardclass = "softwaresystem"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-3" class="alphaboards alphaboards-3">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Software System" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Software System"
+                cardclass = "softwaresystem"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-3" class="alphaboards alphaboards-3">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Software System" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Software System"
+                cardclass = "softwaresystem"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="board-container">
+      <div id="alpha-left-board-5" class="alphaboards alphaboards-5">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Team" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Team"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-5" class="alphaboards alphaboards-5">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Team" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Team"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-5" class="alphaboards alphaboards-5">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Team" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Team"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="board-container">
+      <div id="alpha-left-board-6" class="alphaboards alphaboards-6">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Way of Working" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Way of Working"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-6" class="alphaboards alphaboards-6">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Way of Working" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Way of Working"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-6" class="alphaboards alphaboards-6">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Way of Working" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Way of Working"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="board-container">
+      <div id="alpha-left-board-4" class="alphaboards alphaboards-4">
+        <% @cards.each do |card| %>
+          <% if card.position == 1 && card.cardtype == "Work" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Work"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-middle-board-4" class="alphaboards alphaboards-4">
+        <% @cards.each do |card| %>
+          <% if card.position == 2 && card.cardtype == "Work" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Work"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+      <div id="alpha-right-board-4" class="alphaboards alphaboards-4">
+        <% @cards.each do |card| %>
+          <% if card.position == 3 && card.cardtype == "Work" %>
+            <%
+              cardclass = ""
+              case card.cardtype
+              when "Work"
+                cardclass = "wayofworking"
+              end
+              carddata = card.stateid
+            %>
+            <%= makecard(card, cardclass, carddata).html_safe %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      const button = document.querySelector('.page-wrapper_padding input[type=submit]');
+      button.addEventListener("click", function(evt){
+          document.getElementById("save-iteration-loader").style.display = "block";
+      });
+  </script>
+
+  <% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+  <% end %>
+<%= javascript_include_tag 'semat-essence', :plugin => 'semat_essence' %>

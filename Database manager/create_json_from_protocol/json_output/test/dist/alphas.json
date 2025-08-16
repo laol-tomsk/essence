@@ -1,0 +1,44 @@
+[
+    {
+        "parentAlphaId": null,
+        "name": "Stakeholders",
+        "description": "",
+        "id": "fce6a90c-f5e0-4fc1-8e0e-43e456302a96"
+    },
+    {
+        "parentAlphaId": null,
+        "name": "Opportunity",
+        "description": "",
+        "id": "4ffac877-4500-493d-befa-104df523b689"
+    },
+    {
+        "parentAlphaId": null,
+        "name": "Requirements",
+        "description": "",
+        "id": "bb6bf55a-defd-4561-a39a-3685f6afeaff"
+    },
+    {
+        "parentAlphaId": null,
+        "name": "Software System",
+        "description": "",
+        "id": "65509ed9-ff4f-49a4-a11c-25892ef9288f"
+    },
+    {
+        "parentAlphaId": null,
+        "name": "Team",
+        "description": "",
+        "id": "7593ac24-1ccc-4eb3-b6b9-151b2290fe11"
+    },
+    {
+        "parentAlphaId": null,
+        "name": "Way of Working",
+        "description": "",
+        "id": "be1da017-3d84-428f-8326-811d1e5d69d3"
+    },
+    {
+        "parentAlphaId": null,
+        "name": "Work",
+        "description": "",
+        "id": "3de74009-b80b-4f60-b142-1aba4acb6a6e"
+    }
+]

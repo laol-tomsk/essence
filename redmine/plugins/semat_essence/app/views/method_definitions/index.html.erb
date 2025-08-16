@@ -1,0 +1,17 @@
+<div class="contextual">
+    <%= link_to("New method definition", new_method_definition_path, :class => 'icon icon-add') %>
+</div>
+
+<h2>Method Definitions</h2>
+
+<ul class="se-list">
+  <% @method_definitions.each do |method_definition| %>
+    <li>
+      <%= link_to method_definition.name, method_definition %>
+    </li>
+  <% end %>
+</ul>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+<% end %>

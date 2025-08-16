@@ -1,0 +1,28 @@
+<%= title 'New Work Product Criterion Definition' %>
+
+<%= form_for(@wp_criterion_definition) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="box tabular">
+    <p>
+      <%= f.label :criterion_type %>
+      <%= f.select :criterion_type, WorkProductCriterionDefinition.criterion_types.keys.to_a %>
+    </p>
+
+    <p>
+      <%= label_tag :work_product_definition %>
+      <%= collection_select(:work_product_definition, :id, @work_product_definitions, :id, :name, :prompt => "Select a Work Product" ) %>
+    </p>
+
+    <p>
+      <%= f.label :level_of_details_definition_id %>
+      <%= f.grouped_collection_select(:level_of_details_definition_id, @work_product_definitions, :level_of_details_definitions, :name, :id, :name ) %>
+    </p>
+
+    <%= hidden_field_tag :activity_definition_id, @activity_definition.id %>
+  </div>
+
+  <%= f.submit l(:button_create) %>
+<% end %>
+
+<%= javascript_include_tag 'wp_criterion_definition_creation', :plugin => 'semat_essence' %>

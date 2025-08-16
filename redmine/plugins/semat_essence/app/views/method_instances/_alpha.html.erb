@@ -1,0 +1,8 @@
+  <div class="alpha" se-link="<%= alpha_path(alpha, project_id: project_id) %>">
+    <div class="alpha__name <%= "#{alpha.definition.get_area_of_concern_name}-area" %>">
+      <%= alpha.name %>
+    </div>
+    <div class="alpha__body">
+      <%= render partial: 'shared/alpha_states', locals: { alpha: alpha } %>
+    </div>
+  </div>

@@ -1,0 +1,39 @@
+<div class="heading" style="flex-direction: column; align-items: baseline; padding: 10px; background: lightgray">
+  <div style="display: flex; justify-content: space-between; width: 100%;">
+    <h2><%= @work_product.name %></h2>
+    <div style="text-align: end; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="font-size: 1.2em; line-height: 1.4em">
+        Alpha: <%= link_to @work_product.containing_alpha.name, alpha_path(@work_product.containing_alpha, project_id: @project.id) %>
+      </div>
+      <div class="contextual">
+        <%= link_to l(:button_edit), edit_work_product_path(@work_product, project_id: @project.id), :class => 'icon icon-edit' %>
+        <%= link_to l(:button_delete), @work_product, method: :delete,
+                    data: { confirm: "Are you sure you want to delete it?" }, :class => 'icon icon-del' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% unless @work_product.link.nil? %>
+  <div style="padding: 0 15px;">Link: <%= @work_product.link %></div>
+<% end %>
+
+<div class="page-wrapper_padding">
+  <h3>Level Of Details</h3>
+
+  <div id="level-of-details-list">
+    <%= render 'level_of_details_list' %>
+  </div>
+</div>
+
+<!-- Do not remove #content style -->
+<style>
+  #content {
+    padding: 0;
+  }
+</style>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+<% end %>
+<%= javascript_include_tag 'toggle_work_product_state', :plugin => 'semat_essence' %>

@@ -1,0 +1,94 @@
+<div class="heading <%= "#{@alpha.get_area_of_concern_name}-area" %>" style="flex-direction: column; align-items: baseline; padding: 10px">
+  <div style="display: flex; justify-content: space-between; width: 100%;">
+    <div style="display: flex; flex-direction: column; justify-content: space-between;">
+      <h2 class="heading__name"><%= @alpha.name %></h2>
+      <div style="margin-top: 10px;"><%= @alpha.definition.description %></div>
+    </div>
+    <div style="text-align: end; display: flex; flex-direction: column; justify-content: space-between;">
+      <% unless @alpha.root_alpha? %>
+        <div style="font-size: 1.2em; line-height: 1.4em">
+          Parent: <%= link_to @alpha.parent.name, subalpha_path(@alpha.parent, project_id: @project.id) %>
+        </div>
+        <div>
+          <%=  link_to l(:button_edit), edit_subalpha_path(@alpha, project_id: @project.id), :class => 'icon icon-edit' %>
+          <%=  link_to l(:button_delete), @alpha, method: :delete,
+                       data: { confirm: "Are you sure you want to delete it?" }, :class => 'icon icon-del' %>
+        </div>
+      <%  end %>
+    </div>
+  </div>
+</div>
+
+<% unless @alpha.root_alpha? || @alpha.link.nil? %>
+  <div style="padding: 0 15px;">Link: <%= @alpha.link %></div>
+<% end %>
+
+<div class="page-wrapper_padding">
+
+  <div class="columns">
+
+    <div class="se-sidebar">
+      <div style="height: 30px; display: flex; align-items: center; margin-bottom: 10px;">
+        <h3 style="margin-bottom: 0">States</h3>
+      </div>
+      <div id="alpha-states-checkpoints">
+        <%= render partial: './alphas/alpha_states_with_checkpoints', locals: { alpha: @alpha } %>
+      </div>
+    </div>
+    <div class="se-content" style="display: flex;">
+
+      <div style="margin-right: 50px">
+        <!--span style="display: flex; margin-bottom: 10px"-->
+          <!--span class="subalpha-wp-title">Subalphas</span-->
+          <!--%= link_to("", new_alpha_path(project_id: @project.id, alpha_id: @alpha), :class => 'icon icon-add') %-->
+        <!--/span-->
+        <div class="subalphas_tree-view">
+            <% @alpha.definition.subalpha_definitions.each do |subalpha_definition| %>
+              <div style="font-weight: bold"><%= subalpha_definition.name %></div>
+              <ul class="tree-view-list">
+                <% @alpha.subalphas_of(subalpha_definition).each do |subalpha| %>
+                  <li><%= link_to subalpha.name, alpha_path(subalpha, project_id: @project.id) %></li>
+                <% end %>
+              </ul>
+            <% end %>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; flex: 1">
+        <span style="display: flex; margin-bottom: 10px; align-items: center; justify-content: space-between;">
+          <span class="subalpha-wp-title">Work Products</span>
+          <%= link_to("Add", new_work_product_path(project_id: @project.id, alpha_id: @alpha.id), :class => 'semat-button semat-button-small') %>
+        </span>
+        <div class="work-product_tree-view">
+          <% @alpha.definition.work_product_definitions.each do |wp_definition| %>
+            <div class="work-product_section">
+              <div style="font-weight: bold; padding: 15px; border-bottom: 1px solid grey;"><%= wp_definition.name %></div>
+              <ul class="tree-view-list">
+                <% @alpha.work_products_of(wp_definition).each do |work_product| %>
+                  <li><%= link_to work_product.name, work_product_path(work_product, project_id: @project.id) %></li>
+                <% end %>
+                <%= "No Items" if @alpha.work_products_of(wp_definition).length == 0 %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Do not remove #content style -->
+<style>
+  #content {
+    padding: 0;
+  }
+</style>
+
+<%= render partial: 'shared/modal' %>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+<% end %>
+<%= javascript_include_tag 'semat-essence', :plugin => 'semat_essence' %>

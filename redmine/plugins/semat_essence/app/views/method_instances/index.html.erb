@@ -1,0 +1,6 @@
+<% if @project.method_definition_id.present?  %>
+<%= render partial: 'method'  %>
+<% else %>
+<%= render partial: 'create', locals: {project: @project} %>
+<% end %>
+

@@ -1,0 +1,54 @@
+.se_state-card {
+    max-width: 400px;
+    border: 1px solid #8D9097;
+    border-radius: 5px;
+}
+
+.se_state-card__header {
+    border-bottom: 1px solid black;
+    padding: 15px;
+    background-color: #2e4272;
+    color: white;
+}
+
+.se_state-card__name {
+    display: flex;
+    justify-content: center;
+    font-size: 1.7em;
+    font-weight: bold;
+    line-height: 1.5em;
+    margin-bottom: 5px;
+}
+
+.se_state-card__description {
+    font-size: 1.1em;
+}
+
+.se_state-card__content {
+    padding: 15px;
+    background-color: #5D6884;
+    color: white;
+}
+
+.se_state-card__checkpoints {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+.se_state-card__checkpoint {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 10px;
+    line-height: 1.8em;
+    border: 2px solid #8d9097;
+    padding: 5px;
+    border-radius: 5px;
+    color: inherit;
+}
+
+.se_state-card__checkpoint:last-child {
+    margin-bottom: 0;
+}

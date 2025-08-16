@@ -1,0 +1,20 @@
+<div class="se_alpha-card">
+  <div class="se_alpha-card__header">
+      <div class="se_alpha-card__name"><%= link_to alpha.name, subalpha_path(alpha, project_id: @project.id), class:"alpha_link"%></div>
+    <% if alpha.definition.description != "" %>
+      <div class="se_alpha-card__description"><%= alpha.definition.description %></div>
+    <% end %>
+  </div>
+  <div class="se_alpha-card__content">
+    <div class="se_alpha-card__states">
+      <% alpha.definition.state_definitions.each do |state_definition| %>
+        <!--%= link_to alpha_state_path(state_definition, project_id: project_id), class: "se_alpha-card__state" do %-->
+        <div class="se_alpha-card__state-name">
+          <input type="checkbox" class="se_alpha-card__state-checkbox" <%= "checked" if state_definition.completed?(alpha) %>/>
+          <%= state_definition.name %>
+        </div>
+        <!--% end %-->
+      <% end %>
+    </div>
+  </div>
+</div>

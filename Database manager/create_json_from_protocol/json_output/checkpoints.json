@@ -1,0 +1,1986 @@
+[
+  {
+    "name": "Stakeholder groups identified",
+    "description": "All the different groups of stakeholders that are, or will be, affected by the development and operation of the software system are identified",
+    "order": 0,
+    "id": "2d444a14-e780-409f-9b21-2517d41e0942",
+    "specialId": "S11",
+    "detailId": "8f23f1d4-25ef-44f5-9451-4f145ac02cae"
+  },
+  {
+    "name": "Key Stakeholder groups represented",
+    "description": "There is agreement on the stakeholder groups to be represented. At a minimum, the stakeholders groups that fund, use, support, and maintain the system have been considered.",
+    "order": 0,
+    "id": "880addf4-13cd-46f7-a12b-c5879d8f44df",
+    "specialId": "S12",
+    "detailId": "8f23f1d4-25ef-44f5-9451-4f145ac02cae"
+  },
+  {
+    "name": "Responsibilities defined",
+    "description": "The responsibilities of the stakeholder representatives have been defined.",
+    "order": 0,
+    "id": "dbb902ae-499c-4d75-a7d3-1191f2b2071c",
+    "specialId": "S13",
+    "detailId": "8f23f1d4-25ef-44f5-9451-4f145ac02cae"
+  },
+  {
+    "name": "Responsibilities agreed",
+    "description": "The stakeholder representatives have agreed to take on their responsibilities.",
+    "order": 1,
+    "id": "6ea859b0-3f9f-44f9-82ef-257283f7128d",
+    "specialId": "S21",
+    "detailId": "23efc7fc-13a0-4a03-a017-e4ec30179abc"
+  },
+  {
+    "name": "Representatives authorized",
+    "description": "The stakeholder representatives are authorized to carry out their responsibilities.",
+    "order": 1,
+    "id": "468f8cd7-9e9a-4e38-9509-dc7906549de0",
+    "specialId": "S22",
+    "detailId": "23efc7fc-13a0-4a03-a017-e4ec30179abc"
+  },
+  {
+    "name": "Collaboration approach agreed",
+    "description": "The collaboration approach among the stakeholder representatives has been agreed.",
+    "order": 1,
+    "id": "accb7ce2-5d2c-4d42-9553-c04b78fc037d",
+    "specialId": "S23",
+    "detailId": "23efc7fc-13a0-4a03-a017-e4ec30179abc"
+  },
+  {
+    "name": "Way of working supported \u0026 respected",
+    "description": "The stakeholder representative\u0027s support and respect the team\u0027s way of working.",
+    "order": 1,
+    "id": "c7e28d4c-8009-41b1-acc3-41d7bb2d671a",
+    "specialId": "S24",
+    "detailId": "23efc7fc-13a0-4a03-a017-e4ec30179abc"
+  },
+  {
+    "name": "Representatives assist the team",
+    "description": "The stakeholder representatives assist the team in accordance with their responsibilities.",
+    "order": 2,
+    "id": "53e2185d-c28b-44ea-89e4-b6b882992532",
+    "specialId": "S31",
+    "detailId": "dde4c3f5-c0cc-434f-90b8-affc21752676"
+  },
+  {
+    "name": "Timely feedback and decision provided",
+    "description": "The stakeholder representatives provide feedback and take part in decision making in a timely manner.",
+    "order": 2,
+    "id": "188d18c1-ca22-41e3-a40e-98d9ac0c5beb",
+    "specialId": "S32",
+    "detailId": "dde4c3f5-c0cc-434f-90b8-affc21752676"
+  },
+  {
+    "name": "Changes promptly communicated",
+    "description": "The stakeholder representatives promptly communicate changes that are relevant for their stakeholder groups.",
+    "order": 2,
+    "id": "61932a2a-3b64-4bf2-b4af-844f1e6298e4",
+    "specialId": "S33",
+    "detailId": "dde4c3f5-c0cc-434f-90b8-affc21752676"
+  },
+  {
+    "name": "Minimal expectation agreed",
+    "description": "The stakeholder representatives have agreed upon their minimal expectations for the next deployment of the new system.",
+    "order": 3,
+    "id": "a8f015bf-f583-43e7-abee-3866f74bfac6",
+    "specialId": "S41",
+    "detailId": "b8fb102c-9dca-4de1-a348-5a6279409105"
+  },
+  {
+    "name": "Rep\u0027s happy with their involvement",
+    "description": "The stakeholder representatives are happy with their involvement in the work.",
+    "order": 3,
+    "id": "3e75e51b-6fea-48bb-9ca3-170c14ade99e",
+    "specialId": "S42",
+    "detailId": "b8fb102c-9dca-4de1-a348-5a6279409105"
+  },
+  {
+    "name": "Rep\u0027s input valued",
+    "description": "The stakeholder representatives agree that their input is valued by the team and treated with respect.",
+    "order": 3,
+    "id": "3adf61fb-709e-4e95-ad0f-b85339fc71ff",
+    "specialId": "S43",
+    "detailId": "b8fb102c-9dca-4de1-a348-5a6279409105"
+  },
+  {
+    "name": "Team\u0027s input valued",
+    "description": "The team members agree that their input is valued by the stakeholder representatives and treated with respect.",
+    "order": 3,
+    "id": "217ad4bf-35be-4551-85c4-98cad128be24",
+    "specialId": "S44",
+    "detailId": "b8fb102c-9dca-4de1-a348-5a6279409105"
+  },
+  {
+    "name": "Priorities clear \u0026 perspectives balanced",
+    "description": "The stakeholder representatives agree with how their different priorities and perspectives are being balanced to provide a clear direction for the team.",
+    "order": 3,
+    "id": "b3e37a8d-93f1-47a8-8799-5142c2f9c28b",
+    "specialId": "S45",
+    "detailId": "b8fb102c-9dca-4de1-a348-5a6279409105"
+  },
+  {
+    "name": "Stockholders feedback provided",
+    "description": "The stakeholder representatives provide feedback on the system from their stakeholder group perspective.",
+    "order": 4,
+    "id": "cb709e69-a23e-47ea-a483-3626f3439ba4",
+    "specialId": "S51",
+    "detailId": "c86731d4-e170-4397-baec-ffe6e78df64a"
+  },
+  {
+    "name": "System ready for deployment",
+    "description": "The stakeholder representatives confirm that they agree that the system is ready for deployment.",
+    "order": 4,
+    "id": "8187145b-211e-4585-8e2b-aff24ac7eae5",
+    "specialId": "S52",
+    "detailId": "c86731d4-e170-4397-baec-ffe6e78df64a"
+  },
+  {
+    "name": "Feedback on system use available",
+    "description": "Stakeholders are using the new system and providing feedback on their experiences.",
+    "order": 5,
+    "id": "11a28d88-56b8-4a54-a732-42865097aaf0",
+    "specialId": "S61",
+    "detailId": "787e3726-965f-44a3-88e5-7168f083a08d"
+  },
+  {
+    "name": "System meets expectation",
+    "description": "The stakeholders confirm that the new system meets their expectations.",
+    "order": 5,
+    "id": "29e7bfa6-ee32-4b26-b95e-a921a849aa4c",
+    "specialId": "S62",
+    "detailId": "787e3726-965f-44a3-88e5-7168f083a08d"
+  },
+  {
+    "name": "Idea behind opportunity identified",
+    "description": "An idea for a way of improving current ways of working, increasing market share, or applying a new or innovative software system has been identified.",
+    "order": 6,
+    "id": "9a0410f3-8c15-45f5-b4f0-24be45196196",
+    "specialId": "O11",
+    "detailId": "b1b78ad6-c829-4920-ba22-99773b27c96b"
+  },
+  {
+    "name": "At least one investing stakeholder interested",
+    "description": "At least one of the stakeholders wishes to make an investment in better understanding the opportunity and the value associated with addressing it.",
+    "order": 6,
+    "id": "9ec5e96a-97ed-4a87-a4b1-c187d827cae9",
+    "specialId": "O12",
+    "detailId": "b1b78ad6-c829-4920-ba22-99773b27c96b"
+  },
+  {
+    "name": "Other stakeholders identified",
+    "description": "The other stakeholders who share the opportunity have been identified.",
+    "order": 6,
+    "id": "a019d696-cdb8-4373-9da9-5e407a3d5b2d",
+    "specialId": "O13",
+    "detailId": "b1b78ad6-c829-4920-ba22-99773b27c96b"
+  },
+  {
+    "name": "Solution identified",
+    "description": "The stakeholders in the opportunity and the proposed solution have been identified.",
+    "order": 7,
+    "id": "9bdf3707-2199-46f2-88c4-a92a21901280",
+    "specialId": "O21",
+    "detailId": "0d07a351-b847-4fff-bcf3-0909a7dad2c7"
+  },
+  {
+    "name": "Stakeholders\u0027 needs established",
+    "description": "The stakeholders\u0027 needs that generate the opportunity have been established.",
+    "order": 7,
+    "id": "51d0c50e-d0a4-4088-b3d9-54aa2655d5eb",
+    "specialId": "O22",
+    "detailId": "0d07a351-b847-4fff-bcf3-0909a7dad2c7"
+  },
+  {
+    "name": "Problems and root causes identified",
+    "description": "Any underlying problems and their root causes have been identified.",
+    "order": 7,
+    "id": "cc69a069-9ade-46a8-8bf0-27861067428e",
+    "specialId": "O23",
+    "detailId": "0d07a351-b847-4fff-bcf3-0909a7dad2c7"
+  },
+  {
+    "name": "Need for a solution confirmed",
+    "description": "It has been confirmed that a software-based solution is needed.",
+    "order": 7,
+    "id": "fcfdb4c1-8040-440c-b66b-a93ab1700f07",
+    "specialId": "O24",
+    "detailId": "0d07a351-b847-4fff-bcf3-0909a7dad2c7"
+  },
+  {
+    "name": "At least ane solution proposed",
+    "description": "At least one software-based solution has been proposed.",
+    "order": 7,
+    "id": "65973e54-baa0-487a-af2f-1b069c85ef4d",
+    "specialId": "O25",
+    "detailId": "0d07a351-b847-4fff-bcf3-0909a7dad2c7"
+  },
+  {
+    "name": "Opportunity value quantified",
+    "description": "The value of addressing the opportunity has been quantified either in absolute terms or in returns or savings per time period (e.g. per annum).",
+    "order": 8,
+    "id": "17e26c2d-ab8e-41c8-aec4-35c338c3b1c6",
+    "specialId": "O31",
+    "detailId": "8ceb4bb1-035d-4bd5-8c2c-486503144303"
+  },
+  {
+    "name": "Solution impact understood",
+    "description": "The impact of the solution on the stakeholders is understood.",
+    "order": 8,
+    "id": "858f90af-b56c-4e18-a52a-a0b33bae7816",
+    "specialId": "O32",
+    "detailId": "8ceb4bb1-035d-4bd5-8c2c-486503144303"
+  },
+  {
+    "name": "System value understood",
+    "description": "The value that the software system offers to the stakeholders that fund and use the software system is understood.",
+    "order": 8,
+    "id": "cf5faea2-dc12-4727-9743-323f82e8eac2",
+    "specialId": "O33",
+    "detailId": "8ceb4bb1-035d-4bd5-8c2c-486503144303"
+  },
+  {
+    "name": "Success criteria clear",
+    "description": "The success criteria by which the deployment of the software system is to be judged are clear.",
+    "order": 8,
+    "id": "5b68fd75-c7f1-40ee-b62d-e212d6e23686",
+    "specialId": "O34",
+    "detailId": "8ceb4bb1-035d-4bd5-8c2c-486503144303"
+  },
+  {
+    "name": "Outcomes clear and quantified",
+    "description": "The desired outcomes required of the solution are clear and quantified.",
+    "order": 8,
+    "id": "03d28f60-f8bb-4106-99f3-e58ae2e75f4f",
+    "specialId": "O35",
+    "detailId": "8ceb4bb1-035d-4bd5-8c2c-486503144303"
+  },
+  {
+    "name": "Solution outlined",
+    "description": "A solution has been outlined.",
+    "order": 9,
+    "id": "fe45136f-1262-4b0a-b133-0050d8684684",
+    "specialId": "O41",
+    "detailId": "868e6c53-7c65-43c1-ac77-93f201dd88f2"
+  },
+  {
+    "name": "Solution possible within constraints",
+    "description": "The indications are that the solution can be developed and deployed within constraints.",
+    "order": 9,
+    "id": "a64c135e-a97b-4de3-ac90-70d21f119e61",
+    "specialId": "O42",
+    "detailId": "868e6c53-7c65-43c1-ac77-93f201dd88f2"
+  },
+  {
+    "name": "Risks acceptable \u0026 manageable",
+    "description": "The risks associated with the solution are acceptable and manageable.",
+    "order": 9,
+    "id": "6cfb74e7-c699-469f-b93f-bb39ff8750d3",
+    "specialId": "O43",
+    "detailId": "868e6c53-7c65-43c1-ac77-93f201dd88f2"
+  },
+  {
+    "name": "Solution profitable",
+    "description": "The indicative (ball-park) costs of the solution are less than the anticipated value of the opportunity.",
+    "order": 9,
+    "id": "aab9ff60-b79c-4f6e-9be6-f1bdb9bde564",
+    "specialId": "O44",
+    "detailId": "868e6c53-7c65-43c1-ac77-93f201dd88f2"
+  },
+  {
+    "name": "Reasons to develop solution understood",
+    "description": "The reasons for the development of a software-based solution are understood by all members of the team.",
+    "order": 9,
+    "id": "000c69dc-2b2f-4231-bdbe-24f158bd3335",
+    "specialId": "O45",
+    "detailId": "868e6c53-7c65-43c1-ac77-93f201dd88f2"
+  },
+  {
+    "name": "Pursuit viable",
+    "description": "It is clear that the pursuit of the opportunity is viable.",
+    "order": 9,
+    "id": "629e50dc-26cb-4d5f-ad53-1fe831613d6d",
+    "specialId": "O46",
+    "detailId": "868e6c53-7c65-43c1-ac77-93f201dd88f2"
+  },
+  {
+    "name": "Opportunity addressed",
+    "description": "A usable system that demonstrably addresses the opportunity is available.",
+    "order": 10,
+    "id": "3f5bcf70-f6e0-4396-9c81-1003f4de4bb8",
+    "specialId": "O51",
+    "detailId": "e98fbe11-0864-4f7c-a557-0363df0057a2"
+  },
+  {
+    "name": "Solution worth deploying",
+    "description": "The stakeholders agree that the available solution is worth deploying.",
+    "order": 10,
+    "id": "7e8e2e3f-a0de-4f7a-b697-600c74552da4",
+    "specialId": "O52",
+    "detailId": "e98fbe11-0864-4f7c-a557-0363df0057a2"
+  },
+  {
+    "name": "Stakeholders satisfied",
+    "description": "The stakeholders are satisfied that the solution produced addresses the opportunity.",
+    "order": 10,
+    "id": "8fb95562-d953-424b-9ad5-c2719fa243cc",
+    "specialId": "O53",
+    "detailId": "e98fbe11-0864-4f7c-a557-0363df0057a2"
+  },
+  {
+    "name": "Solution accrues benefits",
+    "description": "The solution has started to accrue benefits for the stakeholders.",
+    "order": 11,
+    "id": "ae6626ac-cba9-4dd8-afa7-284533b70b17",
+    "specialId": "O61",
+    "detailId": "4939afb8-5c04-4fa7-980c-5f42367170e8"
+  },
+  {
+    "name": "ROI acceptable",
+    "description": "The return-on-investment profile is at least as good as anticipated.",
+    "order": 11,
+    "id": "0717e4c2-4669-4666-8f12-22e54b6e085b",
+    "specialId": "O62",
+    "detailId": "4939afb8-5c04-4fa7-980c-5f42367170e8"
+  },
+  {
+    "name": "Stakeholders agree system is to be produced",
+    "description": "The initial set of stakeholders agrees that a system is to be produced.",
+    "order": 12,
+    "id": "8be445a4-b059-4667-9e4e-b1a98695c11b",
+    "specialId": "R11",
+    "detailId": "1568f4d5-0456-462b-a439-e6d2ca2dd1cc"
+  },
+  {
+    "name": "Users identified",
+    "description": "The stakeholders that will use the new system are identified.",
+    "order": 12,
+    "id": "d4380dbc-c153-40c8-84d7-ef177a713c48",
+    "specialId": "R12",
+    "detailId": "1568f4d5-0456-462b-a439-e6d2ca2dd1cc"
+  },
+  {
+    "name": "Funding stakeholders identified",
+    "description": "The stakeholders that will fund the initial work on the new system are identified.",
+    "order": 12,
+    "id": "707f00e8-3824-40b1-9cb7-192eef972c89",
+    "specialId": "R13",
+    "detailId": "1568f4d5-0456-462b-a439-e6d2ca2dd1cc"
+  },
+  {
+    "name": "Opportunity clear",
+    "description": "There is a clear opportunity for the new system to address.",
+    "order": 12,
+    "id": "51c642d2-11ae-4ea1-b315-ae18c016f9f6",
+    "specialId": "R14",
+    "detailId": "1568f4d5-0456-462b-a439-e6d2ca2dd1cc"
+  },
+  {
+    "name": "Development stakeholders identified",
+    "description": "The stakeholders involved in developing the new system are identified.",
+    "order": 13,
+    "id": "2e9b753c-475f-45e4-b313-97759cb0acbc",
+    "specialId": "R21",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "System purpose agreed",
+    "description": "The stakeholders agree on the purpose of the new system.",
+    "order": 13,
+    "id": "0b85a726-4892-490c-8946-d4a5414faf03",
+    "specialId": "R22",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "System success clear",
+    "description": "It is clear what success is for the new system.",
+    "order": 13,
+    "id": "aa0b6ed0-2041-4bb0-9d36-c9b18ed9fc73",
+    "specialId": "R23",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Shared solution understanding exist",
+    "description": "The stakeholders have a shared understanding of the extent of the proposed solution.",
+    "order": 13,
+    "id": "7593f075-5d44-4361-996d-101b0bd25f1c",
+    "specialId": "R24",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Requirement\u0027s format agreed",
+    "description": "The way the requirements will be described is agreed upon.",
+    "order": 13,
+    "id": "c9c689ae-0938-4346-b1b2-9c4e9c669685",
+    "specialId": "R25",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Requirements management in place",
+    "description": "The mechanisms for managing the requirements are in place.",
+    "order": 13,
+    "id": "7e3884f1-0fcb-49c2-af27-e6bf1264351a",
+    "specialId": "R26",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Prioritization scheme clear",
+    "description": "The prioritization scheme is clear.",
+    "order": 13,
+    "id": "458a5456-15ae-476f-9449-a3135de41682",
+    "specialId": "R27",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Constraints identified \u0026considered",
+    "description": "Constraints are identified and considered.",
+    "order": 13,
+    "id": "e6d2a25d-1621-4f60-9bb9-2c3f6146ccc2",
+    "specialId": "R28",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Assumptions clear",
+    "description": "Assumptions are clearly stated.",
+    "order": 13,
+    "id": "96a1bc18-eee3-46c1-b1af-a6642ccf103b",
+    "specialId": "R29",
+    "detailId": "c435c35b-01bf-4a7e-ae68-b02cb7302607"
+  },
+  {
+    "name": "Requirements shared",
+    "description": "The requirements are captured and shared with the team and the stakeholders.",
+    "order": 14,
+    "id": "61bb62f1-2856-48e3-b7a6-c06d27993453",
+    "specialId": "R31",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Requirements\u0027 origin clear",
+    "description": "The origin of the requirements is clear.",
+    "order": 14,
+    "id": "9f1511a2-38d3-4e4c-9629-468fd3bac80c",
+    "specialId": "R32",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Rationale clear",
+    "description": "The rationale behind the requirements is clear.",
+    "order": 14,
+    "id": "7f7fa2c3-6f9a-48c7-8e4c-092333f33f6f",
+    "specialId": "R33",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Conflicts addressed",
+    "description": "Conflicting requirements are identified and attended to.",
+    "order": 14,
+    "id": "872db8ea-cd4e-48d6-afcd-44cdaaf3d55c",
+    "specialId": "R34",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Essential characteristics clear",
+    "description": "The requirements communicate the essential characteristics of the system to be delivered.",
+    "order": 14,
+    "id": "52287516-b9d0-48d4-a516-80878b6141bd",
+    "specialId": "R35",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Key usage scenarios explained",
+    "description": "The most important usage scenarios for the system can be explained.",
+    "order": 14,
+    "id": "9898f962-e513-475f-809f-cb32be003351",
+    "specialId": "R36",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Priorities clear",
+    "description": "The priority of the requirements is clear.",
+    "order": 14,
+    "id": "ecc591bf-e892-4d87-a10f-fef63bfc6d96",
+    "specialId": "R37",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Impact understood",
+    "description": "The impact of implementing the requirements is understood.",
+    "order": 14,
+    "id": "faba068c-4f97-4249-9dbc-7d7c5be6d2e1",
+    "specialId": "R38",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Team knows \u0026agrees on what to deliver",
+    "description": "The team understands what has to be delivered and agrees to deliver it.",
+    "order": 14,
+    "id": "2f966cc3-7edb-4bc0-910c-08d5dfec13d6",
+    "specialId": "R39",
+    "detailId": "714359e5-8e3b-4708-bd3d-fb317422ea99"
+  },
+  {
+    "name": "Acceptable solution described",
+    "description": "The stakeholders accept that the requirements describe an acceptable solution.",
+    "order": 15,
+    "id": "db08798e-8d14-4e78-91b2-c2f3076a3012",
+    "specialId": "R41",
+    "detailId": "5b44015d-698f-4bbe-8921-2b405c6b907d"
+  },
+  {
+    "name": "Change under control",
+    "description": "The rate of change to the agreed requirements is relatively low and under control.",
+    "order": 15,
+    "id": "98f2f63f-97b6-458d-aa9c-456a7bc1ed65",
+    "specialId": "R42",
+    "detailId": "5b44015d-698f-4bbe-8921-2b405c6b907d"
+  },
+  {
+    "name": "Value to be realized clear",
+    "description": "The value provided by implementing the requirements is clear.",
+    "order": 15,
+    "id": "7a1a6cbc-a419-4e05-a668-c993bd005c08",
+    "specialId": "R43",
+    "detailId": "5b44015d-698f-4bbe-8921-2b405c6b907d"
+  },
+  {
+    "name": "Clear how opportunity addressed",
+    "description": "The parts of the opportunity satisfied by the requirements are clear.",
+    "order": 15,
+    "id": "2d0a33b4-93ea-4004-9de5-ca31de1ee98c",
+    "specialId": "R44",
+    "detailId": "5b44015d-698f-4bbe-8921-2b405c6b907d"
+  },
+  {
+    "name": "Testable",
+    "description": "The requirements are testable.",
+    "order": 15,
+    "id": "e538e5e2-f4a9-4d1c-a760-4ba64e81fd99",
+    "specialId": "R45",
+    "detailId": "5b44015d-698f-4bbe-8921-2b405c6b907d"
+  },
+  {
+    "name": "Enough addressed to be acceptable",
+    "description": "Enough of the requirements are addressed for the resulting system to be acceptable to the stakeholders.",
+    "order": 16,
+    "id": "3c55095c-d04f-4459-8b7b-98d62e7acd30",
+    "specialId": "R51",
+    "detailId": "6e112510-1155-4efe-9ecb-50e4e40079f5"
+  },
+  {
+    "name": "Requirements and system match",
+    "description": "The stakeholders accept the requirements as accurately reflecting what the system does and does not do.",
+    "order": 16,
+    "id": "5531e28d-d987-48bb-a735-01bbadf5c287",
+    "specialId": "R52",
+    "detailId": "6e112510-1155-4efe-9ecb-50e4e40079f5"
+  },
+  {
+    "name": "Value realized clear",
+    "description": "The set of requirement items implemented provide clear value to the stakeholders.",
+    "order": 16,
+    "id": "1651522c-8d41-4b21-9bbc-65a1d31ef47b",
+    "specialId": "R53",
+    "detailId": "6e112510-1155-4efe-9ecb-50e4e40079f5"
+  },
+  {
+    "name": "System worth making operational",
+    "description": "The system implementing the requirements is accepted by the stakeholders as worth making operational.",
+    "order": 16,
+    "id": "7991a98f-c986-44de-97ff-c735e4d407ea",
+    "specialId": "R54",
+    "detailId": "6e112510-1155-4efe-9ecb-50e4e40079f5"
+  },
+  {
+    "name": "Stakeholders accept requirements",
+    "description": "The stakeholders accept the requirements as accurately capturing what they require to fully satisfy the need for a new system.",
+    "order": 17,
+    "id": "bb2d4543-3da3-4cee-8594-df2423a2b829",
+    "specialId": "R61",
+    "detailId": "fa034c1e-f90e-4651-b000-439751229402"
+  },
+  {
+    "name": "No hindering requirements",
+    "description": "There are no outstanding requirement items preventing the system from being accepted as fully satisfying the requirements.",
+    "order": 17,
+    "id": "ba959cdd-d7ec-4103-94c2-076e3e20c007",
+    "specialId": "R62",
+    "detailId": "fa034c1e-f90e-4651-b000-439751229402"
+  },
+  {
+    "name": "Requirements fully satisfied",
+    "description": "The system is accepted by the stakeholders as fully satisfying the requirements.",
+    "order": 17,
+    "id": "067fabdb-c429-4d39-88d2-df68655b71fd",
+    "specialId": "R63",
+    "detailId": "fa034c1e-f90e-4651-b000-439751229402"
+  },
+  {
+    "name": "Architecture selection criteria agreed",
+    "description": "The criteria to be used when selecting the architecture have been agreed on.",
+    "order": 18,
+    "id": "20c9bf4d-0729-47f5-8d1c-272cdf49fdf9",
+    "specialId": "SS11",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "HW platform identified",
+    "description": "Hardware platforms have been identified.",
+    "order": 18,
+    "id": "f3467aa9-bfc7-4e3a-a86a-b4cd298a52ad",
+    "specialId": "SS12",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "Technologies selected",
+    "description": "Programming languages and technologies to be used have been selected.",
+    "order": 18,
+    "id": "9dc8b783-29c2-417c-81f4-35cbe1bedce7",
+    "specialId": "SS13",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "System boundary known",
+    "description": "System boundary is known.",
+    "order": 18,
+    "id": "7eedfdd5-95a7-4dcb-9827-f72d55ed0d0e",
+    "specialId": "SS14",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "Decision on system organization made",
+    "description": "Significant decisions about the organization of the system have been made.",
+    "order": 18,
+    "id": "a20e99ba-e535-4601-aca7-b3fb890bb873",
+    "specialId": "SS15",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "Buy, build, reuse decisions made",
+    "description": "Buy, build and reuse decisions have been made.",
+    "order": 18,
+    "id": "7337b013-8ab8-41a3-a4e5-22b32d5414f8",
+    "specialId": "SS16",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "Key technical risks agreed to",
+    "description": "Key technical risks agreed to.",
+    "order": 18,
+    "id": "8968c32d-34aa-427a-81d7-2b65e9ca2327",
+    "specialId": "SS17",
+    "detailId": "10864e85-6005-4749-a769-430c818b1fb2"
+  },
+  {
+    "name": "Key architecture characteristics demonstrated",
+    "description": "Key architectural characteristics have been demonstrated.",
+    "order": 19,
+    "id": "51404b5a-77cf-48b0-a2ec-a76cab658da1",
+    "specialId": "SS21",
+    "detailId": "60630a72-7805-4305-b7d3-8dcea752a98e"
+  },
+  {
+    "name": "System exercised \u0026perfomance measured",
+    "description": "The system can be exercised and its performance can be measured.",
+    "order": 19,
+    "id": "c73b4650-4045-4f3c-9708-5a5b4c9b7398",
+    "specialId": "SS22",
+    "detailId": "60630a72-7805-4305-b7d3-8dcea752a98e"
+  },
+  {
+    "name": "Critical HW configurations demonstrated",
+    "description": "Critical hardware configurations have been demonstrated.",
+    "order": 19,
+    "id": "0b87e86f-2a20-4827-a07b-e48249f3f936",
+    "specialId": "SS23",
+    "detailId": "60630a72-7805-4305-b7d3-8dcea752a98e"
+  },
+  {
+    "name": "Critical interfaces demonstrated",
+    "description": "Critical interfaces have been demonstrated.",
+    "order": 19,
+    "id": "c9e4b6e4-8e2f-491d-bbbb-0b318d9dfdfb",
+    "specialId": "SS24",
+    "detailId": "60630a72-7805-4305-b7d3-8dcea752a98e"
+  },
+  {
+    "name": "Integration with environment demonstrated",
+    "description": "The integration with other existing systems has been demonstrated.",
+    "order": 19,
+    "id": "9338b0c3-e8d1-45f4-a49d-8a6aec36a477",
+    "specialId": "SS25",
+    "detailId": "60630a72-7805-4305-b7d3-8dcea752a98e"
+  },
+  {
+    "name": "Architecture accepted as fit-for-purpose",
+    "description": "The relevant stakeholders agree that the demonstrated architecture is appropriate.",
+    "order": 19,
+    "id": "543e3bcc-f907-4201-bb2b-42685a54d9e9",
+    "specialId": "SS26",
+    "detailId": "60630a72-7805-4305-b7d3-8dcea752a98e"
+  },
+  {
+    "name": "System can be operated",
+    "description": "The system can be operated by stakeholders who use it.",
+    "order": 20,
+    "id": "6c4bacb2-666f-417a-9c5e-04a6591767ca",
+    "specialId": "SS31",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "System functionality tested",
+    "description": "The functionality provided by the system has been tested.",
+    "order": 20,
+    "id": "67e4e369-c8c1-4331-845a-61d03e23ffaf",
+    "specialId": "SS32",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "System performance acceptable",
+    "description": "The performance of the system is acceptable to the stakeholders.",
+    "order": 20,
+    "id": "fadab6cb-c7a5-4d2e-8677-c7a1420432dd",
+    "specialId": "SS33",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "Defect levels acceptable",
+    "description": "Defect levels are acceptable to the stakeholders.",
+    "order": 20,
+    "id": "232e15d7-7d17-4980-8c2c-16153ae6b22b",
+    "specialId": "SS34",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "System fully documented",
+    "description": "The system is fully documented.",
+    "order": 20,
+    "id": "e8995695-b937-490a-8dfc-0fd4fcb3c26b",
+    "specialId": "SS35",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "Release content known",
+    "description": "Release content is known.",
+    "order": 20,
+    "id": "03e778e9-8fdb-4f8e-a6f0-e9e5351cdacf",
+    "specialId": "SS36",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "Added value clear",
+    "description": "The added value provided by the system is clear.",
+    "order": 20,
+    "id": "a8bba43e-5c0f-4d2d-832f-03900c1f3a32",
+    "specialId": "SS37",
+    "detailId": "09631180-050e-4472-8e4f-b339f7004723"
+  },
+  {
+    "name": "User documentation available",
+    "description": "Installation and other user documentation are available.",
+    "order": 21,
+    "id": "bf0618bb-9a21-4c3e-aaab-08fa9d80e779",
+    "specialId": "SS41",
+    "detailId": "b212de46-dd22-4d8b-a476-09392389024e"
+  },
+  {
+    "name": "System accepted as fit-for-purpose",
+    "description": "The stakeholder representatives accept the system as fit-for-purpose.",
+    "order": 21,
+    "id": "190065a7-01a0-46ac-9d62-6b169f7a876a",
+    "specialId": "SS42",
+    "detailId": "b212de46-dd22-4d8b-a476-09392389024e"
+  },
+  {
+    "name": "Stakeholders want the system",
+    "description": "The stakeholder representatives want to make the system operational.",
+    "order": 21,
+    "id": "25c67104-16e2-4228-aa1f-a639544898d8",
+    "specialId": "SS43",
+    "detailId": "b212de46-dd22-4d8b-a476-09392389024e"
+  },
+  {
+    "name": "Operational support in place",
+    "description": "Operational support is in place.",
+    "order": 21,
+    "id": "9e7c07b6-f16c-4b1b-8dbc-57c442006503",
+    "specialId": "SS44",
+    "detailId": "b212de46-dd22-4d8b-a476-09392389024e"
+  },
+  {
+    "name": "System available for use",
+    "description": "The system has been made available to the stakeholders intended to use it.",
+    "order": 22,
+    "id": "962156cc-8e9a-4553-a148-cc5d4e449ef1",
+    "specialId": "SS51",
+    "detailId": "02a7dd46-b95c-4a1c-8a59-1e7f43403b8a"
+  },
+  {
+    "name": "System live",
+    "description": "At least one example of the system is fully operational.",
+    "order": 22,
+    "id": "cd520fd1-ab03-4221-b0f3-2036e5af3a44",
+    "specialId": "SS52",
+    "detailId": "02a7dd46-b95c-4a1c-8a59-1e7f43403b8a"
+  },
+  {
+    "name": "Agreed service levels supported",
+    "description": "The system is fully supported to the agreed service levels.",
+    "order": 22,
+    "id": "8b4fed7c-f582-48f5-af92-6d86b78639d1",
+    "specialId": "SS53",
+    "detailId": "02a7dd46-b95c-4a1c-8a59-1e7f43403b8a"
+  },
+  {
+    "name": "Replaced or discontinued",
+    "description": "The system has been replaced or discontinued.",
+    "order": 23,
+    "id": "58e6361e-6aac-4256-a567-928366442b1c",
+    "specialId": "SS61",
+    "detailId": "10ed66f3-edfb-4f32-b07a-bc12f3efacc2"
+  },
+  {
+    "name": "No longer supported",
+    "description": "The system is no longer supported.",
+    "order": 23,
+    "id": "1e5b3d63-d21b-4b57-8192-75f1bf99a857",
+    "specialId": "SS62",
+    "detailId": "10ed66f3-edfb-4f32-b07a-bc12f3efacc2"
+  },
+  {
+    "name": "No authorized users",
+    "description": "There are no \u0027official\u0027 stakeholders who still use the system.",
+    "order": 23,
+    "id": "022faba6-5ab8-4ed8-bbaa-aa6c947cd660",
+    "specialId": "SS63",
+    "detailId": "10ed66f3-edfb-4f32-b07a-bc12f3efacc2"
+  },
+  {
+    "name": "Updates stopped",
+    "description": "Updates to the system will no longer be produced.",
+    "order": 23,
+    "id": "4d6bdf08-411e-4e74-b4f7-ec4b28823429",
+    "specialId": "SS64",
+    "detailId": "10ed66f3-edfb-4f32-b07a-bc12f3efacc2"
+  },
+  {
+    "name": "Mission defined",
+    "description": "The team mission has been defined in terms of the opportunities and outcomes.",
+    "order": 24,
+    "id": "18ed22ee-17f4-4bd0-ad0c-157b9c86f033",
+    "specialId": "T11",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Constraints known and defined",
+    "description": "Constraints on the team\u0027s operation are known.",
+    "order": 24,
+    "id": "f7b84c99-9345-4425-b567-fbb00deff0d2",
+    "specialId": "T12",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Growth mechanisms in place",
+    "description": "Mechanisms to grow the team are in place.",
+    "order": 24,
+    "id": "72c80b0b-82ef-43d9-9bd8-1ddb10902a23",
+    "specialId": "T13",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Composition defined",
+    "description": "The composition of the team is defined.",
+    "order": 24,
+    "id": "b1ba315e-3b14-4400-ae7b-91f83a757beb",
+    "specialId": "T14",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Responsibilities outlined",
+    "description": "The team\u0027s responsibilities are outlined.",
+    "order": 24,
+    "id": "df807e03-07a9-4493-89cb-5be793f5f233",
+    "specialId": "T15",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Required commitment level clear",
+    "description": "The level of team commitment is clear.",
+    "order": 24,
+    "id": "477755af-59a2-46c2-a127-f5513de57a9b",
+    "specialId": "T16",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Required competencies identified",
+    "description": "Required competencies are identified.",
+    "order": 24,
+    "id": "4e63f0a0-12c2-4cdb-a67a-e687657cea55",
+    "specialId": "T17",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Size determined",
+    "description": "The team size is determined.",
+    "order": 24,
+    "id": "f418c4d5-ffd4-4284-9421-7ea9c8859aab",
+    "specialId": "T18",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Governance rules defined",
+    "description": "Governance rules are defined.",
+    "order": 24,
+    "id": "a4e75692-d65e-4c5c-b292-6e16009a86aa",
+    "specialId": "T19",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Leadership model selected",
+    "description": "Leadership model is selected.",
+    "order": 24,
+    "id": "ccd75577-900e-425a-95c1-a1fc88e998b3",
+    "specialId": "T110",
+    "detailId": "94178c87-8faf-486f-8292-fe1174bb9e49"
+  },
+  {
+    "name": "Enough members recruited",
+    "description": "Enough team members have been recruited to enable the work to progress.",
+    "order": 25,
+    "id": "328d18fc-8647-4fcf-8fec-7a9ea1b66186",
+    "specialId": "T21",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Roles understood",
+    "description": "Every team member understands how the team is organized and what their individual role is.",
+    "order": 25,
+    "id": "b0565464-7ff3-47f0-bb93-229141c89c1f",
+    "specialId": "T22",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "How to work understood",
+    "description": "All team members understand how to perform their work.",
+    "order": 25,
+    "id": "29ee034e-f3a8-4881-a4e7-c41754558db0",
+    "specialId": "T23",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Members introduced",
+    "description": "The team members have met (perhaps virtually) and are beginning to get to know each other.",
+    "order": 25,
+    "id": "1eb0f0ac-d44d-48cd-9cdb-d1ad8b9feaff",
+    "specialId": "T24",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Individual responsibilities accepted and aligned to competencies",
+    "description": "The team members understand their responsibilities and how they align with their competencies.",
+    "order": 25,
+    "id": "aa7e68b3-5e49-49d3-9c9d-3e03b83682b8",
+    "specialId": "T25",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Members accepting work",
+    "description": "Team members are accepting work.",
+    "order": 25,
+    "id": "87e44c0f-6e33-44b1-b512-a44321b966e8",
+    "specialId": "T26",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "External collaborators identified",
+    "description": "Any external collaborators (organizations, teams and individuals) are identified.",
+    "order": 25,
+    "id": "e5edc7e7-61ef-4d07-bd90-102be59d2ecc",
+    "specialId": "T27",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Communication mechanisms defined",
+    "description": "Team communication mechanisms have been defined.",
+    "order": 25,
+    "id": "2d0d426a-58e5-4897-8ff9-12ab126af0ea",
+    "specialId": "T28",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Members commit to team",
+    "description": "Each team member commits to working on the team as defined.",
+    "order": 25,
+    "id": "ad8df147-4114-4904-8b41-9b5ed2766f6f",
+    "specialId": "T29",
+    "detailId": "1e483e7a-bc86-46f8-9277-7112712c01d0"
+  },
+  {
+    "name": "Works as one unit",
+    "description": "The team is working as one cohesive unit.",
+    "order": 26,
+    "id": "ce2fbef3-53f8-4513-88d1-6f116c1bb0ec",
+    "specialId": "T31",
+    "detailId": "e3f34770-dcdd-4b05-bbda-d4fb403de5f5"
+  },
+  {
+    "name": "Communication open and honest",
+    "description": "Communication within the team is open and honest.",
+    "order": 26,
+    "id": "b7518db5-a2f7-41c9-9c7e-ff437396c43a",
+    "specialId": "T32",
+    "detailId": "e3f34770-dcdd-4b05-bbda-d4fb403de5f5"
+  },
+  {
+    "name": "Focused on mission",
+    "description": "The team is focused on achieving the team mission.",
+    "order": 26,
+    "id": "eb197126-38d4-4681-986e-e010ed2e920c",
+    "specialId": "T33",
+    "detailId": "e3f34770-dcdd-4b05-bbda-d4fb403de5f5"
+  },
+  {
+    "name": "Members know each other",
+    "description": "The team members know each other.",
+    "order": 26,
+    "id": "92a7ce4d-a663-4f2e-8af5-1444433b9a82",
+    "specialId": "T34",
+    "detailId": "e3f34770-dcdd-4b05-bbda-d4fb403de5f5"
+  },
+  {
+    "name": "Consistently meeting commitments",
+    "description": "The team consistently meets its commitments.",
+    "order": 27,
+    "id": "e437d322-e2c6-4a1c-ad95-830de2f263fa",
+    "specialId": "T41",
+    "detailId": "9b2d28c9-e195-417c-a6b3-f7fcd63d8877"
+  },
+  {
+    "name": "Continuously adapting to change",
+    "description": "The team continuously adapts to the changing context.",
+    "order": 27,
+    "id": "d4ce8571-517d-499d-9210-c5cb0c439ec5",
+    "specialId": "T42",
+    "detailId": "9b2d28c9-e195-417c-a6b3-f7fcd63d8877"
+  },
+  {
+    "name": "Addresses problems",
+    "description": "The team identifies and addresses problems without outside help.",
+    "order": 27,
+    "id": "cd538778-b35b-4839-8945-719c5d2a7ee8",
+    "specialId": "T43",
+    "detailId": "9b2d28c9-e195-417c-a6b3-f7fcd63d8877"
+  },
+  {
+    "name": "Rework and backtracking minimized",
+    "description": "Effective progress is being achieved with minimal avoidable backtracking and reworking.",
+    "order": 27,
+    "id": "5299346d-30c8-4455-a4b3-a6c79ad0f4be",
+    "specialId": "T44",
+    "detailId": "9b2d28c9-e195-417c-a6b3-f7fcd63d8877"
+  },
+  {
+    "name": "Waste continuously eliminated",
+    "description": "Wasted work, and the potential for wasted work are continuously eliminated.",
+    "order": 27,
+    "id": "12b63d9a-2021-4d24-8f6b-68acfe574aa3",
+    "specialId": "T45",
+    "detailId": "9b2d28c9-e195-417c-a6b3-f7fcd63d8877"
+  },
+  {
+    "name": "Responsibilities fulfilled",
+    "description": "The team responsibilities have been handed over or fulfilled.",
+    "order": 28,
+    "id": "49c97eba-851a-4412-a3f1-5a6960417632",
+    "specialId": "T51",
+    "detailId": "f164c736-a5b6-4230-86e9-1a59835fc73b"
+  },
+  {
+    "name": "Members available to other teams",
+    "description": "The team members are available for assignment to other teams.",
+    "order": 28,
+    "id": "b993a9c5-40b6-4f61-959c-e2c426e48c42",
+    "specialId": "T52",
+    "detailId": "f164c736-a5b6-4230-86e9-1a59835fc73b"
+  },
+  {
+    "name": "Mission concluded",
+    "description": "No further effort is being put in by the team to complete the mission.",
+    "order": 28,
+    "id": "4864258e-7cc0-44be-8d21-003605ae58a0",
+    "specialId": "T53",
+    "detailId": "f164c736-a5b6-4230-86e9-1a59835fc73b"
+  },
+  {
+    "name": "Team actively support principles",
+    "description": "Principles and constraints are committed to by the team.",
+    "order": 29,
+    "id": "92155fb9-ce72-4366-a762-f392eb8c01e9",
+    "specialId": "WW11",
+    "detailId": "d5c5bb0c-335f-4844-8a08-77fd3e02526f"
+  },
+  {
+    "name": "Stakeholders agree with principles",
+    "description": "Principles and constraints are agreed to by the stakeholders.",
+    "order": 29,
+    "id": "ca59c669-0623-4fcc-85f8-43eacc918397",
+    "specialId": "WW12",
+    "detailId": "d5c5bb0c-335f-4844-8a08-77fd3e02526f"
+  },
+  {
+    "name": "Tool needs agreed",
+    "description": "The tool needs of the work and its stakeholders are agreed.",
+    "order": 29,
+    "id": "a98de666-16fa-46ec-98e2-b62b18818ed1",
+    "specialId": "WW13",
+    "detailId": "d5c5bb0c-335f-4844-8a08-77fd3e02526f"
+  },
+  {
+    "name": "Approach recommended",
+    "description": "A recommendation for the approach to be taken is available.",
+    "order": 29,
+    "id": "2189f2fc-8000-460e-9ae0-8ad0ac63e1e8",
+    "specialId": "WW14",
+    "detailId": "d5c5bb0c-335f-4844-8a08-77fd3e02526f"
+  },
+  {
+    "name": "Operational context understood",
+    "description": "The context within which the team will operate is understood.",
+    "order": 29,
+    "id": "3e9ba7ea-40d9-43a2-897d-dc1b7c3e7a7b",
+    "specialId": "WW15",
+    "detailId": "d5c5bb0c-335f-4844-8a08-77fd3e02526f"
+  },
+  {
+    "name": "Practice \u0026 tool constraints known",
+    "description": "The constraints that apply to the selection, acquisition and use of practices and tools are known.",
+    "order": 29,
+    "id": "c434e592-5934-42b6-adbe-01e86a757fb4",
+    "specialId": "WW16",
+    "detailId": "d5c5bb0c-335f-4844-8a08-77fd3e02526f"
+  },
+  {
+    "name": "Key practices \u0026 tools selected",
+    "description": "The key practices and tools that form the foundation of the way-of-working are selected.",
+    "order": 30,
+    "id": "0f64ccbe-5e91-45e4-8f0a-e1a482b432ea",
+    "specialId": "WW21",
+    "detailId": "bd365f7e-8fad-4c8a-9944-8c33d46776de"
+  },
+  {
+    "name": "Practices needed to start work agreed",
+    "description": "Enough practices for work to start are agreed to by the team.",
+    "order": 30,
+    "id": "735e65c0-d44f-48c7-924c-955373c30fef",
+    "specialId": "WW22",
+    "detailId": "bd365f7e-8fad-4c8a-9944-8c33d46776de"
+  },
+  {
+    "name": "Non-negotiable practices \u0026 tool identified",
+    "description": "All non-negotiable practices and tools have been identified.",
+    "order": 30,
+    "id": "23faca21-04ae-4427-8d23-02dba47343de",
+    "specialId": "WW23",
+    "detailId": "bd365f7e-8fad-4c8a-9944-8c33d46776de"
+  },
+  {
+    "name": "Gaps between available and needed way of working understood",
+    "description": "The gaps that exist between the practices and tools that are needed and the practices and tools that are available have been analyzed and understood.",
+    "order": 30,
+    "id": "09a47577-f5ed-41f6-a9a1-d1e44d12e733",
+    "specialId": "WW24",
+    "detailId": "bd365f7e-8fad-4c8a-9944-8c33d46776de"
+  },
+  {
+    "name": "Gaps in capability understood",
+    "description": "The capability gaps that exist between what is needed to execute the desired way of working and the capability levels of the team have been analyzed and understood.",
+    "order": 30,
+    "id": "fa8f9909-16c9-488e-8b54-dbd71e7bd9a6",
+    "specialId": "WW25",
+    "detailId": "bd365f7e-8fad-4c8a-9944-8c33d46776de"
+  },
+  {
+    "name": "Integrated way of working available",
+    "description": "The selected practices and tools have been integrated to form a usable way-of-working.",
+    "order": 30,
+    "id": "bb5bba51-e7c7-49f4-a2b6-695983c8c9c8",
+    "specialId": "WW26",
+    "detailId": "bd365f7e-8fad-4c8a-9944-8c33d46776de"
+  },
+  {
+    "name": "Practices \u0026 tools in use",
+    "description": "The practices and tools are being used to do real work.",
+    "order": 31,
+    "id": "0a072c5a-1546-45a8-80fe-47c93e4f0c42",
+    "specialId": "WW31",
+    "detailId": "0fef1037-6997-43be-8c07-1adeb9871079"
+  },
+  {
+    "name": "Regularly inspected",
+    "description": "The use of the practices and tools selected are regularly inspected.",
+    "order": 31,
+    "id": "f1ffa3f4-2995-4f98-b1cd-117ac3e0da05",
+    "specialId": "WW32",
+    "detailId": "0fef1037-6997-43be-8c07-1adeb9871079"
+  },
+  {
+    "name": "Adapted to context",
+    "description": "The practices and tools are being adapted to the team\u0027s context.",
+    "order": 31,
+    "id": "a122031b-bca0-45bf-9e22-464ff1a9e9d5",
+    "specialId": "WW33",
+    "detailId": "0fef1037-6997-43be-8c07-1adeb9871079"
+  },
+  {
+    "name": "Supported by team",
+    "description": "The use of the practices and tools is supported by the team.",
+    "order": 31,
+    "id": "eb88c670-7126-4af2-a943-1fea62c2081e",
+    "specialId": "WW34",
+    "detailId": "0fef1037-6997-43be-8c07-1adeb9871079"
+  },
+  {
+    "name": "Feedback mechanisms in place",
+    "description": "Procedures are in place to handle feedback on the team\u0027s way of working.",
+    "order": 31,
+    "id": "c20608e1-94e4-41fa-b9b5-105e58c04482",
+    "specialId": "WW35",
+    "detailId": "0fef1037-6997-43be-8c07-1adeb9871079"
+  },
+  {
+    "name": "Practices \u0026 tools support collaboration",
+    "description": "The practices and tools support team communication and collaboration.",
+    "order": 31,
+    "id": "2477480f-0ba5-4770-9d7e-ed73f91c420d",
+    "specialId": "WW36",
+    "detailId": "0fef1037-6997-43be-8c07-1adeb9871079"
+  },
+  {
+    "name": "Used by whole team",
+    "description": "The practices and tools are being used by the whole team to perform their work.",
+    "order": 32,
+    "id": "80a22a73-1598-461f-a3da-f5088c5691d6",
+    "specialId": "WW41",
+    "detailId": "9ed5281c-8ae8-4bb7-b804-1ec7e417c915"
+  },
+  {
+    "name": "Accessible to whole team",
+    "description": "All team members have access to the practices and tools required to do their work.",
+    "order": 32,
+    "id": "bc9b8c11-19e9-41ea-b0e1-e29c402e1c36",
+    "specialId": "WW42",
+    "detailId": "9ed5281c-8ae8-4bb7-b804-1ec7e417c915"
+  },
+  {
+    "name": "Inspected and adapted by whole team",
+    "description": "The whole team is involved in the inspection and adaptation of the way-of-working.",
+    "order": 32,
+    "id": "f1de2c7a-8de3-4bfe-ba14-183d0d471433",
+    "specialId": "WW43",
+    "detailId": "9ed5281c-8ae8-4bb7-b804-1ec7e417c915"
+  },
+  {
+    "name": "Predictable progress being made",
+    "description": "Team members are making progress as planned by using and adapting the way-of-working to suit their current context.",
+    "order": 33,
+    "id": "70650216-2331-4126-882b-af1bd47a07b6",
+    "specialId": "WW51",
+    "detailId": "0d1493f8-fe20-4e33-bc7b-bc50bb518ef8"
+  },
+  {
+    "name": "Practices naturally applied",
+    "description": "The team naturally applies the practices without thinking about them.",
+    "order": 33,
+    "id": "5266341f-5120-4425-98f8-06c18333e744",
+    "specialId": "WW52",
+    "detailId": "0d1493f8-fe20-4e33-bc7b-bc50bb518ef8"
+  },
+  {
+    "name": "Tools  naturally support way-of-working",
+    "description": "The tools naturally support the way that the team works.",
+    "order": 33,
+    "id": "04305976-d7c1-4330-9e33-d05ab7b60ffd",
+    "specialId": "WW53",
+    "detailId": "0d1493f8-fe20-4e33-bc7b-bc50bb518ef8"
+  },
+  {
+    "name": "Continually tuned",
+    "description": "The team continually tunes their use of the practices and tools.",
+    "order": 33,
+    "id": "a04bb851-794f-4f43-ba1d-c44fbb9a3edb",
+    "specialId": "WW54",
+    "detailId": "0d1493f8-fe20-4e33-bc7b-bc50bb518ef8"
+  },
+  {
+    "name": "No longer in use",
+    "description": "The team\u0027s way of working is no longer being used.",
+    "order": 34,
+    "id": "37a31af1-35bb-48db-b4a9-5e36016068d1",
+    "specialId": "WW61",
+    "detailId": "fe9f824b-a719-4d01-be49-1feb7804297d"
+  },
+  {
+    "name": "Lessons learned shared",
+    "description": "Lessons learned are shared for future use.",
+    "order": 34,
+    "id": "f3e1da21-de18-410c-a731-f3eb7114c2d2",
+    "specialId": "WW62",
+    "detailId": "fe9f824b-a719-4d01-be49-1feb7804297d"
+  },
+  {
+    "name": "Required result clear",
+    "description": "The result required of the work being initiated is clear.",
+    "order": 35,
+    "id": "03e7b782-9f83-43b5-afce-9b8827026552",
+    "specialId": "W11",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Constraints clear",
+    "description": "Any constraints on the work\u0027s performance are clearly identified.",
+    "order": 35,
+    "id": "b26aab4f-2df5-41e9-baf2-7d72a3db4271",
+    "specialId": "W12",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Funding stakeholders known",
+    "description": "The stakeholders that will fund the work are known.",
+    "order": 35,
+    "id": "2b9db649-abd9-4817-81d1-e0e3838dd0d1",
+    "specialId": "W13",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Initiator identified",
+    "description": "The initiator of the work is clearly identified.",
+    "order": 35,
+    "id": "17579a86-299f-402f-9c2d-0d1dfd297604",
+    "specialId": "W14",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Accepting stockholders known",
+    "description": "The stakeholders that will accept the results are known.",
+    "order": 35,
+    "id": "59620b4c-722c-4b16-8da6-331096e85385",
+    "specialId": "W15",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Source of founding clear",
+    "description": "The source of funding is clear.",
+    "order": 35,
+    "id": "7efb1af0-7325-42fc-9a41-4fc2f17259c3",
+    "specialId": "W16",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Priority clear",
+    "description": "The priority of the work is clear.",
+    "order": 35,
+    "id": "a5ecb9b9-5148-4a2a-9f10-b3cabced9033",
+    "specialId": "W17",
+    "detailId": "d5ed9c18-3a9a-428a-8c56-38c55ac07a18"
+  },
+  {
+    "name": "Commitment made",
+    "description": "Commitment is made.",
+    "order": 36,
+    "id": "3f1dcd5d-92d1-4e5c-b99e-cb896f362d64",
+    "specialId": "W21",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Cost and effort estimated",
+    "description": "Cost and effort of the work are estimated.",
+    "order": 36,
+    "id": "9a2c6345-4e4b-4b73-8f6d-5ef446a55c50",
+    "specialId": "W22",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Resources availability understood",
+    "description": "Resource availability is understood.",
+    "order": 36,
+    "id": "209a392c-f3c5-4b92-8197-dd06355bc2cb",
+    "specialId": "W23",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Risk exposure understood",
+    "description": "Risk exposure is understood.",
+    "order": 36,
+    "id": "a1c5d0a5-ef8b-48cd-806f-8f00f8b427b2",
+    "specialId": "W24",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Acceptance criteria established",
+    "description": "Acceptance criteria are defined and agreed with client.",
+    "order": 36,
+    "id": "48a0601a-6a9f-4dd3-8d7f-4e5270b134d7",
+    "specialId": "W25",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Sufficiently broken down to start",
+    "description": "The work is broken down sufficiently for productive work to start.",
+    "order": 36,
+    "id": "676c7c89-8032-4f0d-92a1-b46811672734",
+    "specialId": "W26",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Tasks identified and prioritized",
+    "description": "Tasks have been identified and prioritized by the team and stakeholders.",
+    "order": 36,
+    "id": "7cf35001-7fc8-402e-9f0f-741e1d4000d0",
+    "specialId": "W27",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Credible plan in place",
+    "description": "A credible plan is in place.",
+    "order": 36,
+    "id": "9ce4cb42-38cd-410d-8069-02242fd56d7b",
+    "specialId": "W28",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Funding in place",
+    "description": "Funding to start the work is in place.",
+    "order": 36,
+    "id": "783fbc71-251b-4066-88ef-db4141c4a168",
+    "specialId": "W29",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "At least one team member ready",
+    "description": "The team or at least some of the team members are ready to start the work.",
+    "order": 36,
+    "id": "f47a5992-bf4d-4984-99bd-2dec2b2dbb9c",
+    "specialId": "W210",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Integration points defined",
+    "description": "Integration and delivery points are defined.",
+    "order": 36,
+    "id": "a64f48e1-bbc7-4409-bd3d-4e999f8364ab",
+    "specialId": "W211",
+    "detailId": "16b6b06a-d1a1-4589-956d-a20443e812bb"
+  },
+  {
+    "name": "Development started",
+    "description": "Development work has been started.",
+    "order": 37,
+    "id": "7aa26b08-07af-4848-98a5-6b9fdb08268d",
+    "specialId": "W31",
+    "detailId": "40a0e2c8-2ded-4aba-be88-86b1f6d8d4a7"
+  },
+  {
+    "name": "Progress monitored",
+    "description": "Work progress is monitored.",
+    "order": 37,
+    "id": "15847631-b35d-4048-89ab-c97ba327f1cc",
+    "specialId": "W32",
+    "detailId": "40a0e2c8-2ded-4aba-be88-86b1f6d8d4a7"
+  },
+  {
+    "name": "Definition of done in place",
+    "description": "The work is being broken down into actionable work items with clear definitions of done.",
+    "order": 37,
+    "id": "b6b4928c-005d-49e4-99a7-a253e4f74fcc",
+    "specialId": "W33",
+    "detailId": "40a0e2c8-2ded-4aba-be88-86b1f6d8d4a7"
+  },
+  {
+    "name": "Tasks being progressed",
+    "description": "Team members are accepting and progressing tasks.",
+    "order": 37,
+    "id": "32e7ac09-7676-45f8-a9ab-11d582690ae2",
+    "specialId": "W34",
+    "detailId": "40a0e2c8-2ded-4aba-be88-86b1f6d8d4a7"
+  },
+  {
+    "name": "Tasks being completed",
+    "description": "Tasks are being completed.",
+    "order": 38,
+    "id": "2b76f728-b3c4-4a68-bc51-b6f6fe11ffc5",
+    "specialId": "W41",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Unplanned work under control",
+    "description": "Unplanned work is under control.",
+    "order": 38,
+    "id": "ae79aed4-ff49-45fa-9afb-610753f14d43",
+    "specialId": "W42",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Risks under control",
+    "description": "Risks are under control as the impact if they occur and the likelihood of them occurring have been reduced to acceptable levels.",
+    "order": 38,
+    "id": "b818e872-8e1c-4310-b2aa-d713cc2bbc16",
+    "specialId": "W43",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Estimates revised to reflect performance",
+    "description": "Estimates are revised to reflect the team\u0027s performance.",
+    "order": 38,
+    "id": "fcdeddc5-003b-4534-a9ef-85e9996dfa12",
+    "specialId": "W44",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Progress measured",
+    "description": "Measures are available to show progress and velocity.",
+    "order": 38,
+    "id": "2c1cdfea-c59a-40c8-a424-544a4d45ead9",
+    "specialId": "W45",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Re-work under control",
+    "description": "Re-work is under control.",
+    "order": 38,
+    "id": "71ff08cd-2bfc-4696-abd7-02b62c532b6b",
+    "specialId": "W46",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Commitments consistently met",
+    "description": "Tasks are consistently completed on time and within their estimates.",
+    "order": 38,
+    "id": "5c848c13-ed76-424a-88a4-76c8cc443cc5",
+    "specialId": "W47",
+    "detailId": "54f720a4-c0e3-456b-a538-0bcbe372fb03"
+  },
+  {
+    "name": "Only admin tasks left",
+    "description": "All outstanding tasks are administrative housekeeping or related to preparing the next piece of work.",
+    "order": 39,
+    "id": "8418cbd0-4a47-4efc-aea5-868b7f8f67eb",
+    "specialId": "W51",
+    "detailId": "855f0b86-fe89-4577-aa40-6699125c0748"
+  },
+  {
+    "name": "Results achieved",
+    "description": "Work results have been achieved.",
+    "order": 39,
+    "id": "dca4524a-3169-43a5-85bb-db0e4e68f694",
+    "specialId": "W52",
+    "detailId": "855f0b86-fe89-4577-aa40-6699125c0748"
+  },
+  {
+    "name": "Resulting system accepted",
+    "description": "The stakeholder(s) has accepted the resulting software system.",
+    "order": 39,
+    "id": "90bd5be6-f890-4382-baf2-2640a7ea4e56",
+    "specialId": "W53",
+    "detailId": "855f0b86-fe89-4577-aa40-6699125c0748"
+  },
+  {
+    "name": "Lessons learned",
+    "description": "Lessons learned have been itemized, recorded and discussed.",
+    "order": 40,
+    "id": "6591a9fc-4ee0-470a-84bd-0f8200167014",
+    "specialId": "W61",
+    "detailId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a"
+  },
+  {
+    "name": "Metrics available",
+    "description": "Metrics have been made available.",
+    "order": 40,
+    "id": "b44ef615-b8b6-4d54-bb25-8057e8d7e3ee",
+    "specialId": "W62",
+    "detailId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a"
+  },
+  {
+    "name": "Everything archived",
+    "description": "Everything has been archived.",
+    "order": 40,
+    "id": "cc3b3575-fba5-4c27-a116-e00a3993aa9b",
+    "specialId": "W63",
+    "detailId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a"
+  },
+  {
+    "name": "Budget reconciled \u0026closed",
+    "description": "The budget has been reconciled and closed.",
+    "order": 40,
+    "id": "8857bbc0-479f-4e08-a779-f55822db8f53",
+    "specialId": "W64",
+    "detailId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a"
+  },
+  {
+    "name": "Team released",
+    "description": "The team has been released.",
+    "order": 40,
+    "id": "be449b0b-b08b-47a3-bc48-f6644ab2d404",
+    "specialId": "W65",
+    "detailId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a"
+  },
+  {
+    "name": "No outstanding, uncompleted tasks",
+    "description": "There are no outstanding, uncompleted tasks.",
+    "order": 40,
+    "id": "6be86f63-e82f-43b2-9b82-0acd809db270",
+    "specialId": "W66",
+    "detailId": "5ff49d71-514c-4b2b-9bf8-bc79cc7d6d2a"
+  },
+  {
+    "name": "The components of the Software System included in the antipattern are defined",
+    "description": "The components of the Software System included in the antipattern are defined",
+    "order": 0,
+    "id": "252dd3d9-43d3-4fbd-9fda-5edbc819b464",
+    "specialId": null,
+    "detailId": "b84e895c-2e64-4a7b-a7b1-1dff932b1548"
+  },
+  {
+    "name": "An antipattern type has been defined",
+    "description": "An antipattern type has been defined.",
+    "order": 0,
+    "id": "26404755-9a4e-4b5f-b410-8bbe9df28ac5",
+    "specialId": null,
+    "detailId": "1ce21b97-b2cf-4e37-80d9-9f598bd32954"
+  },
+  {
+    "name": "The cost of antipattern fixing was estimated",
+    "description": "The cost of antipattern fixing was estimated",
+    "order": 0,
+    "id": "243615b7-a321-4154-8af8-cebc6f2dee70",
+    "specialId": null,
+    "detailId": "da7811d0-a7a3-4355-8535-3c469cc8ff0f"
+  },
+  {
+    "name": "An assessment of possible losses associated with the presence of an antipattern was carried out",
+    "description": "An assessment of possible losses associated with the presence of an antipattern was carried out.",
+    "order": 10,
+    "id": "c564bef2-acc9-4667-b7e2-fff2f0b6f87f",
+    "specialId": null,
+    "detailId": "da7811d0-a7a3-4355-8535-3c469cc8ff0f"
+  },
+  {
+    "name": "Refactoring completed",
+    "description": "Refactoring completed.",
+    "order": 0,
+    "id": "7f1f648f-8f28-4686-857b-c8d090dbe358",
+    "specialId": null,
+    "detailId": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202"
+  },
+  {
+    "name": "Testing showed the correct work of the components included in the antipattern",
+    "description": "Testing showed the correct work of the components included in the antipattern.",
+    "order": 10,
+    "id": "dccdad4a-f456-4d9c-a394-9c4508233c14",
+    "specialId": null,
+    "detailId": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202"
+  },
+  {
+    "name": "Antipattern elimination activity completed",
+    "description": "Antipattern elimination activity completed.",
+    "order": 20,
+    "id": "b6ca9bb7-cd7b-4a12-bf09-3e120c4533da",
+    "specialId": null,
+    "detailId": "83cc3c2a-bdeb-47a7-b15f-63b6ace68202"
+  },
+  {
+    "name": "Signs of poor-quality design or implementation of the Software System have been found",
+    "description": "Signs of poor-quality design or implementation of the Software System have been found.",
+    "order": 0,
+    "id": "57287465-41af-4fb5-901d-d6d1d6005d41",
+    "specialId": null,
+    "detailId": "4747ade1-fc19-4bf0-9b37-ae97e7e35e86"
+  },
+  {
+    "name": "The boundaries of the low quality area in the Software System have been defined",
+    "description": "The boundaries of the low quality area in the Software System have been defined.",
+    "order": 10,
+    "id": "322934e6-6a67-4311-89d8-3133efeaaaa5",
+    "specialId": null,
+    "detailId": "4747ade1-fc19-4bf0-9b37-ae97e7e35e86"
+  },
+  {
+    "name": "Work Products associated with the inferior part of the Software System have been defined",
+    "description": "Work Products associated with the inferior part of the Software System have been defined.",
+    "order": 20,
+    "id": "2ac2e4c4-a5e6-4fc5-9e02-488404780d5f",
+    "specialId": null,
+    "detailId": "4747ade1-fc19-4bf0-9b37-ae97e7e35e86"
+  },
+  {
+    "name": "The Software System Elements included in the antipattern have been determined",
+    "description": "The Software System Elements included in the antipattern have been determined.",
+    "order": 0,
+    "id": "ad372164-4372-4625-990c-8499323dbe0e",
+    "specialId": null,
+    "detailId": "2e5d2e6d-d471-4664-959a-7e931bd677f8"
+  },
+  {
+    "name": "The type of antipattern has been determined",
+    "description": "The type of antipattern has been determined.",
+    "order": 10,
+    "id": "a92e4f8d-23b1-47fb-b3a0-ed9adf3ccb99",
+    "specialId": null,
+    "detailId": "2e5d2e6d-d471-4664-959a-7e931bd677f8"
+  },
+  {
+    "name": "Dependencies of the Software System on the antipattern elements have been determined",
+    "description": "Dependencies of the Software System on the antipattern elements have been determined.",
+    "order": 20,
+    "id": "596f6b9f-638b-4eb9-bc22-dde47e01ff06",
+    "specialId": null,
+    "detailId": "2e5d2e6d-d471-4664-959a-7e931bd677f8"
+  },
+  {
+    "name": "The impact of the antipattern on the Software System has been estimated",
+    "description": "The impact of the antipattern on the Software System has been estimated.",
+    "order": 30,
+    "id": "12d6220b-08e0-418c-bebe-b3cf642ba06f",
+    "specialId": null,
+    "detailId": "2e5d2e6d-d471-4664-959a-7e931bd677f8"
+  },
+  {
+    "name": "Possible options for refactoring have been identified",
+    "description": "Possible options for refactoring have been identified.",
+    "order": 0,
+    "id": "46878a4f-1ff2-41c1-8dfe-3f29ade47d94",
+    "specialId": null,
+    "detailId": "794c9190-d386-452c-9df0-fc318a123415"
+  },
+  {
+    "name": "The cost of the refactoring options has been assessed",
+    "description": "The cost of the refactoring options has been assessed.",
+    "order": 10,
+    "id": "df5b50cc-bed4-4543-9017-cfa901217f69",
+    "specialId": null,
+    "detailId": "794c9190-d386-452c-9df0-fc318a123415"
+  },
+  {
+    "name": "The most suitable refactoring method has been selected",
+    "description": "The most suitable refactoring method has been selected.",
+    "order": 20,
+    "id": "7552549c-814f-43a3-b704-481295aeaaa7",
+    "specialId": null,
+    "detailId": "794c9190-d386-452c-9df0-fc318a123415"
+  },
+  {
+    "name": "The Software System elements included in the antipattern are completely covered by tests",
+    "description": "The Software System elements included in the antipattern are completely covered by tests.",
+    "order": 0,
+    "id": "5bf1a6c5-5854-46d9-99ae-41843c8c644f",
+    "specialId": null,
+    "detailId": "614b6ea5-ad37-49d6-810f-a2e4fff58992"
+  },
+  {
+    "name": "The antipattern has been refactored",
+    "description": "The antipattern has been refactored.",
+    "order": 10,
+    "id": "dce76384-a694-4802-bdee-751d46918ddc",
+    "specialId": null,
+    "detailId": "614b6ea5-ad37-49d6-810f-a2e4fff58992"
+  },
+  {
+    "name": "Tests confirm that the Software System remains operational",
+    "description": "Tests confirm that the Software System remains operational.",
+    "order": 20,
+    "id": "b447d8c8-0c6b-4a73-b025-15842283138e",
+    "specialId": null,
+    "detailId": "614b6ea5-ad37-49d6-810f-a2e4fff58992"
+  },
+  {
+    "name": "The Work Products related to the changed part of the Software System have been updated",
+    "description": "The Work Products related to the changed part of the Software System have been updated.",
+    "order": 30,
+    "id": "f24dd6f3-4f04-4c97-8693-be906c9d376a",
+    "specialId": null,
+    "detailId": "614b6ea5-ad37-49d6-810f-a2e4fff58992"
+  },
+  {
+    "name": "Tests, reviews or other appropriate activities have been undertaken to ensure that the antipattern h",
+    "description": "Tests, reviews or other appropriate activities have been undertaken to ensure that the antipattern has been corrected or shown not to actually be a fault or flaw.",
+    "order": 0,
+    "id": "c19e7eca-d075-4bb5-b703-2d32f9657400",
+    "specialId": null,
+    "detailId": "31cdbc60-a8ae-4d07-a23a-c4cbd476b9dc"
+  },
+  {
+    "name": "The antipattern management has been finalized",
+    "description": "The antipattern management has been finalized.",
+    "order": 10,
+    "id": "cdcba892-10bc-453e-9d33-070bc64a2e7a",
+    "specialId": null,
+    "detailId": "31cdbc60-a8ae-4d07-a23a-c4cbd476b9dc"
+  },
+  {
+    "name": "Technical debt has decreased",
+    "description": "Technical debt has decreased.",
+    "order": 20,
+    "id": "6612dbd9-9a1d-48c7-afc2-ee3be5dfe62e",
+    "specialId": null,
+    "detailId": "31cdbc60-a8ae-4d07-a23a-c4cbd476b9dc"
+  },
+  {
+    "name": "The antipattern is recognized as mandatory for elimination",
+    "description": "The antipattern is recognized as mandatory for elimination",
+    "order": 20,
+    "id": "47188792-a037-4ac5-8394-7fe89e5fd2b3",
+    "specialId": null,
+    "detailId": "da7811d0-a7a3-4355-8535-3c469cc8ff0f"
+  },
+  {
+    "name": "Architectural goals and constraints are defined in the architecture description. ",
+    "description": "Architectural goals and constraints are defined in the architecture description. ",
+    "order": 0,
+    "id": "30d68e1f-6d7b-4eb2-91a4-8b23d55c593d",
+    "specialId": null,
+    "detailId": "73539590-eb51-4440-a2c4-9e84a1159dc6"
+  },
+  {
+    "name": "All architecturally significant scenarios have been identified. ",
+    "description": "All architecturally significant scenarios have been identified. ",
+    "order": 0,
+    "id": "8b8f198f-8938-4e14-a8ee-d5504e14389b",
+    "specialId": null,
+    "detailId": "1aacfd12-da17-4a50-bb67-d1d16f95d54d"
+  },
+  {
+    "name": "It is clear how the identified scenarios will be tested. ",
+    "description": "It is clear how the identified scenarios will be tested. ",
+    "order": 10,
+    "id": "c9b456f7-705f-4c43-bb47-28c991f8faff",
+    "specialId": null,
+    "detailId": "1aacfd12-da17-4a50-bb67-d1d16f95d54d"
+  },
+  {
+    "name": "Architectural views of the design model are captured in the architecture description. ",
+    "description": "Architectural views of the design model are captured in the architecture description. ",
+    "order": 0,
+    "id": "e221dac6-05f5-40a3-a269-9b4708d45b25",
+    "specialId": null,
+    "detailId": "4ed3eeff-f165-4488-b216-7e0705469c4d"
+  },
+  {
+    "name": "The reasons behind the decisions embodied in the architecture have been described. ",
+    "description": "The reasons behind the decisions embodied in the architecture have been described. ",
+    "order": 10,
+    "id": "7f263529-23d9-4466-a87a-5e66f381abc9",
+    "specialId": null,
+    "detailId": "4ed3eeff-f165-4488-b216-7e0705469c4d"
+  },
+  {
+    "name": "The goals of the architecture have been identified and described with clear evaluation criteria. ",
+    "description": "The goals of the architecture have been identified and described with clear evaluation criteria. ",
+    "order": 0,
+    "id": "337b5334-c632-41a6-94c8-1c1c97672769",
+    "specialId": null,
+    "detailId": "da6d2791-2f5a-4c5f-acec-950e91a4ec63"
+  },
+  {
+    "name": "Any constraints that apply to the architecture have been identified and described. ",
+    "description": "Any constraints that apply to the architecture have been identified and described. ",
+    "order": 10,
+    "id": "4bd848a7-3f06-4eb1-b977-a47db1d90c0b",
+    "specialId": null,
+    "detailId": "da6d2791-2f5a-4c5f-acec-950e91a4ec63"
+  },
+  {
+    "name": "A set of scenarios which demonstrate that the architecture meets its goals has been identified and d",
+    "description": "A set of scenarios which demonstrate that the architecture meets its goals has been identified and described. ",
+    "order": 20,
+    "id": "abaeb3e3-17cd-4461-afe1-997819709cac",
+    "specialId": null,
+    "detailId": "da6d2791-2f5a-4c5f-acec-950e91a4ec63"
+  },
+  {
+    "name": "One or more candidate architectures have been investigated and a suitable one has been identified. ",
+    "description": "One or more candidate architectures have been investigated and a suitable one has been identified. ",
+    "order": 0,
+    "id": "2e4757fe-c5a7-4100-a61f-cfb548f24de0",
+    "specialId": null,
+    "detailId": "79ce3326-d95e-48b6-a86b-e406971af1d9"
+  },
+  {
+    "name": "Decisions have been made regarding the implementation platform and the major technologies to employ.",
+    "description": "Decisions have been made regarding the implementation platform and the major technologies to employ. ",
+    "order": 10,
+    "id": "cd020fc0-12fe-496d-ad4e-d2effd0aa080",
+    "specialId": null,
+    "detailId": "79ce3326-d95e-48b6-a86b-e406971af1d9"
+  },
+  {
+    "name": "Architectural designs and blueprints for the software system are available. ",
+    "description": "Architectural designs and blueprints for the software system are available. ",
+    "order": 0,
+    "id": "4bc10193-71a7-4b58-aa34-bbd51e146e01",
+    "specialId": null,
+    "detailId": "d3f02c54-d9be-4b0a-957b-5b722d40f413"
+  },
+  {
+    "name": "Architectural designs and blueprints for the software system are available. ",
+    "description": "A structure for the software system has been established that will support its development and maintenance. ",
+    "order": 10,
+    "id": "11f15dbb-72e4-433c-b30c-ed4b105d56d8",
+    "specialId": null,
+    "detailId": "d3f02c54-d9be-4b0a-957b-5b722d40f413"
+  },
+  {
+    "name": "A structure for the software system has been established that will support its development and maint",
+    "description": "Buy or build decisions have been made and any third-party products to be used are positioned within the architecture. ",
+    "order": 20,
+    "id": "4d44b962-fbdb-4e42-b5b3-7812f48d17b6",
+    "specialId": null,
+    "detailId": "d3f02c54-d9be-4b0a-957b-5b722d40f413"
+  },
+  {
+    "name": "Key features and unknown characteristics of the architecture have been identified for exploration. ",
+    "description": "Key features and unknown characteristics of the architecture have been identified for exploration. ",
+    "order": 0,
+    "id": "b8b7dc97-ce15-4e06-b219-51ebe70a4a66",
+    "specialId": null,
+    "detailId": "abc3000a-d399-4352-a7f2-0220f7cc68ef"
+  },
+  {
+    "name": "Just enough of the architecture has been implemented to address these areas of concern.",
+    "description": "Just enough of the architecture has been implemented to address these areas of concern.",
+    "order": 10,
+    "id": "40a27277-a06c-4187-913e-0d59d50829be",
+    "specialId": null,
+    "detailId": "abc3000a-d399-4352-a7f2-0220f7cc68ef"
+  },
+  {
+    "name": "An executable skinny system has been built. ",
+    "description": "An executable skinny system has been built. ",
+    "order": 20,
+    "id": "47a5062b-5d57-4782-9662-fd210928556f",
+    "specialId": null,
+    "detailId": "abc3000a-d399-4352-a7f2-0220f7cc68ef"
+  },
+  {
+    "name": "The most difficult or risky architectural scenarios have been demonstrated. ",
+    "description": "The most difficult or risky architectural scenarios have been demonstrated. ",
+    "order": 30,
+    "id": "207e0e06-08db-4e99-9f89-e91b5e32b3d0",
+    "specialId": null,
+    "detailId": "abc3000a-d399-4352-a7f2-0220f7cc68ef"
+  },
+  {
+    "name": "Demonstration results have been gathered to justify selection of the architecture. ",
+    "description": "Demonstration results have been gathered to justify selection of the architecture. ",
+    "order": 40,
+    "id": "272eb005-c96e-4c75-a287-6ade1f2cdf7c",
+    "specialId": null,
+    "detailId": "abc3000a-d399-4352-a7f2-0220f7cc68ef"
+  },
+  {
+    "name": "The software system, starting with the initial \u2018skinny\u2019 system and continuing as the system evolves,",
+    "description": "The software system, starting with the initial \u2018skinny\u2019 system and continuing as the system evolves, has been proven to meet the architectural requirements. ",
+    "order": 0,
+    "id": "b92a764b-0c9d-48dc-8ee6-9b84dccaf322",
+    "specialId": null,
+    "detailId": "ee5abdfe-3b03-490b-add2-48978edf717a"
+  }
+]

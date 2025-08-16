@@ -1,0 +1,2 @@
+module WorkProductDefinitionsHelper
+end

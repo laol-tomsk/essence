@@ -1,0 +1,306 @@
+<% if @iterations_count == -1 %>
+  <div><h3>Checkboxes states history is empty. Go to Essence Method page to save checkboxes states.</h3></div>
+<% else %>
+  <div class="probabilities-form">
+    <%= form_for(:graph_description, url: run_essence_algorithm_path(:project_id => @project.id),  html: { multipart: true }) do |f| %>
+      <h2>Probabilities counting: </h2>
+      <div class="first-group-container">
+        <div class="form-item" style="margin-right: 16px">
+          <span class="label">Iteration</span>
+          <%= select_tag(:selected_iteration, options_for_select(0..@iterations_count, @iteration_to_show)) %>
+        </div>
+        <div class="form-item" style="margin-right: 16px">
+          <span class="label">Select Next?</span>
+          <%= select_tag(:get_next_checkbox, options_for_select(0..4, 0)) %>
+        </div>
+        <div class="form-item" style="margin-right: 16px">
+          <span class="label">Threshold</span>
+          <input id="selected_threshold" name="selected_threshold" type="text" value="0.5"  />
+        </div>
+        <div class="form-item">
+          <span class="label">Sprint Length</span>
+          <input id="sprint_length" name="sprint_length" type="text" value="1000"  />
+        </div>
+      </div>
+
+      <h3>Degree of influence</h3>
+      <div class="second-group-container">
+        <div class="form-item">
+          <span class="label">Weak</span>
+          <input id="selected_influence_weak" name="selected_influence_weak" type="text" value="1"  />
+        </div>
+        <div class="form-item">
+          <span class="label">Medium</span>
+          <input id="selected_influence_medium" name="selected_influence_medium" type="text" value="2"  />
+        </div>
+        <div class="form-item">
+          <span class="label">Strong</span>
+          <input id="selected_influence_strong" name="selected_influence_strong" type="text" value="5"  />
+        </div>
+      </div>
+
+      <h3>API Settings</h3>
+      <div class="second-group-container">
+        <div class="form-item">
+          <span class="label">Key</span>
+          <input id="api_key" name="api_key" type="text" value="<%= @api_key %>"  />
+        </div>
+
+      </div>
+      <div class="third-group-container">
+        <%= f.submit "Show probabilities" %>
+        <div class="semat-loader" id="probabilities-loader" style="margin-left: 16px; display: none;"></div>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="position: relative">
+    <%
+      def makecard (card, cardclass, carddata)
+        res = "<div class=\"card #{cardclass}\" id=\"#{card.id}\" data-id=\"#{card.id}\" data-card-number=\"#{StateDefinition.where(id: carddata).first.order/10}\">
+        <div class=\"header\">
+          <div class=\"alpha-icon\"></div>
+          #{card.cardtype}
+        </div>
+        <div class=\"subtitle\">
+          #{StateDefinition.where(id: carddata).first.name}
+        </div>
+
+        <div class=\"data\" data-card-data=\"#{carddata}\">"
+        alpha = Alpha.where(project_id: @project.id, name: card.cardtype).first
+        state_number = StateDefinition.where(id: carddata).first.order + 1
+        StateDefinition.where(id: carddata).first.checkpoint_definitions.order(order: :asc).each_with_index do |checkpoint_def, checkpoint_number|
+          node_name = get_node_name_for_checkpoint(alpha.name, state_number, checkpoint_number+1)
+          parents = @checkpoints ? @checkpoints[node_name].join(",") : ""
+          res += "<div class=\"node-container\" data-parent-nodes=\"#{parents}\" id=\"#{node_name}\" style=\"display:flex; justify-content: space-between;\">
+          <input style=\"pointer-events: none;\" data-checkbox-name=\"#{checkpoint_def.name}\"
+            data-card-id=\"#{card.id}\"  type=\"checkbox\""
+          checkpoint = Checkpoint.where(alpha_id: alpha.id, checkpoint_definition_id: checkpoint_def.id).first
+          checkpoint_state = AlphaCheckpointState.where(checkpoints_id: checkpoint.id, iteration: @iteration_to_show).first.checkbox_state
+          probability = @probabilities[node_name]
+          if checkpoint_state == true
+            res += "checked"
+          end
+          res += "><span style=\"display:flex; width: 100%;\">#{checkpoint_def.name}</span>"
+          if checkpoint_state == true && probability < 0.5
+            res += "<span onmousedown=\"showNodeParents('#{node_name}')\" class=\"probability-warning\">#{probability.round(4)}</span></div>"
+          else
+            res += "<span onmousedown=\"showNodeParents('#{node_name}')\" >#{probability.round(4)}</span></div>"
+          end
+        end
+        res += "</div>
+        <div class=\"card-number\">
+          #{state_number}/#{StateDefinition.where(id: carddata).take.alpha_definition.state_definitions.count}
+
+        </div>
+
+        <img class=\"kernel-icon\" src=\"/plugin_assets/semat_essence/images/essence_kernel_20.png\">
+        <img class=\"cards-logo\" src=\"/plugin_assets/semat_essence/images/logo.png\">
+        <div class=\"version\">1.1.2</div>
+        </div>"
+        return res
+      end
+    %>
+
+    <div  style="display: flex; width: 100%">
+      <% @cards.each do |card| %>
+        <% if card.cardtype == "Stakeholders" %>
+          <%
+            cardclass = ""
+            case card.cardtype
+            when "Stakeholders"
+              cardclass = "stakeholders"
+            end
+            carddata = card.stateid
+          %>
+          <%= makecard(card, cardclass, carddata).html_safe %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div style="display: flex; width: 100%">
+      <% @cards.each do |card| %>
+        <% if card.cardtype == "Opportunity" %>
+          <%
+            cardclass = ""
+            case card.cardtype
+            when "Opportunity"
+              cardclass = "stakeholders"
+            end
+            carddata = card.stateid
+          %>
+          <%= makecard(card, cardclass, carddata).html_safe %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div style="display: flex; width: 100%">
+      <% @cards.each do |card| %>
+        <% if card.cardtype == "Requirements" %>
+          <%
+            cardclass = ""
+            case card.cardtype
+            when "Requirements"
+              cardclass = "softwaresystem"
+            end
+            carddata = card.stateid
+          %>
+          <%= makecard(card, cardclass, carddata).html_safe %>
+        <% end %>
+      <% end %>
+    </div>
+
+  <div style="display: flex; width: 100%">
+    <% @cards.each do |card| %>
+      <% if card.cardtype == "Software System" %>
+        <%
+          cardclass = ""
+          case card.cardtype
+          when "Software System"
+            cardclass = "softwaresystem"
+          end
+          carddata = card.stateid
+        %>
+        <%= makecard(card, cardclass, carddata).html_safe %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="display: flex; width: 100%">
+    <% @cards.each do |card| %>
+      <% if card.cardtype == "Team" %>
+        <%
+          cardclass = ""
+          case card.cardtype
+          when "Team"
+            cardclass = "wayofworking"
+          end
+          carddata = card.stateid
+        %>
+        <%= makecard(card, cardclass, carddata).html_safe %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="display: flex; width: 100%">
+    <% @cards.each do |card| %>
+      <% if card.cardtype == "Way of Working" %>
+        <%
+          cardclass = ""
+          case card.cardtype
+          when "Way of Working"
+            cardclass = "wayofworking"
+          end
+          carddata = card.stateid
+        %>
+        <%= makecard(card, cardclass, carddata).html_safe %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="display: flex; width: 100%">
+    <% @cards.each do |card| %>
+      <% if card.cardtype == "Work" %>
+        <%
+          cardclass = ""
+          case card.cardtype
+          when "Work"
+            cardclass = "wayofworking"
+          end
+          carddata = card.stateid
+        %>
+        <%= makecard(card, cardclass, carddata).html_safe %>
+      <% end %>
+    <% end %>
+  </div>
+    <div onclick="hideParentConnections()" id="node-parents-overlay" style="display: none; position: absolute; z-index: 10; top: 0; left: 0; right: 0; bottom: 0;">
+      <svg id="node-parents-svg" width="100%" height="100%">
+        <line x1="0" y1="0" x2="1000" y2="1000" style="stroke:rgb(255,0,0);stroke-width:2" />
+      </svg>
+    </div>
+  </div>
+  </div>
+
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+<% end %>
+<script type="text/javascript">
+    const button = document.querySelector('.probabilities-form input[type=submit]');
+    button.addEventListener("click", function(evt){
+      document.getElementById("probabilities-loader").style.display = "block";
+    });
+</script>
+  <script type="text/javascript">
+    function showNodeParents(id) {
+        document.querySelectorAll('.node-container').forEach(item => {
+            if (item.id !== id) {
+                item.style.opacity = "0.5";
+            }
+        });
+
+        document.getElementById("node-parents-overlay").style.display = "block";
+        const svg = document.getElementById("node-parents-svg");
+        svg.innerHTML = "";
+
+        const svgRect = document.getElementById("node-parents-svg").getBoundingClientRect();
+        const currentNode = document.getElementById(id);
+        currentNode.dataset.highlight = "main";
+
+        currentNode.dataset.parentNodes.split(",").forEach(nodeId => {
+            const targetNode = document.getElementById(nodeId);
+            if (targetNode) {
+                targetNode.style.opacity = "1";
+                targetNode.dataset.highlight = "true";
+
+                var currentOffsetTop = currentNode.getBoundingClientRect().top - svgRect.top;
+                var currentOffsetLeft = currentNode.getBoundingClientRect().left - svgRect.left;
+                const currentWidth = currentNode.getBoundingClientRect().width;
+                const currentHeight = currentNode.getBoundingClientRect().height;
+
+                var targetOffsetTop = targetNode.getBoundingClientRect().top - svgRect.top;
+                var targetOffsetLeft = targetNode.getBoundingClientRect().left - svgRect.left;
+                const targetWidth = targetNode.getBoundingClientRect().width;
+                const targetHeight = targetNode.getBoundingClientRect().height;
+
+                if (currentOffsetLeft + currentWidth <= targetOffsetLeft) {
+                    currentOffsetLeft += currentWidth;
+                }
+                if (currentOffsetTop + currentHeight < targetOffsetTop) {
+                    currentOffsetTop += currentHeight;
+                }
+
+                if (targetOffsetLeft + targetWidth <= currentOffsetLeft) {
+                    targetOffsetLeft += targetWidth;
+                }
+                if (targetOffsetTop + targetHeight < currentOffsetTop) {
+                    targetOffsetTop += targetHeight;
+                }
+
+                var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+                line.setAttribute("x1", currentOffsetLeft);
+                line.setAttribute("y1", currentOffsetTop);
+                line.setAttribute("x2", targetOffsetLeft);
+                line.setAttribute("y2", targetOffsetTop);
+                line.style.stroke = "#ff0000";
+                line.style.strokeWidth = "1px";
+                svg.appendChild(line);
+            }
+        })
+    }
+
+    function hideParentConnections() {
+        document.getElementById("node-parents-overlay").style.display = "none";
+        document.querySelectorAll('.node-container').forEach(item => {
+            item.style.opacity = "1";
+            item.dataset.highlight = "";
+        });
+    }
+  </script>
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'alphacards.css', :plugin => 'semat_essence' %>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<% end %>
+<% end %>
