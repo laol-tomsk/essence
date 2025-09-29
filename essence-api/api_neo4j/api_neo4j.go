@@ -568,8 +568,10 @@ func Get_degree_influence_node(session neo4j.Session, guid_parent string, guid_n
 	if err != nil {
 		return "", err
 	}
-	//time.Sleep(time.Microsecond)
-	return influence.(string), nil
+	if influence != nil {
+		return influence.(string), nil
+	}
+	return "", nil
 }
 
 func Get_normalValue_node(session neo4j.Session, guid string) (string, error) {
