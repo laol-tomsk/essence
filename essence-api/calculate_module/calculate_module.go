@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"math"
-	"math/big"
 	"strconv"
 	"sync"
 
@@ -121,7 +120,9 @@ func StartCalculateWrapper(
 	res_i, _, _ := calculete_node_no_dynemic(session, Iteration, i, is_additional)
 	var res_i_obj map[string]float64
 	json.Unmarshal([]byte(res_i), &res_i_obj)
+	Dict_Mutex.Lock()
 	(*res)[i] = res_i_obj
+	Dict_Mutex.Unlock()
 }
 
 func StartCalculate(
@@ -248,13 +249,16 @@ func calculete_node_no_dynemic(session neo4j.Session, number_iteration int, data
 						if flagDetail {
 							N = return_N_on_details(parent_guid, data_dict_version, number_iteration)
 						}
-						normal, err := api_neo4j.Get_normalValue_node(session, parent_guid)
+						normal, err := api_neo4j.Get_normalValue_node(session, parent_guid, number_iteration)
 						if err != nil {
 							log.Fatal(err)
 						}
 						normal_int, err := strconv.Atoi(normal)
 						if err != nil {
 							log.Fatal(err)
+						}
+						if normal_int < 1 {
+							continue
 						}
 						Z := normal_int * ProjectScale
 						if Z < 2 {
@@ -304,7 +308,6 @@ func calculete_node_no_dynemic(session neo4j.Session, number_iteration int, data
 					chan_calc <- result_calc
 					return
 				}
-				vector_parents := create_vector(len(mas_stat_parents))
 				var mas_degree []int64
 				mas_degree_parent := map[string]float64{}
 				for _, parent := range mas_stat_parents {
@@ -320,27 +323,23 @@ func calculete_node_no_dynemic(session neo4j.Session, number_iteration int, data
 				}
 
 				X := 0.0
-				for _, vector := range vector_parents {
-					L := big.NewFloat(Lbase)
-					R := big.NewFloat(Rbase)
-					Y := big.NewFloat(1)
+				for vector := 0; vector < (1 << len(mas_stat_parents)); vector++ {
+					L := Lbase
+					R := Rbase
+					Y := 1.0
 
-					for v := 0; v < len(vector); v++ {
-						if vector[v] == '1' {
-							L.Add(L, big.NewFloat(math.Pow(2, float64(mas_degree[v]))))
-							Y.Mul(Y, big.NewFloat(mas_degree_parent[mas_stat_parents[v]]))
+					for v := 0; v < len(mas_stat_parents); v++ {
+						if (vector>>v)&1 != 0 {
+							L *= float64(uint64(1) << mas_degree[v])
+							Y *= mas_degree_parent[mas_stat_parents[v]]
 						} else {
-							R.Add(R, big.NewFloat(math.Pow(2, float64(mas_degree[v]))))
-							Y.Mul(Y, big.NewFloat(1-mas_degree_parent[mas_stat_parents[v]]))
+							R *= float64(uint64(1) << mas_degree[v])
+							Y *= 1 - mas_degree_parent[mas_stat_parents[v]]
 						}
 
 					}
-					L_end, _ := L.Float64()
-					R_end, _ := R.Float64()
-					Y_end, _ := Y.Float64()
-					X += Y_end * (L_end / (L_end + R_end))
+					X += Y * (L / (L + R))
 				}
-
 				result_calc.Degree = X
 				chan_calc <- result_calc
 			}(node_guid_a, calculate_really)
@@ -388,13 +387,9 @@ func should_be_calculated(session neo4j.Session, goal_node string, node_guid str
 
 func return_N_on_state(parent_guid string, data_dict_version string, number_iteretion int) int {
 	counter := 0
-	is_current_state := false
 	for _, copy_state := range Data_add_dict[data_dict_version][parent_guid] {
 		counter_flag := 0
 		for key := range copy_state {
-			if key == data_dict_version {
-				is_current_state = true
-			}
 			for _, iter := range copy_state[key] {
 				flag, ok := iter[fmt.Sprint(number_iteretion)]
 				if ok {
@@ -409,39 +404,28 @@ func return_N_on_state(parent_guid string, data_dict_version string, number_iter
 			counter += 1
 		}
 	}
-	if is_current_state {
-		counter += 1
-	}
 	return counter
 }
 
 func return_N_on_details(parent_guid string, data_dict_version string, number_iteretion int) int {
 	counter := 0
-	is_current_detail := false
 	for _, copy_datail := range Data_add_dict[data_dict_version][parent_guid] {
 		for key := range copy_datail {
-			if key == data_dict_version {
-				is_current_detail = true
-			}
-			flag := false
+			counter_flag := false
 			for _, iter := range copy_datail[key] {
 				flag, ok := iter[fmt.Sprint(number_iteretion)]
 				if ok {
 					if flag {
 						counter += 1
-						flag = false
+						counter_flag = false
 						break
 					}
 				}
 			}
-			if flag {
+			if counter_flag {
 				break
 			}
 		}
-	}
-
-	if is_current_detail {
-		counter += 1
 	}
 	return counter
 }

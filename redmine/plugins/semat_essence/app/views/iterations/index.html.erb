@@ -11,7 +11,13 @@
         </div>
         <div class="form-item" style="margin-right: 16px">
           <span class="label">Select Next?</span>
-          <%= select_tag(:get_next_checkbox, options_for_select(0..4, 0)) %>
+            <%= select_tag(:get_next_checkbox, options_for_select([
+              ["Look for manager mistakes", 0],
+              ["Select next evidence", 1], 
+              ["Plan iteration (greedy)", 2],
+              ["Plan iteration (by tree)", 3],
+              ["Plan iteration (naive)", 4]
+            ], 0)) %>
         </div>
         <div class="form-item" style="margin-right: 16px">
           <span class="label">Threshold</span>
@@ -71,7 +77,7 @@
         state_number = StateDefinition.where(id: carddata).first.order + 1
         StateDefinition.where(id: carddata).first.checkpoint_definitions.order(order: :asc).each_with_index do |checkpoint_def, checkpoint_number|
           node_name = get_node_name_for_checkpoint(alpha.name, state_number, checkpoint_number+1)
-          parents = @checkpoints ? @checkpoints[node_name].join(",") : ""
+          parents = @checkpoints ? (@checkpoints[node_name] ? @checkpoints[node_name].join(",") : "") : ""
           res += "<div class=\"node-container\" data-parent-nodes=\"#{parents}\" id=\"#{node_name}\" style=\"display:flex; justify-content: space-between;\">
           <input style=\"pointer-events: none;\" data-checkbox-name=\"#{checkpoint_def.name}\"
             data-card-id=\"#{card.id}\"  type=\"checkbox\""

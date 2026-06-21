@@ -119,24 +119,40 @@ class IterationsController < ApplicationController
                     .reject{ |s| s.time_estimate == nil}
                     .map { |s| [s.state_def_id, s.time_estimate] }
 
+    cp_costs = @project.method_definition
+                  .alpha_definitions
+                  .reject{|i| i.parent == nil}
+                  .flat_map { |a| a.state_definitions }
+                  .flat_map { |s| s.checkpoint_definitions }
+                  .reject{ |cp| cp.state_definition.time_estimate == nil}
+                  .map { |cp| [cp.checkpoint_def_id, cp.state_definition.time_estimate] }
+
     level_costs = @project.method_definition
-                .work_product_definitions
-                .flat_map { |wp| wp.level_of_details_definitions }
-                .reject{ |ld| ld.time_estimate == nil}
-                .map { |ld| [ld.level_def_id, ld.time_estimate] }
+                    .work_product_definitions
+                    .flat_map { |wp| wp.level_of_details_definitions }
+                    .reject{ |ld| ld.time_estimate == nil}
+                    .map { |ld| [ld.level_def_id, ld.time_estimate] }
+
+    wcp_costs = @project.method_definition
+                    .work_product_definitions
+                    .flat_map { |wp| wp.level_of_details_definitions }
+                    .flat_map { |ld| ld.wp_checkpoint_definitions }
+                    .reject{ |cp| cp.level_of_details_definition.time_estimate == nil}
+                    .map { |cp| [cp.checkpoint_def_id, cp.level_of_details_definition.time_estimate] }
 
     api_key = params[:api_key]
 
     @toSend = {
       "Data_dict" => @core_history,
       "Data_add_dict"=>@checkbox_history,
-      "Costs" => core_costs.to_h.merge(state_costs.to_h).merge(level_costs.to_h),
+      "Costs" => core_costs.to_h.merge(state_costs.to_h).merge(level_costs.to_h).merge(cp_costs.to_h).merge(wcp_costs.to_h),
       "Weight" => {"S"=>s,"M"=>m,"W"=>w},
       "Method_id"=>@project.method_definition.id,
       "Iter"=>iteration,
       "IterLength"=>sprint_length,
       "Algorithm"=>get_next_checkpoint-2,
-      "Threshold"=>threshold}.to_json
+      "Threshold"=>threshold,
+      "Iter_count"=>get_last_iteration_number(@project.id)+1}.to_json
 
     uri = URI(Config::URL)
     http = Net::HTTP.new(uri.host,Config::PORT)
@@ -267,7 +283,7 @@ class IterationsController < ApplicationController
             history_array << {checkbox_state.iteration => checkbox_state.checkbox_state}
           end
         end
-        subalpha_states[checkbox.definition.state_definition.state_def_id][checkbox.definition.checkpoint_def_id] = history_array
+        subalpha_states[checkbox.definition.state_definition.state_def_id][checkbox.definition.checkpoint_def_id+"_"+checkbox.alpha_id.to_s] = history_array
       end
 
       subalpha_states.each do |state|
@@ -295,7 +311,7 @@ class IterationsController < ApplicationController
             history_array << {checkbox_state.iteration => checkbox_state.checkbox_state}
           end
         end
-        wp_levels[checkbox.definition.level_of_details_definition.level_def_id][checkbox.definition.checkpoint_def_id] = history_array
+        wp_levels[checkbox.definition.level_of_details_definition.level_def_id][checkbox.definition.checkpoint_def_id+"_"+checkbox.work_product_id.to_s] = history_array
       end
 
       wp_levels.each do |level|
@@ -306,5 +322,144 @@ class IterationsController < ApplicationController
       end
     end
     return checkbox_history
+  end
+
+  def task_list_from_json
+    file_path = "/usr/src/redmine/plugins/semat_essence/results.json"
+    json_list = JSON.parse(File.read(file_path))
+      
+    task_ids = json_list.map do |item|
+      item.split('_')
+    end.compact
+
+    tasks = task_ids.map do |item|
+      cp_def = CheckpointDefinition.find_by(checkpoint_def_id: item.first)
+      if cp_def.nil?
+        cp_def = WpCheckpointDefinition.find_by(checkpoint_def_id: item.first)
+        wp = WorkProduct.find(item[1].to_i)
+        wp.name + ": " + cp_def.level_of_details_definition.name
+      else 
+        if (item[1].to_i > 0) 
+          alpha = Alpha.find(item[1].to_i)
+          alpha.name + ": " + cp_def.state_definition.name
+        else
+          alpha = cp_def.state_definition.alpha_definition
+          alpha.name + ": " + cp_def.name
+        end
+      end
+    end
+
+    @proposed_tasks = tasks
+  end
+
+  def process_all_json_files
+    folder_path = "/usr/src/redmine/plugins/semat_essence"
+    output_file = File.join(folder_path, "results.txt")
+    
+    # Находим все JSON файлы в папке
+    json_files = Dir.glob(File.join(folder_path, "*.json"))
+    
+    results = []
+    
+    json_files.each do |file_path|
+      file_name = File.basename(file_path)
+      
+      begin
+        json_list = JSON.parse(File.read(file_path))
+        
+        task_ids = json_list.map do |item|
+          item.split('_')
+        end.compact
+
+        total = 0
+        
+        tasks = task_ids.map do |item|
+          cp_def = CheckpointDefinition.where(checkpoint_def_id: item.first).order(id: :desc).first
+          if cp_def.nil?
+            cp_def = WpCheckpointDefinition.where(checkpoint_def_id: item.first).order(id: :desc).first
+            wp = WorkProduct.find(item[1].to_i)
+            estimate = cp_def.level_of_details_definition.time_estimate
+            total += estimate
+            wp.name + ": " + cp_def.level_of_details_definition.name + " (" + estimate.to_s + " ч)"
+          else
+            if (item[1].to_i > 0) 
+              alpha = Alpha.find(item[1].to_i)
+              estimate = cp_def.state_definition.time_estimate
+              total += estimate
+              alpha.name + ": " + cp_def.state_definition.name + " (" + estimate.to_s + " ч)"
+            else
+              alpha = cp_def.state_definition.alpha_definition
+              estimate = cp_def.time_estimate
+              total += estimate
+              alpha.name + ": " + cp_def.name + " (" + estimate.to_s + " ч)"
+            end
+          end
+        end
+        
+        results << "#{file_name}:"
+        results << tasks.join("\n")
+        results << "total - #{total} ч"
+        results << ""
+        
+      rescue => e
+        results << "#{file_name}: ERROR - #{e.message}"
+        results << ""
+      end
+    end
+    
+    File.open(output_file, 'w') do |file|
+      file.puts results.join("\n")
+    end
+    
+    puts "Results saved to: #{output_file}"
+  end
+
+  def make_tasks_from_json
+    file_path = "/usr/src/redmine/plugins/semat_essence/results.json"
+    json_list = JSON.parse(File.read(file_path))
+      
+    task_ids = json_list.map do |item|
+      item.split('_')
+    end.compact
+
+    project = Project.find(params[:project_id])
+    puts project
+
+    task_ids.each do |item|
+      title = ""
+      description = ""
+      cp_def = CheckpointDefinition.find_by(checkpoint_def_id: item.first)
+      if cp_def.nil?
+        cp_def = WpCheckpointDefinition.find_by(checkpoint_def_id: item.first)
+        wp = WorkProduct.find(item[1].to_i)
+        title = wp.name + ": " + cp_def.level_of_details_definition.name
+        description = cp_def.level_of_details_definition.description
+      else 
+        alpha = ""
+        if item[1].to_i > 0 
+          alpha = Alpha.find(item[1].to_i)
+        else 
+          alpha = cp_def.state_definition.alpha_definition
+        end
+        title = alpha.name + ": " + cp_def.state_definition.name
+        description = cp_def.state_definition.description
+      end
+      issue = Issue.new(
+        project: project,
+        tracker_id: 1,
+        subject: title,
+        description: description,
+        author: User.current,
+        priority_id: 2,
+        status_id: 1
+      )
+      if issue.save 
+        puts "saved successfully"
+      else
+        puts issue.errors.full_messages.join(', ')
+      end
+    end
+
+    redirect_to project_issues_path(project_id: params[:project_id])
   end
 end

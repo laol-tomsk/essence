@@ -40,7 +40,7 @@ div.closed > div.data {
 
 div.card {
     width: 210px;
-    height: 310px;
+    padding-bottom: 50px;
     overflow: hidden;
     background-color: white;
     cursor: pointer;
@@ -68,6 +68,15 @@ div.card div.alpha-icon {
     height: 20px;
     float: left;
     margin-right: 10px;
+}
+
+div.card div.wp-icon {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 10px;
+    background-image: url("/plugin_assets/semat_essence/images/work_product.png");
+    background-size: contain;
 }
 
 div.card img.kernel-icon {

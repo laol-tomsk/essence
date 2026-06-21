@@ -10,8 +10,14 @@
           <%= select_tag(:selected_iteration, options_for_select(0..@iterations_count, @iteration_to_show)) %>
         </div>
         <div class="form-item" style="margin-right: 16px">
-          <span class="label">Select Next?</span>
-          <%= select_tag(:get_next_checkbox, options_for_select(0..4, 0)) %>
+          <span class="label">What to do?</span>
+            <%= select_tag(:get_next_checkbox, options_for_select([
+              ["Look for manager mistakes", 0],
+              ["Select next evidence", 1], 
+              ["Plan iteration (greedy)", 2],
+              ["Plan iteration (by tree)", 3],
+              ["Plan iteration (naive)", 4]
+            ], 0)) %>
         </div>
         <div class="form-item" style="margin-right: 16px">
           <span class="label">Threshold</span>
@@ -56,8 +62,17 @@
 
   <div style="position: relative">
     <%
-      def makecard (card, cardclass, carddata)
-        res = "<div class=\"card #{cardclass}\" id=\"#{card.id}\" data-id=\"#{card.id}\" data-card-number=\"#{StateDefinition.where(id: carddata).first.order/10}\">
+      def cardclass(alphaName)
+        case alphaName 
+          when "Opportunity", "Stakeholders" then "stakeholders"
+          when "Software System", "Requirements" then "softwaresystem"
+          when "Team", "Way of Working", "Work" then "wayofworking"
+          else "softwaresystem"
+        end
+      end
+
+      def makecard (card, carddata)
+        res = "<div class=\"card #{cardclass(card.cardtype)}\" id=\"#{card.id}\" data-id=\"#{card.id}\" data-card-number=\"#{StateDefinition.where(id: carddata).first.order/10}\">
         <div class=\"header\">
           <div class=\"alpha-icon\"></div>
           #{card.cardtype}
@@ -71,11 +86,7 @@
         state_number = StateDefinition.where(id: carddata).first.order + 1
         StateDefinition.where(id: carddata).first.checkpoint_definitions.order(order: :asc).each_with_index do |checkpoint_def, checkpoint_number|
           checkpoint = Checkpoint.where(alpha_id: alpha.id, checkpoint_definition_id: checkpoint_def.id).first
-          if cardclass != ""
-            node_name = get_node_name_for_checkpoint(alpha.name, state_number, checkpoint_number+1)
-          else
-            node_name = checkpoint.definition.checkpoint_def_id
-          end
+          node_name = get_node_name_for_checkpoint(alpha.name, state_number, checkpoint_number+1)
           parents = @checkpoints ? @checkpoints[node_name].join(",") : ""
           res += "<div class=\"node-container\" data-parent-nodes=\"#{parents}\" id=\"#{node_name}\" style=\"display:flex; justify-content: space-between;\">
           <input style=\"pointer-events: none;\" data-checkbox-name=\"#{checkpoint_def.name}\"
@@ -86,7 +97,6 @@
             res += "checked"
           end
           res += "><span style=\"display:flex; width: 100%;\">#{checkpoint_def.name}</span>"
-          puts node_name
           if checkpoint_state == true && probability.is_a?(Numeric) && probability < 0.5
             res += "<span onmousedown=\"showNodeParents('#{node_name}')\" class=\"probability-warning\">#{probability.round(4)}</span></div>"
           else
@@ -117,41 +127,89 @@
       end
 
       def makecard_wp (work_product, level_of_details)
-        res = "<div class=\"card softwaresystem ui-sortable-handle\" id=\"#{level_of_details.id}\"
-        data-id=\"#{work_product.id}\" data-card-number=\"#{LevelOfDetailsDefinition.where(id: level_of_details.id).first.order/10}\">
+        level_of_details_data = LevelOfDetailsDefinition.where(id: level_of_details.id).first
+        if work_product.containing_alpha.definition.parent_id.nil?
+          alpha = work_product.containing_alpha.name
+        else
+          alpha = work_product.containing_alpha.definition.parent.name
+        end
+        res = "<div class=\"card #{cardclass(alpha)} ui-sortable-handle\" id=\"#{level_of_details.id}\"
+        data-id=\"#{work_product.id}\" data-card-number=\"#{level_of_details_data.order/10}\">
             <div class=\"header\">
-              <div class=\"alpha-icon\"></div>
+              <div class=\"wp-icon\"></div>
               #{work_product.name}
             </div>
+            <div class=\"subtitle\">
+              #{level_of_details_data.name}
+            </div>
             <div class=\"data\" data-card-data=\"#{level_of_details}\">"
-        LevelOfDetailsDefinition.where(id: level_of_details.id).first.wp_checkpoint_definitions.order(order: :asc).each do |checkpoint|
+        level_of_details_data.wp_checkpoint_definitions.order(order: :asc).each do |checkpoint|
           res += "<div class=\"node-container\" style=\"display:flex; justify-content: space-between;\">
           <input style=\"pointer-events: none;\"  type=\"checkbox\""
-          checkpoint_state = WpCheckpoint.where(wp_checkpoint_definition_id: checkpoint.id, work_product_id: work_product.id).take.fulfilled
-          probability = @probabilities[checkpoint.checkpoint_def_id]
+          checkpoint_id = WpCheckpoint.where(wp_checkpoint_definition_id: checkpoint.id, work_product_id: work_product.id).take.id
+          checkpoint_state = WpCheckpointState.where(wp_checkpoints_id: checkpoint_id, iteration: @iteration_to_show).first&.checkbox_state || 0
+          probability = @probabilities[checkpoint.checkpoint_def_id + "_" + work_product.id.to_s]
           if checkpoint_state == true
             res += "checked"
           end
           res += "><span style=\"display:flex; width: 100%;\">#{checkpoint.name}</span>"
-          if checkpoint_state == true && !probability.nil? && probability < 0.5
-            res += "<span class=\"probability-warning\">#{probability.round(4)}</span></div>"
+          if probability.nil?
+            res += "<span>...</span></div>"
+          elsif probability.is_a? Numeric
+            res += "<span>#{probability.round(4)}</span></div>"
           else
-            if probability.nil?
-              res += "<span>...</span></div>"
-            elsif probability.is_a? Numeric
-              res += "<span>#{probability.round(4)}</span></div>"
+            if probability["is_best"] > 0.5
+              res += "<span class=\"probability-warning\" >#{probability["sum"].round(4)}</span></div>"
             else
-              if probability["is_best"] > 0.5
-                res += "<span class=\"probability-warning\" >#{probability["sum"].round(4)}</span></div>"
-              else
-                res += "<span>#{probability["sum"].round(4)}</span></div>"
-              end
+              res += "<span>#{probability["sum"].round(4)}</span></div>"
             end
           end
         end
         res += "</div>
             <div class=\"card-number\">
-              #{LevelOfDetailsDefinition.where(id: level_of_details.id).first.order/10 + 1}/#{work_product.definition.level_of_details_definitions.count}
+              #{level_of_details_data.order/10 + 1}/#{work_product.definition.level_of_details_definitions.count}
+            </div>
+            <img class=\"kernel-icon\" src=\"/plugin_assets/semat_essence/images/essence_kernel_20.png\">
+            <img class=\"cards-logo\" src=\"/plugin_assets/semat_essence/images/logo.png\">
+            <div class=\"version\">1.1.2</div>
+            </div>"
+        return res
+      end
+
+      def makecard_subalpha (subalpha, state)
+        state_data = StateDefinition.where(id: state.id).first
+        res = "<div class=\"card #{cardclass(subalpha.definition.parent.name)} ui-sortable-handle\" id=\"#{state.id}\"
+        data-id=\"#{subalpha.id}\" data-card-number=\"#{state_data.order/10}\">
+            <div class=\"header\">
+              <div class=\"alpha-icon\"></div>
+              #{subalpha.name}
+            </div>
+            <div class=\"data\" data-card-data=\"#{state}\">"
+        state_data.checkpoint_definitions.order(order: :asc).each do |checkpoint|
+          res += "<div class=\"node-container\" style=\"display:flex; justify-content: space-between;\">
+          <input style=\"pointer-events: none;\"  type=\"checkbox\""
+          checkpoint_id = Checkpoint.where(checkpoint_definition_id: checkpoint.id, alpha_id: subalpha.id).take.id
+          checkpoint_state = AlphaCheckpointState.where(checkpoints_id: checkpoint_id, iteration: @iteration_to_show).first&.checkbox_state || 0
+          probability = @probabilities[checkpoint.checkpoint_def_id + "_" + subalpha.id.to_s]
+          if checkpoint_state == true
+            res += "checked"
+          end
+          res += "><span style=\"display:flex; width: 100%;\">#{checkpoint.name}</span>"
+          if probability.nil?
+            res += "<span>...</span></div>"
+          elsif probability.is_a? Numeric
+            res += "<span>#{probability.round(4)}</span></div>"
+          else
+            if probability["is_best"] > 0.5
+              res += "<span class=\"probability-warning\" >#{probability["sum"].round(4)}</span></div>"
+            else
+              res += "<span>#{probability["sum"].round(4)}</span></div>"
+            end
+          end
+        end
+        res += "</div>
+            <div class=\"card-number\">
+              #{state_data.order/10 + 1}/#{subalpha.definition.state_definitions.count}
             </div>
             <img class=\"kernel-icon\" src=\"/plugin_assets/semat_essence/images/essence_kernel_20.png\">
             <img class=\"cards-logo\" src=\"/plugin_assets/semat_essence/images/logo.png\">
@@ -165,14 +223,9 @@
       <% @cards.each do |card| %>
         <% if card.cardtype == "Stakeholders" %>
           <%
-            cardclass = ""
-            case card.cardtype
-            when "Stakeholders"
-              cardclass = "stakeholders"
-            end
             carddata = card.stateid
           %>
-          <%= makecard(card, cardclass, carddata).html_safe %>
+          <%= makecard(card, carddata).html_safe %>
         <% end %>
       <% end %>
     </div>
@@ -181,14 +234,9 @@
       <% @cards.each do |card| %>
         <% if card.cardtype == "Opportunity" %>
           <%
-            cardclass = ""
-            case card.cardtype
-            when "Opportunity"
-              cardclass = "stakeholders"
-            end
             carddata = card.stateid
           %>
-          <%= makecard(card, cardclass, carddata).html_safe %>
+          <%= makecard(card, carddata).html_safe %>
         <% end %>
       <% end %>
     </div>
@@ -197,14 +245,9 @@
       <% @cards.each do |card| %>
         <% if card.cardtype == "Requirements" %>
           <%
-            cardclass = ""
-            case card.cardtype
-            when "Requirements"
-              cardclass = "softwaresystem"
-            end
             carddata = card.stateid
           %>
-          <%= makecard(card, cardclass, carddata).html_safe %>
+          <%= makecard(card, carddata).html_safe %>
         <% end %>
       <% end %>
     </div>
@@ -213,14 +256,9 @@
     <% @cards.each do |card| %>
       <% if card.cardtype == "Software System" %>
         <%
-          cardclass = ""
-          case card.cardtype
-          when "Software System"
-            cardclass = "softwaresystem"
-          end
           carddata = card.stateid
         %>
-        <%= makecard(card, cardclass, carddata).html_safe %>
+        <%= makecard(card, carddata).html_safe %>
       <% end %>
     <% end %>
   </div>
@@ -229,14 +267,9 @@
     <% @cards.each do |card| %>
       <% if card.cardtype == "Team" %>
         <%
-          cardclass = ""
-          case card.cardtype
-          when "Team"
-            cardclass = "wayofworking"
-          end
           carddata = card.stateid
         %>
-        <%= makecard(card, cardclass, carddata).html_safe %>
+        <%= makecard(card, carddata).html_safe %>
       <% end %>
     <% end %>
   </div>
@@ -245,14 +278,9 @@
     <% @cards.each do |card| %>
       <% if card.cardtype == "Way of Working" %>
         <%
-          cardclass = ""
-          case card.cardtype
-          when "Way of Working"
-            cardclass = "wayofworking"
-          end
           carddata = card.stateid
         %>
-        <%= makecard(card, cardclass, carddata).html_safe %>
+        <%= makecard(card, carddata).html_safe %>
       <% end %>
     <% end %>
   </div>
@@ -261,41 +289,20 @@
     <% @cards.each do |card| %>
       <% if card.cardtype == "Work" %>
         <%
-          cardclass = ""
-          case card.cardtype
-          when "Work"
-            cardclass = "wayofworking"
-          end
           carddata = card.stateid
         %>
-        <%= makecard(card, cardclass, carddata).html_safe %>
+        <%= makecard(card, carddata).html_safe %>
       <% end %>
     <% end %>
   </div>
 
-  <div style="display: flex; width: 100%">
-    <% @cards.each do |card| %>
-      <% if card.cardtype != "Work" && card.cardtype != "Way of Working" && card.cardtype != "Team" && card.cardtype != "Software System" && card.cardtype != "Requirements" && card.cardtype != "Opportunity" && card.cardtype != "Stakeholders"  %>
-        <%
-          cardclass = ""
-          carddata = card.stateid
-        %>
-        <%= makecard(card, cardclass, carddata).html_safe %>
+  <% @alphas.each do |alpha| %>
+    <div style="display: flex; width: 100%">
+      <% alpha.definition.state_definitions.each do |state| %>
+        <%= makecard_subalpha(alpha, state).html_safe %>
       <% end %>
-    <% end %>
-  </div>
-
-  <div style="display: flex; width: 100%">
-    <% @cards.each do |card| %>
-      <% if card.cardtype != "Work" && card.cardtype != "Way of Working" && card.cardtype != "Team" && card.cardtype != "Software System" && card.cardtype != "Requirements" && card.cardtype != "Opportunity" && card.cardtype != "Stakeholders"  %>
-        <%
-          cardclass = ""
-          carddata = card.stateid
-        %>
-        <%= makecard(card, cardclass, carddata).html_safe %>
-      <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
   <% @work_products.each do |wp| %>
     <div style="display: flex; width: 100%">

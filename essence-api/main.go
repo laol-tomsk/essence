@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/signal"
 	"sort"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -20,9 +21,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func fnd(m map[string]string, val string) string {
+	for k, v := range m {
+		if v == val {
+			return k
+		}
+	}
+	return ""
+}
+
 var (
 	port           = flag.Int("port", 50052, "The server port")
 	is_calculating = false
+
+	USE_OBJECTIVE_ONLY = true
 )
 
 type Response struct {
@@ -41,10 +53,11 @@ type data_dict_json struct {
 	Weight        map[string]int64
 	Costs         map[string]int
 	Method_id     int64
-	Iter          int64
+	Iter          int
 	Threshold     float64
 	IterLength    int
 	Algorithm     int
+	Iter_count    int
 }
 
 func track(msg string) (string, time.Time) {
@@ -62,13 +75,79 @@ func Calculate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "error parsing")
 		return
 	}
-	fmt.Println(st.Data_dict)
 	api_neo4j.Prepare(api_neo4j.GetSession(st.Method_id))
 	res, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, Response{
 		Res: res,
 	})
+}
+
+func CalcIncrease(st data_dict_json, iteration_plan []string) {
+	node_names := calculate.GetNodeNames(st.Method_id)
+	calculate.Default_values = nil
+	api_neo4j.Prepare(api_neo4j.GetSession(st.Method_id))
+	defValuesString, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
+	var defValues map[string]float64
+	json.Unmarshal([]byte(defValuesString), &defValues)
+
+	sum := 0.0
+	for i, v := range defValues {
+		if _, ok := st.Costs[node_names[i]]; ok {
+			sum += v * float64(st.Costs[node_names[i]])
+		}
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			sum += v * float64(st.Costs[strings.Split(i, "_")[0]])
+		}
+	}
+	fmt.Println(sum)
+
+	data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
+	data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
+	_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
+
+	data_dict_copy := make(map[string][]bool)
+	data_dict_copy_json, _ := json.Marshal(st.Data_dict)
+	_ = json.Unmarshal(data_dict_copy_json, &data_dict_copy)
+
+	for _, i := range iteration_plan {
+		for _, v0 := range data_add_dict_copy {
+			for i1 := range v0 {
+				for i2 := range v0[i1] {
+					if i2 == i {
+						if st.Iter-st.Iter_count+len(v0[i1][i2]) >= 0 {
+							v0[i1][i2][st.Iter-st.Iter_count+len(v0[i1][i2])][fmt.Sprint(st.Iter)] = true
+						}
+					}
+				}
+			}
+		}
+		for ix, vx := range data_dict_copy {
+			if ix == i {
+				vx[st.Iter] = true
+			}
+		}
+	}
+
+	calculate.Default_values = nil
+	api_neo4j.Prepare(api_neo4j.GetSession(st.Method_id))
+	newValuesString, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, data_dict_copy, data_add_dict_copy, st.Weight, st.Method_id)
+	var newValues map[string]float64
+	json.Unmarshal([]byte(newValuesString), &newValues)
+
+	newSum := 0.0
+	for i, v := range newValues {
+		if _, ok := st.Costs[node_names[i]]; ok {
+			newSum += v * float64(st.Costs[node_names[i]])
+		}
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			newSum += v * float64(st.Costs[strings.Split(i, "_")[0]])
+		}
+	}
+
+	fmt.Println(newSum)
+	fmt.Println(newSum - sum)
+	is_calculating = false
 }
 
 func SelectNext(c *gin.Context) {
@@ -79,12 +158,17 @@ func SelectNext(c *gin.Context) {
 		is_calculating = true
 	}
 
+	defer duration(track("SelectNext"))
+
 	var st data_dict_json
 	if err := c.ShouldBindJSON(&st); err != nil {
 		fmt.Println("error parsing json:" + err.Error())
 		c.JSON(http.StatusBadRequest, "error parsing")
 		return
 	}
+
+	fmt.Println("iter: ", st.Iter)
+	fmt.Println("iterCount: ", st.Iter_count)
 
 	res2 := SelectNextInternals(st, true)
 
@@ -103,13 +187,14 @@ func SelectNext(c *gin.Context) {
 }
 
 func PlanIteration(c *gin.Context) {
-	defer duration(track("PlanIteration"))
 	fmt.Println("PlanIteration got!")
 	if is_calculating {
 		return
 	} else {
 		is_calculating = true
 	}
+
+	defer duration(track("PlanIteration"))
 
 	var st data_dict_json
 	if err := c.ShouldBindJSON(&st); err != nil {
@@ -121,54 +206,60 @@ func PlanIteration(c *gin.Context) {
 	fmt.Println(st.Algorithm)
 	fmt.Println(st.IterLength)
 	fmt.Println(st.Iter)
+	fmt.Println(st.Iter_count)
 
 	api_neo4j.Prepare(api_neo4j.GetSession(st.Method_id))
 	var iteration_plan []string
 	if st.Algorithm == 0 {
-		iteration_plan, _ = PlanIterationInternalsGreedyV3(st, make([]string, 0))
+		iteration_plan, _ = PlanIterationInternalsGreedy(st, make([]string, 0))
 	}
 	if st.Algorithm == 1 {
-		iteration_plan, _ = PlanIterationInternalsTreeV3(st, make([]string, 0))
+		iteration_plan, _ = PlanIterationInternalsTree(st, make([]string, 0))
 	}
 	if st.Algorithm == 2 {
-		iteration_plan, _ = PlanIterationInternalsNaiveV3(st, make([]string, 0))
-	}
-
-	calculate.Default_values = nil
-	dataForOutput, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
-	var dataForOutputJson map[string]float64
-	json.Unmarshal([]byte(dataForOutput), &dataForOutputJson)
-	var res2 map[string]map[string]float64
-	res2 = make(map[string]map[string]float64)
-	node_names := calculate.GetNodeNames(st.Method_id)
-	for i, v := range dataForOutputJson {
-		item := make(map[string]float64)
-		item["sum"] = v
-		item["self"] = v
-		item["is_best"] = 0.0
-		for _, elem := range iteration_plan {
-			_, ok := node_names[elem]
-			if ok && node_names[elem] == i {
-				item["is_best"] = 1.0
-			}
-			if !ok && elem == i {
-				item["is_best"] = 1.0
-			}
-		}
-		res2[i] = item
+		iteration_plan, _ = PlanIterationInternalsNaive(st, make([]string, 0))
 	}
 
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	res2Json, _ := json.MarshalIndent(&res2, "", "   ")
+	res2Json, _ := json.MarshalIndent(&iteration_plan, "", "   ")
 
 	file, _ := os.Create("C:\\redmine-essence\\redmine\\plugins\\semat_essence\\results.json")
 	file.WriteString(string(res2Json))
 	file.Close()
 
+	CalcIncrease(st, iteration_plan)
+
+	/*files, _ := os.ReadDir("C:\\redmine-essence\\redmine\\plugins\\semat_essence")
+
+	for _, file := range files {
+		// Пропускаем директории, обрабатываем только файлы
+		if file.IsDir() || !strings.HasSuffix(file.Name(), ".json") || !strings.Contains(file.Name(), "ит"+strconv.Itoa(st.Iter)) {
+			continue
+		}
+
+		if strings.Contains(file.Name(), "адный") {
+			continue
+		}
+
+		fullPath := filepath.Join("C:\\redmine-essence\\redmine\\plugins\\semat_essence", file.Name())
+		fmt.Printf("Данные по файлу: %s\n", file.Name())
+
+		jsonData, err := os.ReadFile(fullPath)
+		if err != nil {
+			continue // Продолжаем с следующим файлом
+		}
+
+		var iteration_plan []string
+		json.Unmarshal(jsonData, &iteration_plan)
+
+		// Вызываем CalcIncrease с полученными данными
+		CalcIncrease(st, iteration_plan)
+	}*/
+
 	is_calculating = false
 
 	c.JSON(http.StatusOK, Response{
-		Res: string(res2Json),
+		//Res: string(res2Json),
 	})
 }
 
@@ -179,25 +270,28 @@ func PlanIterationInternalsGreedy(st data_dict_json, iteration_plan []string) ([
 	var defValues map[string]float64
 	json.Unmarshal([]byte(defValuesString), &defValues)
 	defSum := 0.0
-	currentCost := 0
-	for _, v := range defValues {
-		defSum += v
+	node_names := calculate.GetNodeNames(st.Method_id)
+	for i, v := range defValues {
+		if _, ok := st.Costs[node_names[i]]; ok {
+			defSum += v * float64(st.Costs[node_names[i]])
+		}
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			defSum += v * float64(st.Costs[strings.Split(i, "_")[0]])
+		}
 	}
 	var res_plan []string
 	res_plan = iteration_plan
 	res_value := defSum
 
 	//считаем текущую стоимость итерации
-	node_names := calculate.GetNodeNames(st.Method_id)
+	currentCost := 0
 	for _, i := range iteration_plan {
-		costI := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costI = v
+		if _, ok := st.Costs[node_names[i]]; ok {
+			currentCost += st.Costs[node_names[i]]
 		}
-		if v, ok := st.Costs[i]; ok {
-			costI = v
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			currentCost += st.Costs[strings.Split(i, "_")[0]]
 		}
-		currentCost += costI
 	}
 	fmt.Println("current cost is ", currentCost, ", value is ", defSum, ", num of tasks is ", len(iteration_plan))
 
@@ -206,28 +300,26 @@ func PlanIterationInternalsGreedy(st data_dict_json, iteration_plan []string) ([
 	select_next_keys := make([]string, 0, len(select_next_res))
 	for k := range select_next_res {
 		select_next_keys = append(select_next_keys, k)
-		fmt.Println(k, " = ", select_next_res[k]["sum"])
 	}
+	fmt.Println("num of elems available: ", len(select_next_keys))
 
 	//сортируем по эффективность / часы
 	sort.Slice(select_next_keys, func(i int, j int) bool {
-		costI := 1000
-		costJ := 1000
-		if v, ok := st.Costs[select_next_keys[i]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[node_names[select_next_keys[i]]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[select_next_keys[j]]; ok {
-			costJ = v
-		}
-		if v, ok := st.Costs[node_names[select_next_keys[j]]]; ok {
-			costJ = v
-		}
 		var valI, valJ float64
-		valI = (select_next_res[select_next_keys[i]]["sum"] - defSum) / float64(costI)
-		valJ = (select_next_res[select_next_keys[j]]["sum"] - defSum) / float64(costJ)
+		valI = select_next_res[select_next_keys[i]]["sum"] - defSum
+		valJ = select_next_res[select_next_keys[j]]["sum"] - defSum
+		if _, ok := st.Costs[node_names[select_next_keys[i]]]; ok {
+			valI /= float64(st.Costs[node_names[select_next_keys[i]]])
+		}
+		if _, ok := st.Costs[strings.Split(select_next_keys[i], "_")[0]]; ok {
+			valI /= float64(st.Costs[strings.Split(select_next_keys[i], "_")[0]])
+		}
+		if _, ok := st.Costs[node_names[select_next_keys[j]]]; ok {
+			valJ /= float64(st.Costs[node_names[select_next_keys[j]]])
+		}
+		if _, ok := st.Costs[strings.Split(select_next_keys[j], "_")[0]]; ok {
+			valJ /= float64(st.Costs[strings.Split(select_next_keys[j], "_")[0]])
+		}
 		return valI > valJ
 	})
 
@@ -241,58 +333,60 @@ func PlanIterationInternalsGreedy(st data_dict_json, iteration_plan []string) ([
 		st_copy.Iter = st.Iter
 		st_copy.Threshold = st.Threshold
 		st_copy.IterLength = st.IterLength
+		st_copy.Iter_count = st.Iter_count
 
 		//если очередная галочка не пробивает лимит стоимости, вызываем расчёт с добавлением неё
 		costK := 1000
-		if v, ok := st.Costs[node_names[select_next_keys[k]]]; ok {
-			costK = v
+		if _, ok := st.Costs[node_names[select_next_keys[k]]]; ok {
+			costK = st.Costs[node_names[select_next_keys[k]]]
 		}
-		if v, ok := st.Costs[select_next_keys[k]]; ok {
-			costK = v
+		if _, ok := st.Costs[strings.Split(select_next_keys[k], "_")[0]]; ok {
+			costK = st.Costs[strings.Split(select_next_keys[k], "_")[0]]
 		}
-		fmt.Println("getting ", select_next_keys[k], " costing ", costK, " and giving +", select_next_res[select_next_keys[k]]["sum"]-defSum)
-		if currentCost+costK < st.IterLength {
-			if _, ok := st.Data_dict[select_next_keys[k]]; ok {
-				//для обычных галочек это означает, что мы добавляем галочку в data_dict
-				data_dict_copy := make(map[string][]bool)
-				for i2, v2 := range st.Data_dict {
-					for _, v3 := range v2 {
-						data_dict_copy[i2] = append(data_dict_copy[i2], v3)
-					}
+
+		if currentCost+costK <= st.IterLength {
+			fmt.Println("getting ", select_next_keys[k], " costing ", costK, " and giving +", select_next_res[select_next_keys[k]]["sum"]-defSum)
+			data_dict_copy := make(map[string][]bool)
+			for i, v := range st.Data_dict {
+				for _, v2 := range v {
+					data_dict_copy[i] = append(data_dict_copy[i], v2)
 				}
-				data_dict_copy[select_next_keys[k]][int(st.Iter)] = true
-				st_copy.Data_dict = data_dict_copy
-				st_copy.Data_add_dict = st.Data_add_dict
-				iteration_plan = append(iteration_plan, select_next_keys[k])
-			} else {
-				//а для других - что в data_add_dict
-				data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
-				data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
-				_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
-				for i0 := range data_add_dict_copy[select_next_keys[k]] {
-					for _, v1 := range data_add_dict_copy[select_next_keys[k]][i0] {
-						v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
-					}
-				}
-				st_copy.Data_dict = st.Data_dict
-				st_copy.Data_add_dict = data_add_dict_copy
-				iteration_plan = append(iteration_plan, select_next_keys[k])
 			}
+			data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
+			data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
+			_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
+			if _, ok := data_dict_copy[select_next_keys[k]]; ok {
+				data_dict_copy[select_next_keys[k]][int(st.Iter)] = true
+			} else {
+				for _, v0 := range data_add_dict_copy {
+					for i1 := range v0 {
+						for i2 := range v0[i1] {
+							if i2 == select_next_keys[k] {
+								if st.Iter-st.Iter_count+len(v0[i1][i2]) >= 0 {
+									v0[i1][i2][st.Iter-st.Iter_count+len(v0[i1][i2])][fmt.Sprint(st.Iter)] = true
+								}
+							}
+						}
+					}
+				}
+			}
+			st_copy.Data_dict = data_dict_copy
+			st_copy.Data_add_dict = data_add_dict_copy
+			iteration_plan = append(iteration_plan, select_next_keys[k])
 
 			// делаем расчёт оптимального плана с проставленной галочкой
 			new_res_plan, new_res_value := PlanIterationInternalsGreedy(st_copy, iteration_plan)
 
 			// если новый план даёт больший результат, выбираем его
-			if new_res_value > res_value {
+			if new_res_value >= res_value {
 				res_plan = new_res_plan
 				res_value = new_res_value
 			}
 			recursionCalled = true
 		} else {
-			fmt.Println("skipping, since it's too long ", currentCost+costK, ">", st.IterLength)
+			fmt.Println("skipping ", select_next_keys[k], " because ", currentCost+costK, " > ", st.IterLength)
 		}
 
-		// просматриваем только лучший вариант (жадный алгоритм)
 		if recursionCalled {
 			break
 		}
@@ -307,14 +401,12 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 	node_names := calculate.GetNodeNames(st.Method_id)
 	currentCost := 0
 	for _, i := range iteration_plan {
-		costI := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costI = v
+		if _, ok := st.Costs[node_names[i]]; ok {
+			currentCost += st.Costs[node_names[i]]
 		}
-		if v, ok := st.Costs[i]; ok {
-			costI = v
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			currentCost += st.Costs[strings.Split(i, "_")[0]]
 		}
-		currentCost += costI
 	}
 
 	recursion_called := false
@@ -322,122 +414,124 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 	var best_plan []string
 	best_value := 0.0
 	//перебираем все галочки...
-	for i, v := range st.Data_dict {
-		//...кроме тех, которые уже перебрали на более высоких уровнях дерева...
-		if !met_last_one && i == iteration_plan[len(iteration_plan)-1] {
-			met_last_one = true
-		}
-		if !met_last_one {
-			continue
-		}
-		//...кроме отмеченных...
-		if v[int(st.Iter)] == true {
-			continue
-		}
-		//...кроме тех, которые не влазят в объём итерации...
-		costK := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costK = v
-		}
-		if v, ok := st.Costs[i]; ok {
-			costK = v
-		}
-		if currentCost+costK > st.IterLength {
-			continue
-		}
 
-		//копируем данные
-		var st_copy data_dict_json
-		st_copy.Weight = st.Weight
-		st_copy.Costs = st.Costs
-		st_copy.Method_id = st.Method_id
-		st_copy.Iter = st.Iter
-		st_copy.Threshold = st.Threshold
-		st_copy.IterLength = st.IterLength
-		data_dict_copy := make(map[string][]bool)
-		for i2, v2 := range st.Data_dict {
-			for _, v3 := range v2 {
-				data_dict_copy[i2] = append(data_dict_copy[i2], v3)
+	if !USE_OBJECTIVE_ONLY {
+		for i, v := range st.Data_dict {
+			//...кроме тех, которые уже перебрали на более высоких уровнях дерева...
+			if !met_last_one && i == iteration_plan[len(iteration_plan)-1] {
+				met_last_one = true
 			}
-		}
-		data_dict_copy[i][int(st.Iter)] = true
-		st_copy.Data_dict = data_dict_copy
-		st_copy.Data_add_dict = st.Data_add_dict
-		iteration_plan_copy := append(iteration_plan, i)
-		//вызываем расчёт для поддерева
-		fmt.Println("calling subtree for ", i)
-		new_res_plan, new_res_value := PlanIterationInternalsTree(st_copy, iteration_plan_copy)
+			if !met_last_one {
+				continue
+			}
+			//...кроме отмеченных...
+			if v[int(st.Iter)] == true {
+				continue
+			}
+			//...кроме тех, которые не влазят в объём итерации...
+			costK := 1000
+			if _, ok := st.Costs[node_names[i]]; ok {
+				costK = st.Costs[node_names[i]]
+			}
+			if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+				costK = st.Costs[strings.Split(i, "_")[0]]
+			}
+			if currentCost+costK > st.IterLength {
+				fmt.Println("Skipping "+node_names[i]+" because it's too long: ", costK)
+				continue
+			}
 
-		//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
-		if new_res_value > best_value {
-			fmt.Println(i, " becomes the best subtree!")
-			best_plan = new_res_plan
-			best_value = new_res_value
+			//копируем данные
+			var st_copy data_dict_json
+			st_copy.Weight = st.Weight
+			st_copy.Costs = st.Costs
+			st_copy.Method_id = st.Method_id
+			st_copy.Iter = st.Iter
+			st_copy.Threshold = st.Threshold
+			st_copy.IterLength = st.IterLength
+			st_copy.Iter_count = st.Iter_count
+			data_dict_copy := make(map[string][]bool)
+			for i2, v2 := range st.Data_dict {
+				for _, v3 := range v2 {
+					data_dict_copy[i2] = append(data_dict_copy[i2], v3)
+				}
+			}
+			data_dict_copy[i][int(st.Iter)] = true
+			st_copy.Data_dict = data_dict_copy
+			st_copy.Data_add_dict = st.Data_add_dict
+			iteration_plan_copy := append(iteration_plan, i)
+			//вызываем расчёт для поддерева
+			fmt.Println("calling subtree for ", i)
+			new_res_plan, new_res_value := PlanIterationInternalsTree(st_copy, iteration_plan_copy)
+
+			//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
+			if new_res_value > best_value {
+				fmt.Println(i, " becomes the best subtree!")
+				best_plan = new_res_plan
+				best_value = new_res_value
+			}
+			recursion_called = true
 		}
-		recursion_called = true
 	}
 
 	//дополнительные тоже
-	for i, v := range st.Data_add_dict {
-		//...кроме тех, которые уже перебрали на более высоких уровнях дерева...
-		if !met_last_one && i == iteration_plan[len(iteration_plan)-1] {
-			met_last_one = true
-		}
-		if !met_last_one {
-			continue
-		}
-		//...кроме отмеченных...
-		overall := false
-		for i0 := range v {
-			for _, v1 := range v[i0] {
-				overall = overall || v1[len(v1)-1][fmt.Sprint(st.Iter)]
+	for i0, v0 := range st.Data_add_dict {
+		for i1 := range v0 {
+			for i2 := range v0[i1] {
+				//...кроме тех, которые уже перебрали на более высоких уровнях дерева...
+				if !met_last_one && i2 == iteration_plan[len(iteration_plan)-1] {
+					met_last_one = true
+				}
+				if !met_last_one {
+					continue
+				}
+				//...кроме отмеченных...
+				if st.Iter-st.Iter_count+len(v0[i1][i2]) < 0 {
+					continue
+				}
+				if v0[i1][i2][st.Iter-st.Iter_count+len(v0[i1][i2])][fmt.Sprint(st.Iter)] {
+					continue
+				}
+				//...кроме тех, которые не влазят в объём итерации...
+				costI2 := 1000
+				if _, ok := st.Costs[node_names[i2]]; ok {
+					costI2 = st.Costs[node_names[i2]]
+				}
+				if _, ok := st.Costs[strings.Split(i2, "_")[0]]; ok {
+					costI2 = st.Costs[strings.Split(i2, "_")[0]]
+				}
+				if currentCost+costI2 > st.IterLength {
+					continue
+				}
+				//копируем данные
+				var st_copy data_dict_json
+				st_copy.Weight = st.Weight
+				st_copy.Costs = st.Costs
+				st_copy.Method_id = st.Method_id
+				st_copy.Iter = st.Iter
+				st_copy.Threshold = st.Threshold
+				st_copy.IterLength = st.IterLength
+				st_copy.Data_dict = st.Data_dict
+				st_copy.Iter_count = st.Iter_count
+				data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
+				data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
+				_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
+				data_add_dict_copy[i0][i1][i2][st.Iter-st.Iter_count+len(data_add_dict_copy[i0][i1][i2])][fmt.Sprint(st.Iter)] = true
+				st_copy.Data_add_dict = data_add_dict_copy
+				iteration_plan_copy := append(iteration_plan, i2)
+				//вызываем расчёт для поддерева
+				fmt.Println("calling subtree for ", i2)
+				new_res_plan, new_res_value := PlanIterationInternalsTree(st_copy, iteration_plan_copy)
+
+				//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
+				if new_res_value > best_value {
+					fmt.Println(i2, " becomes the best subtree!")
+					best_plan = new_res_plan
+					best_value = new_res_value
+				}
+				recursion_called = true
 			}
 		}
-		if overall == true {
-			continue
-		}
-		//...кроме тех, которые не влазят в объём итерации...
-		costK := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costK = v
-		}
-		if v, ok := st.Costs[i]; ok {
-			costK = v
-		}
-		if currentCost+costK > st.IterLength {
-			continue
-		}
-
-		//копируем данные
-		var st_copy data_dict_json
-		st_copy.Weight = st.Weight
-		st_copy.Costs = st.Costs
-		st_copy.Method_id = st.Method_id
-		st_copy.Iter = st.Iter
-		st_copy.Threshold = st.Threshold
-		st_copy.IterLength = st.IterLength
-		st_copy.Data_dict = st.Data_dict
-		data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
-		data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
-		_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
-		for i0 := range data_add_dict_copy[i] {
-			for _, v1 := range data_add_dict_copy[i][i0] {
-				v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
-			}
-		}
-		st_copy.Data_add_dict = data_add_dict_copy
-		iteration_plan_copy := append(iteration_plan, i)
-		//вызываем расчёт для поддерева
-		fmt.Println("calling subtree for ", i)
-		new_res_plan, new_res_value := PlanIterationInternalsTree(st_copy, iteration_plan_copy)
-
-		//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
-		if new_res_value > best_value {
-			fmt.Println(i, " becomes the best subtree!")
-			best_plan = new_res_plan
-			best_value = new_res_value
-		}
-		recursion_called = true
 	}
 
 	//если ни одно поддерево не было использовано
@@ -449,18 +543,18 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 		json.Unmarshal([]byte(defValuesString), &defValues)
 		defSum := 0.0
 		for i, v := range defValues {
-			costI := 1000
-			if v2, ok := st.Costs[node_names[i]]; ok {
-				costI = v2
+			if _, ok := st.Costs[node_names[i]]; ok {
+				defSum += v * float64(st.Costs[node_names[i]])
 			}
-			if v2, ok := st.Costs[i]; ok {
-				costI = v2
+			if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+				defSum += v * float64(st.Costs[strings.Split(i, "_")[0]])
 			}
-			defSum += v * float64(costI)
 		}
 		best_plan = iteration_plan
 		best_value = defSum
 	}
+
+	fmt.Println(best_plan)
 
 	// возвращаем результат: либо лучшую из веток рекурсии, либо текущую итерацию, если веток рекурсии не нашлось
 	return best_plan, best_value
@@ -473,10 +567,16 @@ func PlanIterationInternalsNaive(st data_dict_json, iteration_plan []string) ([]
 	var defValues map[string]float64
 	json.Unmarshal([]byte(defValuesString), &defValues)
 	defSum := 0.0
-	for _, v := range defValues {
-		defSum += v
-	}
 	node_names := calculate.GetNodeNames(st.Method_id)
+
+	for i, v := range defValues {
+		if _, ok := st.Costs[node_names[i]]; ok {
+			defSum += v * float64(st.Costs[node_names[i]])
+		}
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			defSum += v * float64(st.Costs[strings.Split(i, "_")[0]])
+		}
+	}
 
 	//вычисляем результат применения каждой возможной галочки
 	select_next_res := SelectNextInternals(st, false)
@@ -501,11 +601,11 @@ func PlanIterationInternalsNaive(st data_dict_json, iteration_plan []string) ([]
 
 	for i := 1; i <= len(select_next_keys); i++ {
 		costI := 1000
-		if v, ok := st.Costs[node_names[select_next_keys[i-1]]]; ok {
-			costI = v
+		if _, ok := st.Costs[node_names[select_next_keys[i-1]]]; ok {
+			costI = st.Costs[node_names[select_next_keys[i-1]]]
 		}
-		if v, ok := st.Costs[select_next_keys[i-1]]; ok {
-			costI = v
+		if _, ok := st.Costs[strings.Split(select_next_keys[i-1], "_")[0]]; ok {
+			costI = st.Costs[strings.Split(select_next_keys[i-1], "_")[0]]
 		}
 		for j := 0; j <= st.IterLength; j++ {
 			if costI > j {
@@ -540,340 +640,15 @@ func PlanIterationInternalsNaive(st data_dict_json, iteration_plan []string) ([]
 		if _, ok := data_dict_copy[i]; ok {
 			data_dict_copy[i][int(st.Iter)] = true
 		} else {
-			for i0 := range data_add_dict_copy[i] {
-				for _, v1 := range data_add_dict_copy[i][i0] {
-					v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
-				}
-			}
-		}
-	}
-	calculate.Default_values = nil
-	final_res_string, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, data_dict_copy, data_add_dict_copy, st.Weight, st.Method_id)
-	var final_res map[string]float64
-	json.Unmarshal([]byte(final_res_string), &final_res)
-	res_value := 0.0
-	for _, v := range final_res {
-		res_value += v
-	}
-
-	return plans[len(select_next_keys)][st.IterLength], res_value
-}
-
-func PlanIterationInternalsGreedyV3(st data_dict_json, iteration_plan []string) ([]string, float64) {
-	// считаем, какая будет сумма, если вообще ничего не добавлять
-	calculate.Default_values = nil
-	defValuesString, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
-	var defValues map[string]float64
-	json.Unmarshal([]byte(defValuesString), &defValues)
-	defSum := 0.0
-	currentCost := 0
-	for _, v := range defValues {
-		defSum += v
-	}
-	var res_plan []string
-	res_plan = iteration_plan
-	res_value := defSum
-
-	//считаем текущую стоимость итерации
-	node_names := calculate.GetNodeNames(st.Method_id)
-	for _, i := range iteration_plan {
-		costI := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[i]; ok {
-			costI = v
-		}
-		currentCost += costI
-	}
-	fmt.Println("current cost is ", currentCost, ", value is ", defSum, ", num of tasks is ", len(iteration_plan))
-
-	//вычисляем результат применения каждой возможной галочки
-	select_next_res := SelectNextInternals(st, false)
-	select_next_keys := make([]string, 0, len(select_next_res))
-	for k := range select_next_res {
-		select_next_keys = append(select_next_keys, k)
-		fmt.Println(k, " = ", select_next_res[k]["sum"])
-	}
-
-	//сортируем по эффективность / часы
-	sort.Slice(select_next_keys, func(i int, j int) bool {
-		costI := 1000
-		costJ := 1000
-		if v, ok := st.Costs[select_next_keys[i]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[node_names[select_next_keys[i]]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[select_next_keys[j]]; ok {
-			costJ = v
-		}
-		if v, ok := st.Costs[node_names[select_next_keys[j]]]; ok {
-			costJ = v
-		}
-		var valI, valJ float64
-		valI = (select_next_res[select_next_keys[i]]["sum"] - defSum) / float64(costI)
-		valJ = (select_next_res[select_next_keys[j]]["sum"] - defSum) / float64(costJ)
-		return valI > valJ
-	})
-
-	//перебираем все непоставленные галочки от лучшей к худшей
-	recursionCalled := false
-	for k := range select_next_keys {
-		var st_copy data_dict_json
-		st_copy.Weight = st.Weight
-		st_copy.Costs = st.Costs
-		st_copy.Method_id = st.Method_id
-		st_copy.Iter = st.Iter
-		st_copy.Threshold = st.Threshold
-		st_copy.IterLength = st.IterLength
-
-		//если очередная галочка не пробивает лимит стоимости, вызываем расчёт с добавлением неё
-		costK := 1000
-		if v, ok := st.Costs[node_names[select_next_keys[k]]]; ok {
-			costK = v
-		}
-		if v, ok := st.Costs[select_next_keys[k]]; ok {
-			costK = v
-		}
-		fmt.Println("getting ", select_next_keys[k], " costing ", costK, " and giving +", select_next_res[select_next_keys[k]]["sum"]-defSum)
-		_, ok := st.Data_dict[select_next_keys[k]]
-		if currentCost+costK < st.IterLength && !ok {
-			//а для других - что в data_add_dict
-			data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
-			data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
-			_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
-			for i0 := range data_add_dict_copy[select_next_keys[k]] {
-				for _, v1 := range data_add_dict_copy[select_next_keys[k]][i0] {
-					v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
-				}
-			}
-			st_copy.Data_dict = st.Data_dict
-			st_copy.Data_add_dict = data_add_dict_copy
-			iteration_plan = append(iteration_plan, select_next_keys[k])
-
-			// делаем расчёт оптимального плана с проставленной галочкой
-			new_res_plan, new_res_value := PlanIterationInternalsGreedyV3(st_copy, iteration_plan)
-
-			// если новый план даёт больший результат, выбираем его
-			if new_res_value > res_value {
-				res_plan = new_res_plan
-				res_value = new_res_value
-			}
-			recursionCalled = true
-		} else {
-			fmt.Println("skipping, since it's too long ", currentCost+costK, ">", st.IterLength)
-		}
-
-		// просматриваем только лучший вариант (жадный алгоритм)
-		if recursionCalled {
-			break
-		}
-	}
-
-	fmt.Println(res_plan)
-
-	// возвращаем результат: либо лучшую из веток рекурсии, либо текущую итерацию, если веток рекурсии не нашлось
-	return res_plan, res_value
-}
-
-func PlanIterationInternalsTreeV3(st data_dict_json, iteration_plan []string) ([]string, float64) {
-	//считаем текущую стоимость итерации
-	node_names := calculate.GetNodeNames(st.Method_id)
-	currentCost := 0
-	for _, i := range iteration_plan {
-		costI := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[i]; ok {
-			costI = v
-		}
-		currentCost += costI
-	}
-
-	recursion_called := false
-	met_last_one := len(iteration_plan) == 0
-	var best_plan []string
-	best_value := 0.0
-	//перебираем все галочки...
-	//кроме обычных, потому что это V3
-
-	//дополнительные тоже
-	for i, v := range st.Data_add_dict {
-		//...кроме тех, которые уже перебрали на более высоких уровнях дерева...
-		if !met_last_one && i == iteration_plan[len(iteration_plan)-1] {
-			met_last_one = true
-		}
-		if !met_last_one {
-			continue
-		}
-		//...кроме отмеченных...
-		overall := false
-		for i0 := range v {
-			for _, v1 := range v[i0] {
-				overall = overall || v1[len(v1)-1][fmt.Sprint(st.Iter)]
-			}
-		}
-		if overall == true {
-			continue
-		}
-		//...кроме тех, которые не влазят в объём итерации...
-		costK := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costK = v
-		}
-		if v, ok := st.Costs[i]; ok {
-			costK = v
-		}
-		if currentCost+costK > st.IterLength {
-			continue
-		}
-
-		//копируем данные
-		var st_copy data_dict_json
-		st_copy.Weight = st.Weight
-		st_copy.Costs = st.Costs
-		st_copy.Method_id = st.Method_id
-		st_copy.Iter = st.Iter
-		st_copy.Threshold = st.Threshold
-		st_copy.IterLength = st.IterLength
-		st_copy.Data_dict = st.Data_dict
-		data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
-		data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
-		_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
-		for i0 := range data_add_dict_copy[i] {
-			for _, v1 := range data_add_dict_copy[i][i0] {
-				v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
-			}
-		}
-		st_copy.Data_add_dict = data_add_dict_copy
-		iteration_plan_copy := append(iteration_plan, i)
-		//вызываем расчёт для поддерева
-		fmt.Println("calling subtree for ", i)
-		new_res_plan, new_res_value := PlanIterationInternalsTreeV3(st_copy, iteration_plan_copy)
-
-		//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
-		if new_res_value > best_value {
-			fmt.Println(i, " becomes the best subtree!")
-			best_plan = new_res_plan
-			best_value = new_res_value
-		}
-		recursion_called = true
-	}
-
-	//если ни одно поддерево не было использовано
-	if !recursion_called {
-		fmt.Println("no subtree found, getting result from here")
-		calculate.Default_values = nil
-		defValuesString, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
-		var defValues map[string]float64
-		json.Unmarshal([]byte(defValuesString), &defValues)
-		defSum := 0.0
-		for i, v := range defValues {
-			costI := 1000
-			if v2, ok := st.Costs[node_names[i]]; ok {
-				costI = v2
-			}
-			if v2, ok := st.Costs[i]; ok {
-				costI = v2
-			}
-			defSum += v * float64(costI)
-		}
-		best_plan = iteration_plan
-		best_value = defSum
-	}
-
-	fmt.Println(best_plan)
-
-	// возвращаем результат: либо лучшую из веток рекурсии, либо текущую итерацию, если веток рекурсии не нашлось
-	return best_plan, best_value
-}
-
-func PlanIterationInternalsNaiveV3(st data_dict_json, iteration_plan []string) ([]string, float64) {
-	// считаем, какая будет сумма, если вообще ничего не добавлять
-	calculate.Default_values = nil
-	defValuesString, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
-	var defValues map[string]float64
-	json.Unmarshal([]byte(defValuesString), &defValues)
-	defSum := 0.0
-	for _, v := range defValues {
-		defSum += v
-	}
-	node_names := calculate.GetNodeNames(st.Method_id)
-
-	//вычисляем результат применения каждой возможной галочки
-	select_next_res := SelectNextInternals(st, false)
-	select_next_keys := make([]string, 0, len(select_next_res))
-	for k := range select_next_res {
-		select_next_keys = append(select_next_keys, k)
-	}
-
-	//создаём хранилища данных
-	data := make([][]float64, len(select_next_keys)+1)
-	plans := make([][][]string, len(select_next_keys)+1)
-	for i := 0; i <= len(select_next_keys); i++ {
-		data[i] = make([]float64, st.IterLength+1)
-		plans[i] = make([][]string, st.IterLength+1)
-	}
-
-	//динамическое программирование
-	for j := 0; j <= st.IterLength; j++ {
-		data[0][j] = 0
-		plans[0][j] = make([]string, 0)
-	}
-
-	for i := 1; i <= len(select_next_keys); i++ {
-		costI := 1000
-		if _, ok := st.Data_dict[select_next_keys[i-1]]; ok {
-			costI = 1000
-		} else {
-			if v, ok := st.Costs[node_names[select_next_keys[i-1]]]; ok {
-				costI = v
-			}
-			if v, ok := st.Costs[select_next_keys[i-1]]; ok {
-				costI = v
-			}
-		}
-		for j := 0; j <= st.IterLength; j++ {
-			if costI > j {
-				data[i][j] = data[i-1][j]
-				plans[i][j] = make([]string, len(plans[i-1][j]))
-				copy(plans[i][j], plans[i-1][j])
-			} else {
-				if data[i-1][j] > data[i-1][j-costI]+select_next_res[select_next_keys[i-1]]["sum"]-defSum {
-					data[i][j] = data[i-1][j]
-					plans[i][j] = make([]string, len(plans[i-1][j]))
-					copy(plans[i][j], plans[i-1][j])
-				} else {
-					data[i][j] = data[i-1][j-costI] + select_next_res[select_next_keys[i-1]]["sum"] - defSum
-					plans[i][j] = make([]string, len(plans[i-1][j-costI])+1)
-					plans[i][j] = append(plans[i-1][j-costI], select_next_keys[i-1])
-				}
-			}
-		}
-	}
-
-	fmt.Println(plans[len(select_next_keys)][st.IterLength])
-
-	//считаем результат со всеми предложенными галочками
-	data_dict_copy := make(map[string][]bool)
-	for i, v := range st.Data_dict {
-		for _, v2 := range v {
-			data_dict_copy[i] = append(data_dict_copy[i], v2)
-		}
-	}
-	data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
-	data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
-	_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
-	for _, i := range plans[len(select_next_keys)][st.IterLength] {
-		if _, ok := data_dict_copy[i]; ok {
-			data_dict_copy[i][int(st.Iter)] = true
-		} else {
-			for i0 := range data_add_dict_copy[i] {
-				for _, v1 := range data_add_dict_copy[i][i0] {
-					v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
+			for _, v0 := range data_add_dict_copy {
+				for i1 := range v0 {
+					for i2 := range v0[i1] {
+						if i2 == i {
+							if st.Iter-st.Iter_count+len(v0[i1][i2]) >= 0 {
+								v0[i1][i2][st.Iter-st.Iter_count+len(v0[i1][i2])][fmt.Sprint(st.Iter)] = true
+							}
+						}
+					}
 				}
 			}
 		}
@@ -883,8 +658,13 @@ func PlanIterationInternalsNaiveV3(st data_dict_json, iteration_plan []string) (
 	var final_res map[string]float64
 	json.Unmarshal([]byte(final_res_string), &final_res)
 	res_value := 0.0
-	for _, v := range final_res {
-		res_value += v
+	for i, v := range final_res {
+		if _, ok := st.Costs[node_names[i]]; ok {
+			res_value += v * float64(st.Costs[node_names[i]])
+		}
+		if _, ok := st.Costs[strings.Split(i, "_")[0]]; ok {
+			res_value += v * float64(st.Costs[strings.Split(i, "_")[0]])
+		}
 	}
 
 	return plans[len(select_next_keys)][st.IterLength], res_value
@@ -903,6 +683,9 @@ func SelectNextInternals(st data_dict_json, convert_to_node_names bool) map[stri
 	json.Unmarshal([]byte(defValuesString), &defValues)
 
 	for i, v := range st.Data_dict {
+		if USE_OBJECTIVE_ONLY {
+			continue
+		}
 		if v[int(st.Iter)] == true {
 			continue
 		}
@@ -913,33 +696,31 @@ func SelectNextInternals(st data_dict_json, convert_to_node_names bool) map[stri
 				data_dict_copy[i2] = append(data_dict_copy[i2], v3)
 			}
 		}
-		data_dict_copy[i][int(st.Iter)] = true
-		wg.Add(1)
-		go calculate.StartCalculateWrapper(int(st.Iter), 1, st.Threshold, data_dict_copy, st.Data_add_dict, st.Weight, st.Method_id, &wg, &res, i, defValues, false)
-	}
-
-	for i, v := range st.Data_add_dict {
-		overall := false
-		for i0 := range v {
-			for _, v1 := range v[i0] {
-				overall = overall || v1[len(v1)-1][fmt.Sprint(st.Iter)]
-			}
-		}
-		if overall == true {
-			continue
-		}
-
 		data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
 		data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
 		_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
-		for i0 := range data_add_dict_copy[i] {
-			for _, v1 := range data_add_dict_copy[i][i0] {
-				v1[len(v1)-1][fmt.Sprint(st.Iter)] = true
+		data_dict_copy[i][int(st.Iter)] = true
+		wg.Add(1)
+		go calculate.StartCalculateWrapper(int(st.Iter), 1, st.Threshold, data_dict_copy, data_add_dict_copy, st.Weight, st.Method_id, &wg, &res, i, defValues, false)
+	}
+
+	for i0, v0 := range st.Data_add_dict {
+		for i1 := range v0 {
+			for i2 := range v0[i1] {
+				if st.Iter-st.Iter_count+len(v0[i1][i2]) < 0 {
+					continue
+				}
+				if v0[i1][i2][st.Iter-st.Iter_count+len(v0[i1][i2])][fmt.Sprint(st.Iter)] {
+					continue
+				}
+				data_add_dict_copy := make(map[string][]map[string][]map[string]bool)
+				data_add_dict_copy_json, _ := json.Marshal(st.Data_add_dict)
+				_ = json.Unmarshal(data_add_dict_copy_json, &data_add_dict_copy)
+				data_add_dict_copy[i0][i1][i2][st.Iter-st.Iter_count+len(data_add_dict_copy[i0][i1][i2])][fmt.Sprint(st.Iter)] = true
+				wg.Add(1)
+				go calculate.StartCalculateWrapper(int(st.Iter), 1, st.Threshold, st.Data_dict, data_add_dict_copy, st.Weight, st.Method_id, &wg, &res, i2, defValues, true)
 			}
 		}
-
-		wg.Add(1)
-		go calculate.StartCalculateWrapper(int(st.Iter), 1, st.Threshold, st.Data_dict, data_add_dict_copy, st.Weight, st.Method_id, &wg, &res, i, defValues, true)
 	}
 
 	wg.Wait()
@@ -952,15 +733,13 @@ func SelectNextInternals(st data_dict_json, convert_to_node_names bool) map[stri
 	for i, v := range res {
 		sum := 0.0
 		self := 0.0
-		costI := 1000
-		if v, ok := st.Costs[node_names[i]]; ok {
-			costI = v
-		}
-		if v, ok := st.Costs[i]; ok {
-			costI = v
-		}
 		for i2, v2 := range v {
-			sum += v2 * float64(costI)
+			if _, ok := st.Costs[node_names[i2]]; ok {
+				sum += v2 * float64(st.Costs[node_names[i2]])
+			}
+			if _, ok := st.Costs[strings.Split(i2, "_")[0]]; ok {
+				sum += v2 * float64(st.Costs[strings.Split(i2, "_")[0]])
+			}
 			if node_names[i] == i2 {
 				self = v2
 			}
@@ -1057,6 +836,7 @@ func main() {
 	}))
 
 	router.POST("/calculate", Calculate)
+	//router.POST("/calculate", CalcIncrease)
 	router.GET("/list_checkpoints", GetAllNode)
 	router.GET("/select_next", SelectNext)
 	router.GET("/plan_iteration", PlanIteration)
