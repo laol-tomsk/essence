@@ -1,0 +1,60 @@
+<h2>Proposed Tasks</h2>
+
+<div class="probabilities-form">
+  <%= form_tag(make_tasks_from_form_path(:project_id => @project.id), method: :post, id: "task-list-form") do %>
+    <div id="task-list">
+      <% @proposed_tasks.each_with_index do |task, index| %>
+        <div class="form-item task-list-item" style="display: inline-flex; margin: 10px">
+          <span class="label task-number">Task <%= index + 1 %></span>
+          <span>
+          <input type="text" name="tasks[]" value="<%= task %>" style="width: 340px" />
+          <button type="button" class="semat_button remove-task-button" style="margin-left: 8px">Dlt</button>
+          </span>
+        </div>
+      <% end %>
+    </div>
+    <br>
+    <button type="button" class="semat_button" id="add-task-button">+</button>
+    <button type="submit" class="semat_button" style="color:white; background: blue">Create Tasks</button>
+  <% end %>
+</div>
+
+<template id="task-list-item-template">
+  <div class="form-item task-list-item" style="display: inline-flex; margin: 10px">
+    <span class="label task-number"></span>
+    <span>
+    <input type="text" name="tasks[]" value="" style="width: 340px" />
+    <button type="button" class="semat_button remove-task-button" style="margin-left: 8px">Dlt</button>
+    </span>
+  </div>
+</template>
+
+<script type="text/javascript">
+  function updateTaskNumbers() {
+    document.querySelectorAll(".task-list-item").forEach(function(item, index) {
+      item.querySelector(".task-number").textContent = "Task " + (index + 1);
+    });
+  }
+
+  function bindRemoveTaskButton(button) {
+    button.addEventListener("click", function() {
+      button.closest(".task-list-item").remove();
+      updateTaskNumbers();
+    });
+  }
+
+  document.querySelectorAll(".remove-task-button").forEach(bindRemoveTaskButton);
+
+  document.getElementById("add-task-button").addEventListener("click", function() {
+    var template = document.getElementById("task-list-item-template");
+    var taskList = document.getElementById("task-list");
+    var item = template.content.firstElementChild.cloneNode(true);
+    bindRemoveTaskButton(item.querySelector(".remove-task-button"));
+    taskList.appendChild(item);
+    updateTaskNumbers();
+  });
+</script>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'semat-essence-plugin', :plugin => 'semat_essence' %>
+<% end %>

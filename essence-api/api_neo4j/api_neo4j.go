@@ -23,7 +23,7 @@ var (
 	Prepared           = false
 
 	USE_CACHING    = true
-	USE_KEY_ALPHAS = true
+	USE_KEY_ALPHAS = false
 )
 
 func getNormalValueWithKeyAlphas(guid string, iter int) int {
@@ -105,8 +105,6 @@ func Prepare(session neo4j.Session) error {
 	if Prepared {
 		return nil
 	}
-
-	fmt.Println("PREPARE CALLED")
 
 	_, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		result, err := tx.Run("MATCH (n:state) RETURN n.guid", nil)
@@ -347,31 +345,6 @@ func Get_node_manager_opinion(session neo4j.Session, guid string) (string, error
 	return node.(string), nil
 }
 
-func Get_node_children(session neo4j.Session, guid string) ([]string, error) {
-	parents, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		var list []string
-		result, err := tx.Run("MATCH (n)-[]->(p) WHERE n.guid = $guid RETURN p.guid", map[string]interface{}{
-			"guid": guid,
-		})
-		if err != nil {
-			return nil, err
-		}
-		for result.Next() {
-			list = append(list, result.Record().Values[0].(string))
-		}
-		if err = result.Err(); err != nil {
-			return nil, err
-		}
-		//list[0], list[1] = list[1], list[0]
-		return list, nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	//time.Sleep(time.Microsecond)
-	return parents.([]string), nil
-}
-
 func Get_node_parents(session neo4j.Session, guid string) ([]string, error) {
 	if _, ok := nodeParents[guid]; ok {
 		return nodeParents[guid], nil
@@ -401,49 +374,6 @@ func Get_node_parents(session neo4j.Session, guid string) ([]string, error) {
 	return parents.([]string), nil
 }
 
-func Get_count_normal(session neo4j.Session) int64 {
-	counter := 0
-	session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		result, _ := tx.Run("MATCH (p:normalVState)-[]->(:checkpoint) RETURN DISTINCT n.guid", map[string]interface{}{})
-		for result.Next() {
-			counter++
-		}
-		result, _ = tx.Run("MATCH (p:normalVDetail)-[]->(:checkpoint) RETURN DISTINCT n.guid", map[string]interface{}{})
-		for result.Next() {
-			counter++
-		}
-
-		return counter, nil
-	})
-
-	return 0
-}
-
-func Get_node_parents_labels(session neo4j.Session, guid string, label string) ([]string, error) {
-	mas_parents, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		var list []string
-		request := "MATCH (p:" + label + ")-[]->(n) WHERE n.guid = $guid RETURN p.guid"
-		result, err := tx.Run(request, map[string]interface{}{
-			"guid": guid,
-		})
-		if err != nil {
-			return nil, err
-		}
-		for result.Next() {
-			list = append(list, result.Record().Values[0].(string))
-		}
-		if err = result.Err(); err != nil {
-			return nil, err
-		}
-		return list, nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	//time.Sleep(time.Microsecond)
-	return mas_parents.([]string), nil
-}
-
 func Get_mas_normal_parents(session neo4j.Session, guid string) ([]string, error) {
 	if _, ok := nodeNormalParents[guid]; ok {
 		return nodeNormalParents[guid], nil
@@ -465,34 +395,6 @@ func Get_mas_normal_parents(session neo4j.Session, guid string) ([]string, error
 		result, err = tx.Run(request, map[string]interface{}{
 			"guid": guid,
 		})
-		for result.Next() {
-			list = append(list, result.Record().Values[0].(string))
-		}
-		if err = result.Err(); err != nil {
-			return nil, err
-		}
-		return list, nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	//time.Sleep(time.Microsecond)
-	return mas_parents.([]string), nil
-}
-
-func Get_mas_normal_parents_concrect_projectr(session neo4j.Session) ([]string, error) {
-	mas_parents, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		var list []string
-		request := "MATCH (p:normalVDetail)-[]->(:checkpoint) RETURN DISTINCT p.guid"
-		result, err := tx.Run(request, map[string]interface{}{})
-		if err != nil {
-			return nil, err
-		}
-		for result.Next() {
-			list = append(list, result.Record().Values[0].(string))
-		}
-		request = "MATCH (p:normalVState)-[]->(:checkpoint) RETURN DISTINCT p.guid"
-		result, err = tx.Run(request, map[string]interface{}{})
 		for result.Next() {
 			list = append(list, result.Record().Values[0].(string))
 		}

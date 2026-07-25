@@ -6,7 +6,6 @@ import (
 	"calculator/server"
 	"context"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -21,30 +20,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func fnd(m map[string]string, val string) string {
-	for k, v := range m {
-		if v == val {
-			return k
-		}
-	}
-	return ""
-}
-
 var (
-	port           = flag.Int("port", 50052, "The server port")
 	is_calculating = false
 
 	USE_OBJECTIVE_ONLY = true
 )
 
 type Response struct {
-	Res  string `json:"res"`
-	plh  string
-	plhp string
-}
-
-type Response2 struct {
-	mas_id []string `json:"mas_Id"`
+	Res string `json:"res"`
 }
 
 type data_dict_json struct {
@@ -229,37 +212,10 @@ func PlanIteration(c *gin.Context) {
 
 	CalcIncrease(st, iteration_plan)
 
-	/*files, _ := os.ReadDir("C:\\redmine-essence\\redmine\\plugins\\semat_essence")
-
-	for _, file := range files {
-		// Пропускаем директории, обрабатываем только файлы
-		if file.IsDir() || !strings.HasSuffix(file.Name(), ".json") || !strings.Contains(file.Name(), "ит"+strconv.Itoa(st.Iter)) {
-			continue
-		}
-
-		if strings.Contains(file.Name(), "адный") {
-			continue
-		}
-
-		fullPath := filepath.Join("C:\\redmine-essence\\redmine\\plugins\\semat_essence", file.Name())
-		fmt.Printf("Данные по файлу: %s\n", file.Name())
-
-		jsonData, err := os.ReadFile(fullPath)
-		if err != nil {
-			continue // Продолжаем с следующим файлом
-		}
-
-		var iteration_plan []string
-		json.Unmarshal(jsonData, &iteration_plan)
-
-		// Вызываем CalcIncrease с полученными данными
-		CalcIncrease(st, iteration_plan)
-	}*/
-
 	is_calculating = false
 
 	c.JSON(http.StatusOK, Response{
-		//Res: string(res2Json),
+		Res: string(res2Json),
 	})
 }
 
@@ -301,7 +257,6 @@ func PlanIterationInternalsGreedy(st data_dict_json, iteration_plan []string) ([
 	for k := range select_next_res {
 		select_next_keys = append(select_next_keys, k)
 	}
-	fmt.Println("num of elems available: ", len(select_next_keys))
 
 	//сортируем по эффективность / часы
 	sort.Slice(select_next_keys, func(i int, j int) bool {
@@ -345,7 +300,6 @@ func PlanIterationInternalsGreedy(st data_dict_json, iteration_plan []string) ([
 		}
 
 		if currentCost+costK <= st.IterLength {
-			fmt.Println("getting ", select_next_keys[k], " costing ", costK, " and giving +", select_next_res[select_next_keys[k]]["sum"]-defSum)
 			data_dict_copy := make(map[string][]bool)
 			for i, v := range st.Data_dict {
 				for _, v2 := range v {
@@ -383,8 +337,6 @@ func PlanIterationInternalsGreedy(st data_dict_json, iteration_plan []string) ([
 				res_value = new_res_value
 			}
 			recursionCalled = true
-		} else {
-			fmt.Println("skipping ", select_next_keys[k], " because ", currentCost+costK, " > ", st.IterLength)
 		}
 
 		if recursionCalled {
@@ -437,7 +389,6 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 				costK = st.Costs[strings.Split(i, "_")[0]]
 			}
 			if currentCost+costK > st.IterLength {
-				fmt.Println("Skipping "+node_names[i]+" because it's too long: ", costK)
 				continue
 			}
 
@@ -461,12 +412,10 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 			st_copy.Data_add_dict = st.Data_add_dict
 			iteration_plan_copy := append(iteration_plan, i)
 			//вызываем расчёт для поддерева
-			fmt.Println("calling subtree for ", i)
 			new_res_plan, new_res_value := PlanIterationInternalsTree(st_copy, iteration_plan_copy)
 
 			//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
 			if new_res_value > best_value {
-				fmt.Println(i, " becomes the best subtree!")
 				best_plan = new_res_plan
 				best_value = new_res_value
 			}
@@ -520,12 +469,10 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 				st_copy.Data_add_dict = data_add_dict_copy
 				iteration_plan_copy := append(iteration_plan, i2)
 				//вызываем расчёт для поддерева
-				fmt.Println("calling subtree for ", i2)
 				new_res_plan, new_res_value := PlanIterationInternalsTree(st_copy, iteration_plan_copy)
 
 				//если это поддерево оказалось лучше предыдущих, обновляем оптимумы
 				if new_res_value > best_value {
-					fmt.Println(i2, " becomes the best subtree!")
 					best_plan = new_res_plan
 					best_value = new_res_value
 				}
@@ -536,7 +483,6 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 
 	//если ни одно поддерево не было использовано
 	if !recursion_called {
-		fmt.Println("no subtree found, getting result from here")
 		calculate.Default_values = nil
 		defValuesString, _, _ := calculate.StartCalculate(int(st.Iter), 1, st.Threshold, st.Data_dict, st.Data_add_dict, st.Weight, st.Method_id)
 		var defValues map[string]float64
@@ -554,7 +500,9 @@ func PlanIterationInternalsTree(st data_dict_json, iteration_plan []string) ([]s
 		best_value = defSum
 	}
 
-	fmt.Println(best_plan)
+	if len(iteration_plan) == 0 {
+		fmt.Println("best tree plan: ", best_plan, ", value: ", best_value)
+	}
 
 	// возвращаем результат: либо лучшую из веток рекурсии, либо текущую итерацию, если веток рекурсии не нашлось
 	return best_plan, best_value

@@ -134,6 +134,7 @@ class MethodDefinitionInstaller
       order: obj["order"],
       level_def_id: obj["id"],
       time_estimate: obj["timeEstimate"],
+      task_name: obj["taskName"],
       work_product_definition_id: @id_mapper[obj["workProductId"]]
     }
   end
@@ -154,6 +155,7 @@ class MethodDefinitionInstaller
       order: obj["order"],
       state_def_id: obj["id"],
       time_estimate: obj["timeEstimate"],
+      task_name: obj["taskName"],
       alpha_definition_id: @id_mapper[get_alpha_id(obj)],
     }
   end
@@ -165,6 +167,7 @@ class MethodDefinitionInstaller
       order: obj["order"],
       checkpoint_def_id: obj["id"],
       time_estimate: obj["timeEstimate"],
+      task_name: obj["taskName"],
       state_definition_id: @id_mapper[obj["detailId"]],
     }
   end
@@ -175,6 +178,7 @@ class MethodDefinitionInstaller
       description: obj["description"],
       order: obj["order"],
       checkpoint_def_id: obj["id"],
+      task_name: obj["taskName"],
       level_of_details_definition_id: @id_mapper[obj["detailId"]],
     }
   end

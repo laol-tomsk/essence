@@ -79,8 +79,10 @@ class IterationsController < ApplicationController
                                                 params[:selected_influence_medium].to_i, params[:selected_influence_strong].to_i,
                                                 params[:selected_threshold].to_f, params[:get_next_checkbox].to_i, params[:sprint_length].to_i)
 
-    if @probabilities == 0
-      return 0
+    if params[:get_next_checkbox].to_i >= 2
+      @proposed_tasks = build_task_list(@probabilities)
+      render :task_list
+      return
     end
 
     @alphas = Alpha.where(project_id: @project.id)
@@ -95,13 +97,6 @@ class IterationsController < ApplicationController
   end
 
   def request_probabilities_for(iteration, w,m,s,threshold, get_next_checkpoint, sprint_length)
-    if get_next_checkpoint > 0
-      if File.exists?("/usr/src/redmine/plugins/semat_essence/results.json")
-        resP = JSON.parse(File.read("/usr/src/redmine/plugins/semat_essence/results.json"))
-        return resP
-      end
-    end
-
     checkpoint_codes = get_checkbox_def_name_from_alphas(@project.alphas)
     
     core_costs = @project.method_definition
@@ -157,6 +152,8 @@ class IterationsController < ApplicationController
     uri = URI(Config::URL)
     http = Net::HTTP.new(uri.host,Config::PORT)
     http.use_ssl = false
+    http.open_timeout = 10
+    http.read_timeout = nil
     if get_next_checkpoint == 0
       req = Net::HTTP::Post.new("/calculate", initheader = {'Content-Type' =>'application/json'})
     end
@@ -169,8 +166,9 @@ class IterationsController < ApplicationController
     req.body = "#{@toSend}"
 
     if get_next_checkpoint > 0
-      http.request(req)
-      return 0
+      res = http.request(req)
+      resP = JSON.parse(res.body)
+      return JSON.parse(resP["res"])
     end
 
     if get_next_checkpoint == 0
@@ -324,32 +322,11 @@ class IterationsController < ApplicationController
     return checkbox_history
   end
 
-  def task_list_from_json
+  def task_list_from_result_log
+    @project = Project.find(params[:project_id])
     file_path = "/usr/src/redmine/plugins/semat_essence/results.json"
-    json_list = JSON.parse(File.read(file_path))
-      
-    task_ids = json_list.map do |item|
-      item.split('_')
-    end.compact
-
-    tasks = task_ids.map do |item|
-      cp_def = CheckpointDefinition.find_by(checkpoint_def_id: item.first)
-      if cp_def.nil?
-        cp_def = WpCheckpointDefinition.find_by(checkpoint_def_id: item.first)
-        wp = WorkProduct.find(item[1].to_i)
-        wp.name + ": " + cp_def.level_of_details_definition.name
-      else 
-        if (item[1].to_i > 0) 
-          alpha = Alpha.find(item[1].to_i)
-          alpha.name + ": " + cp_def.state_definition.name
-        else
-          alpha = cp_def.state_definition.alpha_definition
-          alpha.name + ": " + cp_def.name
-        end
-      end
-    end
-
-    @proposed_tasks = tasks
+    @proposed_tasks = build_task_list(JSON.parse(File.read(file_path)))
+    render :task_list
   end
 
   def process_all_json_files
@@ -414,41 +391,16 @@ class IterationsController < ApplicationController
     puts "Results saved to: #{output_file}"
   end
 
-  def make_tasks_from_json
-    file_path = "/usr/src/redmine/plugins/semat_essence/results.json"
-    json_list = JSON.parse(File.read(file_path))
-      
-    task_ids = json_list.map do |item|
-      item.split('_')
-    end.compact
-
+  def make_tasks_from_form
     project = Project.find(params[:project_id])
-    puts project
 
-    task_ids.each do |item|
-      title = ""
-      description = ""
-      cp_def = CheckpointDefinition.find_by(checkpoint_def_id: item.first)
-      if cp_def.nil?
-        cp_def = WpCheckpointDefinition.find_by(checkpoint_def_id: item.first)
-        wp = WorkProduct.find(item[1].to_i)
-        title = wp.name + ": " + cp_def.level_of_details_definition.name
-        description = cp_def.level_of_details_definition.description
-      else 
-        alpha = ""
-        if item[1].to_i > 0 
-          alpha = Alpha.find(item[1].to_i)
-        else 
-          alpha = cp_def.state_definition.alpha_definition
-        end
-        title = alpha.name + ": " + cp_def.state_definition.name
-        description = cp_def.state_definition.description
-      end
+    tasks = Array(params[:tasks]).map(&:strip).reject(&:blank?)
+    tasks.each do |title|
       issue = Issue.new(
         project: project,
         tracker_id: 1,
         subject: title,
-        description: description,
+        description: "",
         author: User.current,
         priority_id: 2,
         status_id: 1
@@ -461,5 +413,40 @@ class IterationsController < ApplicationController
     end
 
     redirect_to project_issues_path(project_id: params[:project_id])
+  end
+
+  private
+
+  def build_task_list(json_list)
+    task_ids = json_list.map do |item|
+      item.split('_')
+    end.compact
+
+    task_ids.map do |item|
+      cp_def = CheckpointDefinition.find_by(checkpoint_def_id: item.first)
+      if cp_def.nil?
+        cp_def = WpCheckpointDefinition.find_by(checkpoint_def_id: item.first)
+        wp = WorkProduct.find(item[1].to_i)
+        level_definition = cp_def.level_of_details_definition
+        fallback = wp.name + ": " + level_definition.name
+        task_name_from_template(cp_def.task_name.presence || level_definition.task_name, wp.name, fallback)
+      else
+        state_definition = cp_def.state_definition
+        if item[1].to_i > 0
+          alpha = Alpha.find(item[1].to_i)
+          fallback = alpha.name + ": " + state_definition.name
+        else
+          alpha = state_definition.alpha_definition
+          fallback = alpha.name + ": " + cp_def.name
+        end
+        task_name_from_template(cp_def.task_name.presence || state_definition.task_name, alpha.name, fallback)
+      end
+    end
+  end
+
+  def task_name_from_template(template, item_name, fallback)
+    return fallback if template.blank?
+
+    template.gsub("%ITEM%", item_name)
   end
 end

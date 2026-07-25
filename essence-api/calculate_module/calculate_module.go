@@ -91,8 +91,6 @@ func StartCalculateWrapper(
 	i string,
 	def_values map[string]float64,
 	is_additional bool) {
-	//fmt.Println("START")
-
 	if Data_dict == nil {
 		Data_dict = make(map[string]map[string][]bool)
 	}
@@ -133,8 +131,6 @@ func StartCalculate(
 	data_add_dict map[string][]map[string][]map[string]bool,
 	weight map[string]int64,
 	method_id int64) (string, string, string) {
-	//fmt.Println("START")
-
 	if Data_dict == nil {
 		Data_dict = make(map[string]map[string][]bool)
 	}
@@ -162,9 +158,6 @@ func GetNodeNames(method_id int64) map[string]string {
 }
 
 func calculete_node_no_dynemic(session neo4j.Session, number_iteration int, data_dict_version string, is_additional bool) (string, string, string) {
-	//chanal_lost := logmodule.GetChanal()
-	//go logmodule.StartLogs(&chanal_lost, time.Now().Format("2006.01.02 15:04:05"))
-
 	var (
 		final_dict      = map[string]float64{}
 		final_dictMutex = sync.RWMutex{}
@@ -361,7 +354,6 @@ func calculete_node_no_dynemic(session neo4j.Session, number_iteration int, data
 	if err != nil {
 		panic(err)
 	}
-	//logmodule.StopLogs(&chanal_lost)
 	return string(f_json), "", ""
 }
 
@@ -430,28 +422,6 @@ func return_N_on_details(parent_guid string, data_dict_version string, number_it
 	return counter
 }
 
-func create_vector(len_vector int) []string {
-	var mas []string
-	for i := 0; i < int(math.Pow(2, float64(len_vector))); i++ {
-		bin_value, _ := ConvertInt(fmt.Sprint(i), 10, 2)
-		flag := len(bin_value)
-		for flag != len_vector {
-			bin_value = "0" + bin_value
-			flag = len(bin_value)
-		}
-		mas = append(mas, bin_value)
-	}
-	return mas
-}
-
-func ConvertInt(val string, base, toBase int) (string, error) {
-	i, err := strconv.ParseInt(val, base, 64)
-	if err != nil {
-		return "", err
-	}
-	return strconv.FormatInt(i, toBase), nil
-}
-
 func Log(base, x float64) float64 {
 	return math.Log(x) / math.Log(base)
 }
@@ -471,6 +441,5 @@ func return_nod_dynemic_data() [][]string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//fmt.Println(st.Mas)
 	return st.Mas
 }
