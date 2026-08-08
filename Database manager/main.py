@@ -77,7 +77,14 @@ def create_new_databese_XML():
 
 def StartWeb():
 	eel.init("web")
-	eel.start("main.html", size=(310,310), port=get_free_port())
+	port = get_free_port()
+	try:
+		# Eel по умолчанию ищет Chrome или Chromium.
+		eel.start("main.html", size=(310,310), port=port)
+	except OSError as error:
+		print("Chrome/Chromium не найден. Запускаем интерфейс в Microsoft Edge.")
+		print(error)
+		eel.start("main.html", size=(310,310), port=port, mode="edge")
 
 def main():
 	StartWeb()

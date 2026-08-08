@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	Ndriver, _         = neo4j.NewDriver("bolt://localhost:7687", neo4j.BasicAuth("laoltomsk", "Nerybov1999", ""))
+	Ndriver, _         = neo4j.NewDriver("bolt://localhost:7687", neo4j.BasicAuth("neo4j", "super_admin", ""))
 	stateNodes         []string
 	normalVStateNodes  []string
 	normalVDetailNodes []string
